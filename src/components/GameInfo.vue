@@ -1,38 +1,38 @@
 <template>
-<div>
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <TicketStore/>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <PrizesInformation/>
-            </div>
-            <div class="col">
-                <PlayerInformation/>
-            </div>
-            <div class="col">
-                <CurrentGameInformation/>
-            </div>
-            <div class="col">
-                <LastWinnersOwners/>
-            </div>
-        </div>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <TicketStore />
+      </div>
     </div>
     <div class="row">
+      <div class="row">
         <div class="col">
-            <Lucky7Tickets/>
+          <PrizesInformation />
         </div>
         <div class="col">
-            <LastWinnersPrizes/>
+          <PlayerInformation />
         </div>
         <div class="col">
-            <LastWinnersDifferences/>
+          <CurrentGameInformation />
         </div>
+        <div class="col">
+          <LastWinnersOwners />
+        </div>
+      </div>
     </div>
-</div>
+    <div class="row">
+      <div class="col">
+        <Lucky7Tickets />
+      </div>
+      <div class="col">
+        <LastWinnersPrizes />
+      </div>
+      <div class="col">
+        <LastWinnersDifferences />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -46,7 +46,7 @@ import LastWinnersDifferences from './gameInfo/LastWinnersDifferences.vue';
 import LastWinnersPrizes from './gameInfo/LastWinnersPrizes.vue';
 
 export default {
-  name: 'gameInfo',
+  name: 'GameInfo',
   components: {
     PrizesInformation,
     TicketStore,
@@ -61,12 +61,4 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>

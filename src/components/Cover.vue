@@ -1,7 +1,7 @@
 <template>
-    <div>
-        This is the cover
-    </div>
+  <div>
+    This is the cover
+  </div>
 </template>
 
 <script>

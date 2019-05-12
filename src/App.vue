@@ -1,21 +1,17 @@
 <template>
   <div id="app">
-    <Top/>
-    <Cover/>
-    <GameInfo/>
+    <!-- <Top/>
+    <Cover/> -->
+    <GameInfo />
   </div>
 </template>
 
 <script>
-import Top from './components/Top.vue';
-import Cover from './components/Cover.vue';
 import GameInfo from './components/GameInfo.vue';
 
 export default {
-  name: 'app',
+  name: 'App',
   components: {
-    Top,
-    Cover,
     GameInfo,
   },
 };

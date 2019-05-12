@@ -1,13 +1,13 @@
 <template>
-    <div>
-        <h1>Last winners</h1>
-        <h2>First prize owner</h2>
-        <h3>{{ firstPrize }}</h3>
-        <h2>Second prize owner</h2>
-        <h3>{{ secondPrize }}</h3>
-        <h2>Third prize owner</h2>
-        <h3>{{ thirdPrize }}</h3>
-    </div>
+  <div>
+    <h1>Last winners</h1>
+    <h2>First prize owner</h2>
+    <h3>{{ firstPrize }}</h3>
+    <h2>Second prize owner</h2>
+    <h3>{{ secondPrize }}</h3>
+    <h2>Third prize owner</h2>
+    <h3>{{ thirdPrize }}</h3>
+  </div>
 </template>
 
 <script>
