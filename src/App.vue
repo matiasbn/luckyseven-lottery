@@ -1,19 +1,41 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <PrizesInformation/>
+    <TicketStore/>
+    <Lucky7Tickets/>
+    <PlayerInformation/>
+    <GameInformation/>
+    <LastWinnersOwners/>
+    <LastWinnersDifferences/>
+    <LastWinnersPrizes/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import PrizesInformation from './components/PrizesInformation.vue';
+import TicketStore from './components/TicketStore.vue';
+import Lucky7Tickets from './components/Lucky7Tickets.vue';
+import PlayerInformation from './components/PlayerInformation.vue';
+import GameInformation from './components/GameInformation.vue';
+import LastWinnersOwners from './components/LastWinnersOwners.vue';
+import LastWinnersDifferences from './components/LastWinnersDifferences.vue';
+import LastWinnersPrizes from './components/LastWinnersPrizes.vue';
+import { store } from './store/store';
 
 export default {
   name: 'app',
+  store,
   components: {
-    HelloWorld
-  }
-}
+    PrizesInformation,
+    TicketStore,
+    Lucky7Tickets,
+    PlayerInformation,
+    GameInformation,
+    LastWinnersOwners,
+    LastWinnersDifferences,
+    LastWinnersPrizes,
+  },
+};
 </script>
 
 <style>
