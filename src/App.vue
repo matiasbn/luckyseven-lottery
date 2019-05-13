@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <!-- <Top/>
-    <Cover/> -->
-    <GameInfo />
+    <b-card-group deck>
+      <GameInfo />
+    </b-card-group>
   </div>
 </template>
 
