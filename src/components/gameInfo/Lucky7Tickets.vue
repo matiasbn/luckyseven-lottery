@@ -1,27 +1,30 @@
 <template>
-  <div>
+  <b-card
+    header="Current game"
+    header-tag="h1"
+  >
     <b-table
       striped
       hover
-      :responsive="responsive"
+      responsive
       bordered
       :items="lucky7Tickets"
       :fields="fields"
     />
-  </div>
+  </b-card>
 </template>
 <script>
 export default {
   data() {
     return {
       fields: [
-        { key: 'number', headerTitle: 'Lucky7Number' },
-        { key: 'ticket', headerTitle: 'Lucky7Ticket' },
+        { key: 'number', label: 'Lucky7Number' },
+        { key: 'ticket', label: 'Lucky7Ticket' },
         {
-          key: 'difference', headerTitle: 'Difference', sort: true, sortable: true, center: true,
+          key: 'difference', label: 'Difference', sort: true, center: true,
         },
-        { key: 'owner', headerTitle: 'Owner' },
-        { key: 'prize', headerTitle: 'Prize' },
+        { key: 'owner', label: 'Owner' },
+        { key: 'prize', label: 'Prize' },
       ],
     };
   },
@@ -83,5 +86,7 @@ export default {
 };
 </script>
 <style scoped>
-
+  .card{
+    text-align: center;
+  }
 </style>

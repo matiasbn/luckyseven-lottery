@@ -1,15 +1,16 @@
 <template>
   <div>
     <b-card
-      title="Your account"
       header="Player stats"
+      header-tag="h2"
+      title="Your account"
     >
       <b-card-text>{{ account }}</b-card-text>
     </b-card>
 
     <b-card title="Your current prize">
       <b-card-text>{{ currentPrize }}</b-card-text>
-      <b-button variant="outline-primary">
+      <b-button variant="success">
         Claim your prize!
       </b-button>
     </b-card>
@@ -29,4 +30,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+  .card{
+    text-align:center;
+  }
+</style>

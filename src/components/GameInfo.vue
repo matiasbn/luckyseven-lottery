@@ -1,28 +1,49 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <PlayerInformation />
-      <TicketStore />
-    </div>
-    <div class="row">
-      <CurrentGame />
-    </div>
-  </div>
+  <b-container>
+    <b-row>
+      <b-col>
+        <PlayerStats />
+      </b-col>
+      <b-col>
+        <LastTickets />
+      </b-col>
+      <b-col>
+        <PricesAndStats />
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <TicketStore />
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <Lucky7Tickets />
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
-import PlayerInformation from './GameInfo/PlayerInformation.vue';
+import LastTickets from './GameInfo/LastTickets.vue';
+import Lucky7Tickets from './GameInfo/Lucky7Tickets.vue';
+import PlayerStats from './GameInfo/PlayerStats.vue';
+import PricesAndStats from './GameInfo/PricesAndStats.vue';
 import TicketStore from './GameInfo/TicketStore.vue';
-import CurrentGame from './GameInfo/CurrentGame.vue';
 
 export default {
   components: {
-    PlayerInformation,
+    LastTickets,
+    Lucky7Tickets,
+    PlayerStats,
+    PricesAndStats,
     TicketStore,
-    CurrentGame,
   },
 };
 </script>
 
 <style>
+  .row {
+    margin:20px;
+  }
 </style>

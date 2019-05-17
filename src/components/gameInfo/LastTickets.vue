@@ -1,16 +1,12 @@
 <template>
   <div>
     <b-card
+      header="Your tickets"
+      header-tag="h2"
       title="Last Purchased Ticket"
-      header="Last Tickets"
     >
       <b-card-text>
         {{ lastPurchasedTicket }}
-      </b-card-text>
-    </b-card>
-    <b-card title="Last Generated Ticket">
-      <b-card-text>
-        {{ lastGeneratedTicket }}
       </b-card-text>
     </b-card>
     <b-card title="Lucky7Ticket?">
@@ -45,4 +41,7 @@ export default {
 };
 </script>
 <style>
+  .card{
+    text-align:center;
+  }
 </style>

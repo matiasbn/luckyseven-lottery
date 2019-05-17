@@ -1,18 +1,19 @@
 <template>
   <div id="app">
-    <b-card-group deck>
-      <GameInfo />
-    </b-card-group>
+    <Navbar />
+    <GameInfo />
   </div>
 </template>
 
 <script>
 import GameInfo from './components/GameInfo.vue';
+import Navbar from './components/Navbar.vue';
 
 export default {
   name: 'App',
   components: {
     GameInfo,
+    Navbar,
   },
 };
 </script>

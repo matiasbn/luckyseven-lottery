@@ -1,8 +1,9 @@
 <template>
   <div>
     <b-card
-      title="Tickets stats"
       header="Game stats"
+      header-tag="h2"
+      title="Tickets stats"
     >
       <b-card-text>
         Tickets selled:
@@ -15,12 +16,12 @@
     </b-card>
     <b-card title="Prices">
       <b-card-text>
-        Generate ticket prize:
+        Generate ticket:
         {{ generateTicketPrice }}
       </b-card-text>
       <b-card-text>
-        Sell ticket prize:
-        {{ sellTicketPrice }}
+        Purchase ticket:
+        {{ purchaseTicketPrice }}
       </b-card-text>
     </b-card>
   </div>
@@ -33,8 +34,8 @@ export default {
     generateTicketPrice() {
       return this.$store.state.game.generateTicketPrice;
     },
-    sellTicketPrice() {
-      return this.$store.state.game.sellTicketPrice;
+    purchaseTicketPrice() {
+      return this.$store.state.game.purchaseTicketPrice;
     },
     ticketsSelled() {
       return this.$store.state.game.ticketsSelled;
@@ -47,5 +48,7 @@ export default {
 </script>
 
 <style scoped>
-
+  .card{
+    text-align:center;
+  }
 </style>
