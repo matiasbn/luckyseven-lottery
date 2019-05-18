@@ -14,18 +14,23 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "bootstrap-vue": "^2.0.0-rc.20",
-    "vue-router": "^3.0.1",
     "bootstrap": "^4.3.1",
+    "bootstrap-vue": "^2.0.0-rc.20",
     "core-js": "^2.6.5",
     "portal-vue": "^2.1.4",
     "solhint": "^2.0.0",
     "truffle-hdwallet-provider": "^1.0.9",
     "vue": "^2.6.10",
+    "vue-router": "^3.0.1",
     "vuex": "^3.1.1",
     "web3": "^1.0.0-beta.55"
   },
   "devDependencies": {
+    "@commitlint/config-conventional": "^7.6.0",
+    "@vue/cli-plugin-babel": "^3.7.0",
+    "@vue/cli-plugin-eslint": "^3.7.0",
+    "@vue/cli-service": "^3.7.0",
+    "@vue/eslint-config-airbnb": "^4.0.0",
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.22.1",
     "babel-eslint": "^8.2.1",
@@ -53,6 +58,7 @@
     "eslint-friendly-formatter": "^3.0.0",
     "eslint-import-resolver-webpack": "^0.8.3",
     "eslint-loader": "^1.7.1",
+    "eslint-plugin-css-modules": "^2.11.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-vue": "^4.0.0",
     "eslint-plugin-vue-types": "^1.0.0",
@@ -89,15 +95,9 @@
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.1",
-    "webpack-merge": "^4.1.0",
-    "@commitlint/config-conventional": "^7.6.0",
-    "@vue/cli-plugin-babel": "^3.7.0",
-    "@vue/cli-plugin-eslint": "^3.7.0",
-    "@vue/cli-service": "^3.7.0",
-    "@vue/eslint-config-airbnb": "^4.0.0"
+    "webpack-merge": "^4.1.0"
   },
-  "peerDependencies": {
-  },
+  "peerDependencies": {},
   "engines": {
     "node": ">= 6.0.0",
     "npm": ">= 3.0.0"

@@ -16,7 +16,8 @@ module.exports = {
     'plugin:vue/recommended',
     'plugin:vue/essential',
     '@vue/airbnb',
-    'airbnb-base'
+    'airbnb-base',
+    "plugin:css-modules/recommended"
     ]
     ,
     // required to lint *.vue files
@@ -48,13 +49,15 @@ module.exports = {
           'state', // for vuex state
           'acc', // for reduce accumulators
           'e' // for e.returnvalue
-        ]
+        ],
       }],
-    // allow optionalDependencies
-    'import/no-extraneous-dependencies': ['error', {
-      optionalDependencies: ['test/unit/index.js']
-    }],
-    // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+      // allow optionalDependencies
+      'import/no-extraneous-dependencies': ['error', {
+        optionalDependencies: ['test/unit/index.js']
+      }],
+      // allow debugger during development
+      'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+      'css-modules/no-unused-class':'off',
+      'css-modules/no-undef-class':'off',
   }
 }
