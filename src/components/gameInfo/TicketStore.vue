@@ -3,6 +3,8 @@
     header="Ticket Store"
     header-tag="h1"
     class="ticket-store"
+    header-bg-variant="warning"
+    header-text-variant="white"
   >
     <b-row>
       <b-col>
@@ -10,29 +12,54 @@
           header="Try your luck!"
           header-tag="h2"
         >
-          <b-button
-            pill
-            variant="warning"
-          >
-            Generate Ticket
-          </b-button>
-          <b-button
-            pill
-            variant="warning"
-          >
-            Buy Ticket
-          </b-button>
-          <b-button
-            pill
-            variant="warning"
-          >
-            Give me a random ticket!
-          </b-button>
+          <b-row>
+            <b-col>
+              <p>
+                Generate a ticket for a lower price than purchasing it!. <br>
+              </p>
+              <b-button
+                v-b-popover.hover="generatePrice"
+                title="Price"
+                pill
+                variant="warning"
+              >
+                Generate Ticket
+              </b-button>
+            </b-col>
+            <b-col>
+              <p>
+                Buy your generated ticket to win the prize instantly!
+              </p>
+              <b-button
+                v-b-popover.hover="purchasePrice"
+                title="Price"
+                pill
+                variant="warning"
+              >
+                Buy Ticket
+              </b-button>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <p>
+                Or, if you feel lucky, you can purchase your ticket directly!.
+              </p>
+              <b-button
+                v-b-popover.hover="purchasePrice"
+                title="Price"
+                pill
+                variant="warning"
+              >
+                Give me a random ticket!
+              </b-button>
+            </b-col>
+          </b-row>
         </b-card>
       </b-col>
       <b-col>
         <b-card
-          header="Generated ticket"
+          header="Generated/Purchased ticket"
           header-tag="h2"
           title="Ticket value"
         >
@@ -64,6 +91,12 @@ export default {
       return 'No, best luck for the next game';
     },
   },
+  data() {
+    return {
+      generatePrice: `${this.$store.state.game.generateTicketPrice} ETH`,
+      purchasePrice: `${this.$store.state.game.purchaseTicketPrice} ETH`,
+    };
+  },
   computed: {
     lastGeneratedTicket() {
       return this.$store.state.player.lastGeneratedTicket;
@@ -77,15 +110,27 @@ export default {
     lucky7Ticket() {
       return this.$store.state.player.lucky7Ticket;
     },
+    generateTicketPrice() {
+      return this.$store.state.game.generateTicketPrice;
+    },
+    purchaseTicketPrice() {
+      return this.$store.state.game.purchaseTicketPrice;
+    },
   },
 };
 </script>
 
-<style scoped>
+<style>
   .ticket-store {
     text-align:center;
   }
   .btn {
     margin:5px;
+  }
+  .card-text{
+    margin:0;
+  }
+  .col{
+    border:1px yellow;
   }
 </style>

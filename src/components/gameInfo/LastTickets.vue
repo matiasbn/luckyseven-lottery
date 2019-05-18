@@ -4,6 +4,8 @@
       header="Your tickets"
       header-tag="h2"
       title="Last Purchased Ticket"
+      header-bg-variant="warning"
+      header-text-variant="white"
     >
       <b-card-text>
         {{ lastPurchasedTicket }}
@@ -22,7 +24,7 @@ export default {
   filters: {
     isLucky7Ticket(lucky7Ticket) {
       if (lucky7Ticket) {
-        return 'Yes!, Congratulations';
+        return 'Yes!, Congratulations!';
       }
       return 'No, best luck for the next game';
     },

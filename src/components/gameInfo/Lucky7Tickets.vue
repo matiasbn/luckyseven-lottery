@@ -2,14 +2,16 @@
   <b-card
     header="Current game"
     header-tag="h1"
+    header-bg-variant="warning"
+    header-text-variant="white"
   >
     <b-table
+      :items="lucky7Tickets"
+      :fields="fields"
       striped
       hover
       responsive
       bordered
-      :items="lucky7Tickets"
-      :fields="fields"
     />
   </b-card>
 </template>

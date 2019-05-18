@@ -4,6 +4,8 @@
       header="Game stats"
       header-tag="h2"
       title="Tickets stats"
+      header-bg-variant="warning"
+      header-text-variant="white"
     >
       <b-card-text>
         Tickets selled:

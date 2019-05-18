@@ -1,27 +1,60 @@
+// https://eslint.org/docs/user-guide/configuring
+
 module.exports = {
   root: true,
-  env: {
-    // this section will be used to determine which APIs are available to us
-    // (i.e are we running in a browser environment or a node.js env)
-    node: true,
-    browser: true,
-  },
   parserOptions: {
     parser: 'babel-eslint',
-    // specifying a module sourcetype prevent eslint from marking import statements as errors
     sourceType: 'module',
   },
+  env: {
+    browser: true,
+  },
+  // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
+  // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
   extends: [
-    // use the recommended rule set for both plain javascript and vue
     'eslint:recommended',
     'plugin:vue/recommended',
     'plugin:vue/essential',
     '@vue/airbnb',
-    'plugin:vue-types/strongly-recommended',
-  ],
-  rules: {
-    // we should always disable console logs and debugging in production
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-  },
-};
+    'airbnb-base'
+    ]
+    ,
+    // required to lint *.vue files
+    plugins: [
+      'vue'
+    ],
+    // check if imports actually resolve
+    settings: {
+      'import/resolver': {
+        webpack: {
+          config: 'build/webpack.base.conf.js'
+        }
+      }
+    },
+    // add your custom rules here
+    rules: {
+      'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+      'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+      // don't require .vue extension when importing
+      'import/extensions': ['error', 'always', {
+        js: 'never',
+        vue: 'never'
+      }],
+      // disallow reassignment of function parameters
+      // disallow parameter object manipulation except for specific exclusions
+      'no-param-reassign': ['error', {
+        props: true,
+        ignorePropertyModificationsFor: [
+          'state', // for vuex state
+          'acc', // for reduce accumulators
+          'e' // for e.returnvalue
+        ]
+      }],
+    // allow optionalDependencies
+    'import/no-extraneous-dependencies': ['error', {
+      optionalDependencies: ['test/unit/index.js']
+    }],
+    // allow debugger during development
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+  }
+}

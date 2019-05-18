@@ -1,5 +1,5 @@
 <template>
-  <b-container>
+  <b-container fluid>
     <b-row>
       <b-col>
         <PlayerStats />
@@ -25,11 +25,11 @@
 </template>
 
 <script>
-import LastTickets from './GameInfo/LastTickets.vue';
-import Lucky7Tickets from './GameInfo/Lucky7Tickets.vue';
-import PlayerStats from './GameInfo/PlayerStats.vue';
-import PricesAndStats from './GameInfo/PricesAndStats.vue';
-import TicketStore from './GameInfo/TicketStore.vue';
+import LastTickets from './GameInfo/LastTickets';
+import Lucky7Tickets from './GameInfo/Lucky7Tickets';
+import PlayerStats from './GameInfo/PlayerStats';
+import PricesAndStats from './GameInfo/PricesAndStats';
+import TicketStore from './GameInfo/TicketStore';
 
 export default {
   components: {

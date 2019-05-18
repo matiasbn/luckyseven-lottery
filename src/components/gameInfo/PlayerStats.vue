@@ -4,6 +4,8 @@
       header="Player stats"
       header-tag="h2"
       title="Your account"
+      header-bg-variant="warning"
+      header-text-variant="white"
     >
       <b-card-text>{{ account }}</b-card-text>
     </b-card>
