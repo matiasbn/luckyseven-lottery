@@ -55,7 +55,7 @@ const getWeb3 = new Promise(((resolve, reject) => {
       if (err) {
         reject(new Error(`Unable to retrieve balance for address: ${result.coinbase}`));
       } else {
-        balance = result.web3().fromWei(balance, 'ether');
+        balance = parseInt(balance, 10);
         result = Object.assign({}, result, { balance });
         resolve(result);
       }

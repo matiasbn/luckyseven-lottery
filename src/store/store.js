@@ -16,10 +16,13 @@ export const store = new Vuex.Store({
         console.log('error in action registerWeb3', e);
       });
     },
+    pollWeb3({ commit }, payload) {
+      console.log('pollWeb3 action being executed');
+      commit('pollWeb3Instance', payload);
+    },
   },
   mutations: {
     registerWeb3Instance(state, payload) {
-      console.log(payload);
       console.log('registerWeb3instance Mutation being executed', payload);
       const result = payload;
       const web3Copy = state.web3;
@@ -29,6 +32,11 @@ export const store = new Vuex.Store({
       web3Copy.isInjected = result.injectedWeb3;
       web3Copy.web3Instance = result.web3;
       state.web3 = web3Copy;
+    },
+    pollWeb3Instance(state, payload) {
+      console.log('pollWeb3Instance mutation being executed', payload);
+      state.web3.coinbase = payload.coinbase;
+      state.web3.balance = parseInt(payload.balance, 10);
     },
   },
   state: {

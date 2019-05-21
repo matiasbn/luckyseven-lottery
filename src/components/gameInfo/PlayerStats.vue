@@ -14,19 +14,27 @@
       header-bg-variant="warning"
       header-text-variant="white"
     >
-      <b-card-text>{{ balance }}</b-card-text>
+      <b-card-text>{{ balance | transformBalance }} ETH</b-card-text>
     </b-card>
     <b-card title="Your current prize">
       <b-card-text>{{ currentPrize }}</b-card-text>
       <b-button variant="success">
-        Claim your prize!
+        Claim your prize now!
       </b-button>
     </b-card>
   </div>
 </template>
 
 <script>
+import Web3 from 'web3';
+
 export default {
+  filters: {
+    transformBalance(balance) {
+      const web3 = new Web3();
+      return web3.fromWei(balance, 'ether');
+    },
+  },
   computed: {
     account() {
       return this.$store.state.web3.coinbase;

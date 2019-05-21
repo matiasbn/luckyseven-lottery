@@ -31,6 +31,7 @@ import Lucky7Tickets from './GameInfo/Lucky7Tickets';
 import PlayerStats from './GameInfo/PlayerStats';
 import PricesAndStats from './GameInfo/PricesAndStats';
 import TicketStore from './GameInfo/TicketStore';
+import pollWeb3 from '../util/pollWeb3';
 
 export default {
   components: {
@@ -43,6 +44,7 @@ export default {
   beforeCreate() {
     console.log('registerWeb3 Action dispatched');
     this.$store.dispatch('registerWeb3');
+    pollWeb3();
   },
 };
 </script>
@@ -50,7 +52,5 @@ export default {
 <style>
   .row {
     margin:20px;
-  }
-  .main-container{
   }
 </style>

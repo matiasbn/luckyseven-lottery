@@ -3,6 +3,13 @@
     <b-card
       header="Game stats"
       header-tag="h2"
+      title="Current network"
+      header-bg-variant="warning"
+      header-text-variant="white"
+    >
+      <b-card-text>{{ network }}</b-card-text>
+    </b-card>
+    <b-card
       title="Tickets stats"
       header-bg-variant="warning"
       header-text-variant="white"
@@ -19,17 +26,18 @@
     <b-card title="Prices">
       <b-card-text>
         Generate ticket:
-        {{ generateTicketPrice }}
+        {{ generateTicketPrice }} ETH
       </b-card-text>
       <b-card-text>
         Purchase ticket:
-        {{ purchaseTicketPrice }}
+        {{ purchaseTicketPrice }} ETH
       </b-card-text>
     </b-card>
   </div>
 </template>
 
 <script>
+import { NETWORKS } from '../../util/constants/networks';
 
 export default {
   computed: {
@@ -44,6 +52,10 @@ export default {
     },
     ticketsGenerated() {
       return this.$store.state.game.ticketsGenerated;
+    },
+    network() {
+      const networkId = this.$store.state.web3.networkId;
+      return NETWORKS[networkId];
     },
   },
 };
