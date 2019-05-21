@@ -1,5 +1,6 @@
 <template>
-  <b-container fluid>
+  <div
+    class="main-container">
     <b-row>
       <b-col>
         <PlayerStats />
@@ -21,7 +22,7 @@
         <Lucky7Tickets />
       </b-col>
     </b-row>
-  </b-container>
+  </div>
 </template>
 
 <script>
@@ -39,11 +40,17 @@ export default {
     PricesAndStats,
     TicketStore,
   },
+  beforeCreate() {
+    console.log('registerWeb3 Action dispatched');
+    this.$store.dispatch('registerWeb3');
+  },
 };
 </script>
 
 <style>
   .row {
     margin:20px;
+  }
+  .main-container{
   }
 </style>

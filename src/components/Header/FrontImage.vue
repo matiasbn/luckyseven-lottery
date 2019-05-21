@@ -1,14 +1,12 @@
 <template>
-  <b-card
-    :img-src="require('../../assets/header.jpg')"
-    img-alt="Card Image"
-    overlay
-    text-variant="white"
-  >
-    <b-card-text class="front-image">
-      Some quick example text to build on the card and make up the bulk of the card's content.
-    </b-card-text>
-  </b-card>
+  <div class="main-image">
+    <b-img
+      :src="require('../../assets/header.jpg')"
+      fluid
+      class="front-image"
+    />
+    <h1 class="front-title">hola</h1>
+  </div>
 </template>
 
 <script>
@@ -19,6 +17,15 @@ export default {
 
 <style>
   .front-image{
-    vertical-align:middle;
+    position:block;
+  }
+  .front-title{
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate( -50%, -50% );
+    text-align: center;
+    color: white;
+    font-weight: bold;
   }
 </style>

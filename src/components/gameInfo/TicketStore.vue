@@ -11,6 +11,7 @@
         <b-card
           header="Try your luck!"
           header-tag="h2"
+          fluid
         >
           <b-row>
             <b-col>
@@ -20,7 +21,6 @@
               <b-button
                 v-b-popover.hover="generatePrice"
                 title="Price"
-                pill
                 variant="warning"
               >
                 Generate Ticket
@@ -33,7 +33,6 @@
               <b-button
                 v-b-popover.hover="purchasePrice"
                 title="Price"
-                pill
                 variant="warning"
               >
                 Buy Ticket
@@ -48,7 +47,6 @@
               <b-button
                 v-b-popover.hover="purchasePrice"
                 title="Price"
-                pill
                 variant="warning"
               >
                 Give me a random ticket!

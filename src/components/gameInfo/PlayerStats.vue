@@ -9,7 +9,13 @@
     >
       <b-card-text>{{ account }}</b-card-text>
     </b-card>
-
+    <b-card
+      title="Your balance"
+      header-bg-variant="warning"
+      header-text-variant="white"
+    >
+      <b-card-text>{{ balance }}</b-card-text>
+    </b-card>
     <b-card title="Your current prize">
       <b-card-text>{{ currentPrize }}</b-card-text>
       <b-button variant="success">
@@ -23,7 +29,10 @@
 export default {
   computed: {
     account() {
-      return this.$store.state.player.account;
+      return this.$store.state.web3.coinbase;
+    },
+    balance() {
+      return this.$store.state.web3.balance;
     },
     currentPrize() {
       return this.$store.state.player.currentPrize;

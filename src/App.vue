@@ -1,7 +1,5 @@
 <template>
   <div id="app">
-    <Navbar />
-    <Header />
     <GameInfo />
   </div>
 </template>
@@ -21,5 +19,9 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+  html{
+    display:inline-block;
+    box-sizing:content-box !important;
+  }
 </style>

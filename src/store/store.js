@@ -1,10 +1,36 @@
 /* eslint-disable import/prefer-default-export */
 import Vue from 'vue';
 import Vuex from 'vuex';
+import getWeb3 from '../util/getWeb3';
 
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
+  actions: {
+    registerWeb3({ commit }) {
+      console.log('registerWeb3 Action being executed');
+      getWeb3.then((result) => {
+        console.log('committing result to registerWeb3Instance mutation');
+        commit('registerWeb3Instance', result);
+      }).catch((e) => {
+        console.log('error in action registerWeb3', e);
+      });
+    },
+  },
+  mutations: {
+    registerWeb3Instance(state, payload) {
+      console.log(payload);
+      console.log('registerWeb3instance Mutation being executed', payload);
+      const result = payload;
+      const web3Copy = state.web3;
+      web3Copy.coinbase = result.coinbase;
+      web3Copy.networkId = result.networkId;
+      web3Copy.balance = result.balance;
+      web3Copy.isInjected = result.injectedWeb3;
+      web3Copy.web3Instance = result.web3;
+      state.web3 = web3Copy;
+    },
+  },
   state: {
     web3: {
       isInjected: false,
