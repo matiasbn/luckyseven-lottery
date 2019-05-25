@@ -13,6 +13,7 @@ export const store = new Vuex.Store({
         console.log('committing result to registerWeb3Instance mutation');
         commit('registerWeb3Instance', result);
       }).catch((e) => {
+        console.log(e);
         console.log('error in action registerWeb3', e);
       });
     },
@@ -24,29 +25,24 @@ export const store = new Vuex.Store({
   mutations: {
     registerWeb3Instance(state, payload) {
       console.log('registerWeb3instance Mutation being executed', payload);
-      const result = payload;
-      const web3Copy = state.web3;
-      web3Copy.coinbase = result.coinbase;
-      web3Copy.networkId = result.networkId;
-      web3Copy.balance = result.balance;
-      web3Copy.isInjected = result.injectedWeb3;
-      web3Copy.web3Instance = result.web3;
-      state.web3 = web3Copy;
+      const { networkId, coinbase, balance, isConnected } = payload;
+      state.web3.networkId = networkId;
+      state.web3.coinbase = coinbase;
+      state.web3.balance = balance;
+      state.web3.isConnected = isConnected;
     },
     pollWeb3Instance(state, payload) {
       console.log('pollWeb3Instance mutation being executed', payload);
       state.web3.coinbase = payload.coinbase;
-      state.web3.balance = parseInt(payload.balance, 10);
+      state.web3.balance = payload.balance;
     },
   },
   state: {
     web3: {
-      isInjected: false,
-      web3Instance: null,
       networkId: null,
       coinbase: null,
-      balance: null,
-      error: null,
+      balance: 0,
+      isConnected: false,
     },
     contractInstance: null,
     totalPrize: 10.6125128931,

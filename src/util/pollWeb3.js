@@ -1,36 +1,28 @@
 import Web3 from 'web3';
+import util from 'util';
 import { store } from '../store/store';
 
-const pollWeb3 = () => {
-  let web3 = window.web3;
-  web3 = new Web3(web3.currentProvider);
+const web3 = new Web3(window.web3.currentProvider);
 
-  setInterval(() => {
-    if (web3 && store.state.web3.web3Instance) {
-      if (web3.eth.coinbase !== store.state.web3.coinbase) {
-        const newCoinbase = web3.eth.coinbase;
-        web3.eth.getBalance(web3.eth.coinbase, (err, newBalance) => {
-          if (err) {
-            console.log(err);
-          } else {
-            store.dispatch('pollWeb3', {
-              coinbase: newCoinbase,
-              balance: parseInt(newBalance, 10),
-            });
-          }
-        });
-      } else {
-        web3.eth.getBalance(store.state.web3.coinbase, (err, polledBalance) => {
-          if (err) {
-            console.log(err);
-          } else if (parseInt(polledBalance, 10) !== store.state.web3.balance) {
-            store.dispatch('pollWeb3', {
-              coinbase: store.state.web3.coinbase,
-              balance: polledBalance,
-            });
-          }
-        });
+const getAsyncBalance = util.promisify(web3.eth.getBalance);
+const getAsyncCoinbase = util.promisify(web3.eth.getCoinbase);
+
+const pollWeb3 = () => {
+  setInterval(async () => {
+    try {
+      if (web3 && store.state.web3.isConnected) {
+        const { coinbase, balance } = store.state.web3;
+        const web3Coinbase = await getAsyncCoinbase();
+        const web3Balance = parseInt(await getAsyncBalance(web3.eth.coinbase), 10);
+        if (web3Coinbase !== coinbase || web3Balance !== balance) {
+          store.dispatch('pollWeb3', {
+            coinbase: web3Coinbase,
+            balance: web3Balance,
+          });
+        }
       }
+    } catch (e) {
+      console.log(e);
     }
   }, 500);
 };
