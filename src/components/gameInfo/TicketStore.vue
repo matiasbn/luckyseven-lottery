@@ -80,6 +80,8 @@
   </b-card>
 </template>
 <script>
+import { mapState } from 'vuex';
+
 export default {
   filters: {
     isLucky7Ticket(lucky7Ticket) {
@@ -96,24 +98,14 @@ export default {
     };
   },
   computed: {
-    lastGeneratedTicket() {
-      return this.$store.state.player.lastGeneratedTicket;
-    },
-    lastGeneratedNumber1() {
-      return this.$store.state.player.lastGeneratedNumber1;
-    },
-    lastGeneratedNumber2() {
-      return this.$store.state.player.lastGeneratedNumber2;
-    },
-    lucky7Ticket() {
-      return this.$store.state.player.lucky7Ticket;
-    },
-    generateTicketPrice() {
-      return this.$store.state.game.generateTicketPrice;
-    },
-    purchaseTicketPrice() {
-      return this.$store.state.game.purchaseTicketPrice;
-    },
+    ...mapState({
+      lastGeneratedTicket: state => state.player.lastGeneratedTicket,
+      lastGeneratedNumber1: state => state.player.lastGeneratedNumber1,
+      lastGeneratedNumber2: state => state.player.lastGeneratedNumber2,
+      lucky7Ticket: state => state.player.lucky7Ticket,
+      generateTicketPrice: state => state.game.generateTicketPrice,
+      purchaseTicketPrice: state => state.game.purchaseTicketPrice,
+    }),
   },
 };
 </script>

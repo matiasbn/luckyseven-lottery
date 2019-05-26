@@ -20,6 +20,9 @@
 </template>
 
 <script>
+
+import { mapState } from 'vuex';
+
 export default {
   filters: {
     isLucky7Ticket(lucky7Ticket) {
@@ -30,15 +33,11 @@ export default {
     },
   },
   computed: {
-    lastPurchasedTicket() {
-      return this.$store.state.player.lastPurchasedTicket;
-    },
-    lastGeneratedTicket() {
-      return this.$store.state.player.lastGeneratedTicket;
-    },
-    lucky7Ticket() {
-      return this.$store.state.player.lucky7Ticket;
-    },
+    ...mapState({
+      lastPurchasedTicket: state => state.player.lastPurchasedTicket,
+      lastGeneratedTicket: state => state.player.lastGeneratedTicket,
+      lucky7Ticket: state => state.player.lucky7Ticket,
+    }),
   },
 };
 </script>

@@ -11,17 +11,15 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   computed: {
-    firstPrize() {
-      return this.$store.state.lastWinnersOwners.firstPrizeOwner;
-    },
-    secondPrize() {
-      return this.$store.state.lastWinnersOwners.secondPrizeOwner;
-    },
-    thirdPrize() {
-      return this.$store.state.lastWinnersOwners.thirdPrizeOwner;
-    },
+    ...mapState({
+      firstPrize: state => state.lastWinnersOwners.firstPrizeOwner,
+      secondPrize: state => state.lastWinnersOwners.secondPrizeOwner,
+      thirdPrize: state => state.lastWinnersOwners.thirdPrizeOwner,
+    }),
   },
 };
 </script>

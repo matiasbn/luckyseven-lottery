@@ -27,6 +27,7 @@
 
 <script>
 import Web3 from 'web3';
+import { mapState } from 'vuex';
 
 export default {
   filters: {
@@ -36,15 +37,11 @@ export default {
     },
   },
   computed: {
-    account() {
-      return this.$store.state.web3.coinbase;
-    },
-    balance() {
-      return this.$store.state.web3.balance;
-    },
-    currentPrize() {
-      return this.$store.state.player.currentPrize;
-    },
+    ...mapState({
+      account: state => state.web3.coinbase,
+      balance: state => state.web3.balance,
+      currentPrize: state => state.web3.currentPrize,
+    }),
   },
 };
 </script>

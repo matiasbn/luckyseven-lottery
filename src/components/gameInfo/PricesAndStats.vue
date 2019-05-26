@@ -38,25 +38,17 @@
 
 <script>
 import { NETWORKS } from '@/web3/constants/networks';
+import { mapState } from 'vuex';
 
 export default {
   computed: {
-    generateTicketPrice() {
-      return this.$store.state.game.generateTicketPrice;
-    },
-    purchaseTicketPrice() {
-      return this.$store.state.game.purchaseTicketPrice;
-    },
-    ticketsSelled() {
-      return this.$store.state.game.ticketsSelled;
-    },
-    ticketsGenerated() {
-      return this.$store.state.game.ticketsGenerated;
-    },
-    network() {
-      const networkId = this.$store.state.web3.networkId;
-      return NETWORKS[networkId];
-    },
+    ...mapState({
+      generateTicketPrice: state => state.game.generateTicketPrice,
+      purchaseTicketPrice: state => state.game.purchaseTicketPrice,
+      ticketsSelled: state => state.game.ticketsSelled,
+      ticketsGenerated: state => state.game.ticketsGenerated,
+      network: state => NETWORKS[state.web3.networkId],
+    }),
   },
 };
 </script>
