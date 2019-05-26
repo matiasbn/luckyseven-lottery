@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { NETWORKS } from '../../util/constants/networks';
+import { NETWORKS } from '@/web3/constants/networks';
 
 export default {
   computed: {

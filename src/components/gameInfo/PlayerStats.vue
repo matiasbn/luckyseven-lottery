@@ -32,7 +32,7 @@ export default {
   filters: {
     transformBalance(balance) {
       const web3 = new Web3();
-      return web3.fromWei(balance, 'ether');
+      return web3.utils.fromWei(balance, 'ether');
     },
   },
   computed: {

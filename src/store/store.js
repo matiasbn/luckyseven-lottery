@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import Vue from 'vue';
 import Vuex from 'vuex';
-import getWeb3 from '../util/getWeb3';
+import getWeb3 from '../web3/getWeb3';
 
 Vue.use(Vuex);
 
@@ -41,7 +41,7 @@ export const store = new Vuex.Store({
     web3: {
       networkId: null,
       coinbase: null,
-      balance: 0,
+      balance: '',
       isConnected: false,
     },
     contractInstance: null,

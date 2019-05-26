@@ -20,11 +20,12 @@
     "dotenv": "^8.0.0",
     "portal-vue": "^2.1.4",
     "solhint": "^2.0.0",
+    "truffle-contract": "^4.0.17",
     "truffle-hdwallet-provider": "^1.0.9",
     "vue": "^2.6.10",
     "vue-router": "^3.0.1",
     "vuex": "^3.1.1",
-    "web3": "^0.20.0"
+    "web3": "^1.0.0-beta.55"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^7.6.0",

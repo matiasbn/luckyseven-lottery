@@ -26,12 +26,12 @@
 </template>
 
 <script>
+import pollWeb3 from '@/web3/pollWeb3';
 import LastTickets from './GameInfo/LastTickets';
 import Lucky7Tickets from './GameInfo/Lucky7Tickets';
 import PlayerStats from './GameInfo/PlayerStats';
 import PricesAndStats from './GameInfo/PricesAndStats';
 import TicketStore from './GameInfo/TicketStore';
-import pollWeb3 from '../util/pollWeb3';
 
 export default {
   components: {
