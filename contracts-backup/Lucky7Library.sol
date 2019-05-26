@@ -7,7 +7,7 @@
   * This contract contains all the functions to get values between contracts.
 */
 
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.20 <0.6.0;
 import "./Lucky7Admin.sol";
 import "./Lucky7Storage.sol";
 import "./Lucky7TicketFactory.sol";

@@ -8,7 +8,7 @@
   * This contract is meant to storage all the important information of the game, i.e. Tickets, Lucky7Numbers and Lucky7Tickets related info.
   */
 
-pragma solidity ^0.4.20;
+pragma solidity >=0.4.20 <0.6.0;
 
 import "./helpers/SafeMath.sol";
 import "./Lucky7Library.sol";
