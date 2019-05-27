@@ -26,28 +26,40 @@
     <b-card title="Prices">
       <b-card-text>
         Generate ticket:
-        {{ generateTicketPrice }} ETH
+        {{ generateTicketPrice | transformWei }} ETH
       </b-card-text>
       <b-card-text>
         Purchase ticket:
-        {{ purchaseTicketPrice }} ETH
+        {{ purchaseTicketPrice | transformWei }} ETH
       </b-card-text>
     </b-card>
   </div>
 </template>
 
 <script>
+import Web3 from 'web3';
 import { NETWORKS } from '@/web3/constants/networks';
 import { mapState } from 'vuex';
 
+const web3 = new Web3();
 export default {
+  filters: {
+    transformWei(wei) {
+      return web3.utils.fromWei(wei, 'ether');
+    },
+  },
   computed: {
     ...mapState({
       generateTicketPrice: state => state.game.generateTicketPrice,
       purchaseTicketPrice: state => state.game.purchaseTicketPrice,
       ticketsSelled: state => state.game.ticketsSelled,
       ticketsGenerated: state => state.game.ticketsGenerated,
-      network: state => NETWORKS[state.web3.networkId],
+      network: (state) => {
+        if (state.web3.networkId > 5777) {
+          return 'Local network';
+        }
+        return NETWORKS[state.web3.networkId];
+      },
     }),
   },
 };

@@ -22,6 +22,7 @@
                 v-b-popover.hover="generatePrice"
                 title="Price"
                 variant="warning"
+                @click="generateTicket"
               >
                 Generate Ticket
               </b-button>
@@ -81,7 +82,10 @@
 </template>
 <script>
 import { mapState } from 'vuex';
+import truffleContract from '@/web3/truffleContract';
+import Web3 from 'web3';
 
+const web3 = new Web3();
 export default {
   filters: {
     isLucky7Ticket(lucky7Ticket) {
@@ -90,12 +94,6 @@ export default {
       }
       return 'No, best luck for the next game';
     },
-  },
-  data() {
-    return {
-      generatePrice: `${this.$store.state.game.generateTicketPrice} ETH`,
-      purchasePrice: `${this.$store.state.game.purchaseTicketPrice} ETH`,
-    };
   },
   computed: {
     ...mapState({
@@ -106,6 +104,20 @@ export default {
       generateTicketPrice: state => state.game.generateTicketPrice,
       purchaseTicketPrice: state => state.game.purchaseTicketPrice,
     }),
+  },
+  methods: {
+    async generateTicket() {
+      const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
+      console.log(truffleContractInstance);
+    },
+    generatePrice() {
+      const price = this.$store.state.game.generateTicketPrice;
+      return `${web3.utils.fromWei(price, 'ether')} ETH`;
+    },
+    purchasePrice() {
+      const price = this.$store.state.game.purchaseTicketPrice;
+      return `${web3.utils.fromWei(price, 'ether')} ETH`;
+    },
   },
 };
 </script>

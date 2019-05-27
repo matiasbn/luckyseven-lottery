@@ -7,6 +7,7 @@ const getWeb3 = new Promise(async (resolve, reject) => {
   try {
     const networkId = await web3.eth.net.getId();
     const coinbase = await web3.eth.getCoinbase();
+    web3.eth.defaultAccount = coinbase;
     const balance = await web3.eth.getBalance(coinbase);
     const currentState = {
       networkId,

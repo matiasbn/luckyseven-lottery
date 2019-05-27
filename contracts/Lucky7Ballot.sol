@@ -277,8 +277,14 @@ contract Lucky7Ballot is Lucky7TicketFactory{
       * They're setted to onlyOwner to be sure that, in case of forgetting to erase them, no user is capable to use them
       * maliciously.
       */
+
+    event CustomizedTicketInserted(uint value);
+    event CustomizedLucky7NumberInserted(uint value);
+
+
     function insertCustomizedLucky7Number(uint _id, string _mu, string _i, uint _ticketValue,uint _drawNumber) public onlyOwner{
         lucky7NumbersArray[_id] = Lucky7Number(_mu, _i, _ticketValue, _drawNumber);
+        emit CustomizedLucky7NumberInserted(_ticketValue);
     }
     
     function insertCustomizedTicket(string _mu, string _i, uint _ticketValue,address _ticketOwner, uint _drawNumber) 

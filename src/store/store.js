@@ -1,7 +1,9 @@
+/* eslint-disable no-await-in-loop */
 /* eslint-disable import/prefer-default-export */
 import Vue from 'vue';
 import Vuex from 'vuex';
-import getWeb3 from '../web3/getWeb3';
+import getWeb3 from '@/web3/getWeb3';
+import truffleContract from '@/web3/truffleContract';
 
 Vue.use(Vuex);
 
@@ -21,6 +23,32 @@ export const store = new Vuex.Store({
       console.log('pollWeb3 action being executed');
       commit('pollWeb3Instance', payload);
     },
+    async retrieveGameInformation({ commit }) {
+      console.log('retrieving information from blockchain');
+      const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
+      const numberOfLucky7Numbers = Number(await truffleContractInstance.numberOfLucky7Numbers());
+      const lucky7Numbers = [];
+      for (let i = 0; i < numberOfLucky7Numbers; i += 1) {
+        const auxiliarNumber = await truffleContractInstance.lucky7NumbersArray(i);
+        lucky7Numbers[i] = Number(auxiliarNumber.ticketValue);
+      }
+      const generateTicketPrice = await truffleContractInstance.generateTicketPrice();
+      const sellTicketPrice = await truffleContractInstance.sellTicketPrice();
+      const userValues = await truffleContractInstance.userValues(this.state.web3.coinbase);
+      const payload = { lucky7Numbers, generateTicketPrice, sellTicketPrice, userValues };
+      commit('retrieveGameInfoInstance', payload);
+    },
+    async eventListener({ commit }) {
+      console.log('listening to events');
+      const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
+      truffleContractInstance
+        .CustomizedLucky7NumberInserted({}, (error, event) => {
+          if (!error) {
+            console.log(event);
+            commit('eventEmitted', event);
+          }
+        });
+    },
   },
   mutations: {
     registerWeb3Instance(state, payload) {
@@ -36,6 +64,20 @@ export const store = new Vuex.Store({
       state.web3.coinbase = payload.coinbase;
       state.web3.balance = payload.balance;
     },
+    retrieveGameInfoInstance(state, payload) {
+      console.log('retrieveGameInfoInstance mutation being executed', payload);
+      const { lucky7Numbers, generateTicketPrice, sellTicketPrice, userValues } = payload;
+      lucky7Numbers.forEach((number, index) => {
+        state.lucky7Numbers[index].number = number;
+      });
+      state.game.generateTicketPrice = generateTicketPrice;
+      state.game.purchaseTicketPrice = sellTicketPrice;
+      state.player.lastPurchasedTicket = userValues.ticketValue;
+    },
+    eventEmitted(state, payload) {
+      console.log(state);
+      console.log(payload);
+    },
   },
   state: {
     web3: {
@@ -49,7 +91,7 @@ export const store = new Vuex.Store({
     lucky7Numbers: [
       {
         prize: 10.6125128931,
-        ticket: 1982378913,
+        ticket: 123917289,
         owner: 12313,
         difference: 1,
         place: 1,
@@ -57,7 +99,7 @@ export const store = new Vuex.Store({
       },
       {
         prize: 10.6125128931,
-        ticket: 1982378913,
+        ticket: 123917289,
         owner: 12313,
         difference: 2,
         place: 1,
@@ -65,7 +107,7 @@ export const store = new Vuex.Store({
       },
       {
         prize: 10.6125128931,
-        ticket: 1982378913,
+        ticket: 123917289,
         owner: 12313,
         difference: 3,
         place: 1,
@@ -73,7 +115,7 @@ export const store = new Vuex.Store({
       },
       {
         prize: 10.6125128931,
-        ticket: 1982378913,
+        ticket: 123917289,
         owner: 12313,
         difference: 4,
         place: 1,
@@ -81,7 +123,7 @@ export const store = new Vuex.Store({
       },
       {
         prize: 10.6125128931,
-        ticket: 1982378913,
+        ticket: 123917289,
         owner: 12313,
         difference: 5,
         place: 1,
@@ -89,7 +131,7 @@ export const store = new Vuex.Store({
       },
       {
         prize: 10.6125128931,
-        ticket: 1982378913,
+        ticket: 123917289,
         owner: 12313,
         difference: 6,
         place: 1,
@@ -97,7 +139,7 @@ export const store = new Vuex.Store({
       },
       {
         prize: 10.6125128931,
-        ticket: 1982378913,
+        ticket: 123917289,
         owner: 12313,
         difference: 7,
         place: 1,
@@ -117,8 +159,8 @@ export const store = new Vuex.Store({
       isLucky7Ticket: false,
     },
     game: {
-      generateTicketPrice: 12,
-      purchaseTicketPrice: 19,
+      generateTicketPrice: '',
+      purchaseTicketPrice: '',
       ticketsSelled: 7,
       ticketsGenerated: 200,
     },

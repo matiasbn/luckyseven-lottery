@@ -33,6 +33,7 @@ import PlayerStats from './GameInfo/PlayerStats';
 import PricesAndStats from './GameInfo/PricesAndStats';
 import TicketStore from './GameInfo/TicketStore';
 
+
 export default {
   components: {
     LastTickets,
@@ -44,7 +45,12 @@ export default {
   beforeCreate() {
     console.log('registerWeb3 Action dispatched');
     this.$store.dispatch('registerWeb3');
+    this.$store.dispatch('retrieveGameInformation');
     pollWeb3();
+  },
+  beforeMount() {
+    console.log('retrieving game information');
+    this.$store.dispatch('eventListener');
   },
 };
 </script>

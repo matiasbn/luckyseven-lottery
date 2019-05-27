@@ -31,6 +31,7 @@ export default {
       }
       return 'No, best luck for the next game';
     },
+
   },
   computed: {
     ...mapState({
