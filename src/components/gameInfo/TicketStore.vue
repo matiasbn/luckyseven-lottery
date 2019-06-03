@@ -35,6 +35,7 @@
                 v-b-popover.hover="purchasePrice"
                 title="Price"
                 variant="warning"
+                @click="purchaseGeneratedTicket"
               >
                 Buy Ticket
               </b-button>
@@ -49,6 +50,7 @@
                 v-b-popover.hover="purchasePrice"
                 title="Price"
                 variant="warning"
+                @click="purchaseRandomTicket"
               >
                 Give me a random ticket!
               </b-button>
@@ -108,7 +110,30 @@ export default {
   methods: {
     async generateTicket() {
       const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
-      console.log(truffleContractInstance);
+      const price = this.$store.state.game.generateTicketPrice;
+      const account = this.$store.state.web3.coinbase;
+      await truffleContractInstance.generateRandomTicket({
+        from: account,
+        value: parseInt(price, 10),
+      });
+    },
+    async purchaseGeneratedTicket() {
+      const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
+      const price = this.$store.state.game.purchaseTicketPrice;
+      const account = this.$store.state.web3.coinbase;
+      await truffleContractInstance.sellGeneratedTicket({
+        from: account,
+        value: parseInt(price, 10),
+      });
+    },
+    async purchaseRandomTicket() {
+      const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
+      const price = this.$store.state.game.purchaseTicketPrice;
+      const account = this.$store.state.web3.coinbase;
+      await truffleContractInstance.sellRandomTicket({
+        from: account,
+        value: parseInt(price, 10),
+      });
     },
     generatePrice() {
       const price = this.$store.state.game.generateTicketPrice;

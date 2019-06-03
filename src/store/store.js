@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable import/prefer-default-export */
 import Vue from 'vue';
@@ -10,41 +11,50 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
   actions: {
     registerWeb3({ commit }) {
-      console.log('registerWeb3 Action being executed');
       getWeb3.then((result) => {
-        console.log('committing result to registerWeb3Instance mutation');
         commit('registerWeb3Instance', result);
       }).catch((e) => {
         console.log(e);
-        console.log('error in action registerWeb3', e);
       });
     },
     pollWeb3({ commit }, payload) {
-      console.log('pollWeb3 action being executed');
       commit('pollWeb3Instance', payload);
     },
     async retrieveGameInformation({ commit }) {
-      console.log('retrieving information from blockchain');
       const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
-      const numberOfLucky7Numbers = Number(await truffleContractInstance.numberOfLucky7Numbers());
+      const numberOfLucky7Numbers = parseInt(await truffleContractInstance.numberOfLucky7Numbers(), 10);
       const lucky7Numbers = [];
+      const lucky7Tickets = [];
       for (let i = 0; i < numberOfLucky7Numbers; i += 1) {
-        const auxiliarNumber = await truffleContractInstance.lucky7NumbersArray(i);
-        lucky7Numbers[i] = Number(auxiliarNumber.ticketValue);
+        lucky7Numbers[i] = parseInt((await truffleContractInstance.lucky7NumbersArray(i)).ticketValue, 10);
+        const lucky7TicketID = parseInt(await truffleContractInstance.lucky7TicketID(i), 10);
+        console.log(lucky7TicketID);
+        // lucky7Tickets[i] = parseInt((await truffleContractInstance.ticketsArray(lucky7TicketID)).ticketValue);
+        lucky7Tickets[i] = {
+          ticket: parseInt(await truffleContractInstance.ticketsArray(lucky7TicketID), 10),
+          owner: await truffleContractInstance.lucky7TicketOwner(i),
+          get difference() {
+            return parseInt(
+              lucky7Numbers[i] - this.ticket > 0
+                ? lucky7Numbers[i] - this.ticket
+                : this.ticket - lucky7Numbers[i],
+              10,
+            );
+          },
+        };
+        console.log(lucky7Tickets[i].ticket);
       }
       const generateTicketPrice = await truffleContractInstance.generateTicketPrice();
       const sellTicketPrice = await truffleContractInstance.sellTicketPrice();
       const userValues = await truffleContractInstance.userValues(this.state.web3.coinbase);
-      const payload = { lucky7Numbers, generateTicketPrice, sellTicketPrice, userValues };
+      const payload = { lucky7Numbers, lucky7Tickets, generateTicketPrice, sellTicketPrice, userValues };
       commit('retrieveGameInfoInstance', payload);
     },
     async eventListener({ commit }) {
-      console.log('listening to events');
       const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
       truffleContractInstance
         .CustomizedLucky7NumberInserted({}, (error, event) => {
           if (!error) {
-            console.log(event);
             commit('eventEmitted', event);
           }
         });
@@ -52,7 +62,6 @@ export const store = new Vuex.Store({
   },
   mutations: {
     registerWeb3Instance(state, payload) {
-      console.log('registerWeb3instance Mutation being executed', payload);
       const { networkId, coinbase, balance, isConnected } = payload;
       state.web3.networkId = networkId;
       state.web3.coinbase = coinbase;
@@ -60,23 +69,30 @@ export const store = new Vuex.Store({
       state.web3.isConnected = isConnected;
     },
     pollWeb3Instance(state, payload) {
-      console.log('pollWeb3Instance mutation being executed', payload);
       state.web3.coinbase = payload.coinbase;
       state.web3.balance = payload.balance;
     },
     retrieveGameInfoInstance(state, payload) {
-      console.log('retrieveGameInfoInstance mutation being executed', payload);
-      const { lucky7Numbers, generateTicketPrice, sellTicketPrice, userValues } = payload;
+      const {
+        lucky7Numbers,
+        lucky7Tickets,
+        generateTicketPrice,
+        sellTicketPrice,
+        userValues } = payload;
       lucky7Numbers.forEach((number, index) => {
         state.lucky7Numbers[index].number = number;
+      });
+      lucky7Tickets.forEach((lucky7Ticket, index) => {
+        state.lucky7Numbers[index].ticket = lucky7Ticket.ticket;
+        state.lucky7Numbers[index].owner = lucky7Ticket.owner;
+        state.lucky7Numbers[index].difference = lucky7Ticket.difference;
       });
       state.game.generateTicketPrice = generateTicketPrice;
       state.game.purchaseTicketPrice = sellTicketPrice;
       state.player.lastPurchasedTicket = userValues.ticketValue;
     },
     eventEmitted(state, payload) {
-      console.log(state);
-      console.log(payload);
+      console.log(payload, state);
     },
   },
   state: {

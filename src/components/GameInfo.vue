@@ -43,15 +43,13 @@ export default {
     TicketStore,
   },
   beforeCreate() {
-    console.log('registerWeb3 Action dispatched');
     this.$store.dispatch('registerWeb3');
     this.$store.dispatch('retrieveGameInformation');
     pollWeb3();
   },
-  beforeMount() {
-    console.log('retrieving game information');
-    this.$store.dispatch('eventListener');
-  },
+  // beforeMount() {
+  //   this.$store.dispatch('eventListener');
+  // },
 };
 </script>
 
