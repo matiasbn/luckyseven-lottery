@@ -47,9 +47,9 @@ export default {
     this.$store.dispatch('retrieveGameInformation');
     pollWeb3();
   },
-  // created() {
-  //   this.$store.dispatch('ticketGenerated');
-  // },
+  created() {
+    this.$store.dispatch('listenEvents', this.$store.state.web3.coinbase);
+  },
 };
 </script>
 

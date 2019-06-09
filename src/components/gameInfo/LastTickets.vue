@@ -13,7 +13,7 @@
     </b-card>
     <b-card title="Lucky7Ticket?">
       <b-card-text>
-        {{ lucky7Ticket | isLucky7Ticket }}
+        {{ isLucky7Ticket | checkLucky7Ticket }}
       </b-card-text>
     </b-card>
   </div>
@@ -21,11 +21,11 @@
 
 <script>
 
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   filters: {
-    isLucky7Ticket(lucky7Ticket) {
+    checkLucky7Ticket(lucky7Ticket) {
       if (lucky7Ticket) {
         return 'Yes!, Congratulations!';
       }
@@ -34,11 +34,7 @@ export default {
 
   },
   computed: {
-    ...mapState({
-      lastPurchasedTicket: state => state.player.lastPurchasedTicket,
-      lastGeneratedTicket: state => state.player.lastGeneratedTicket,
-      lucky7Ticket: state => state.player.lucky7Ticket,
-    }),
+    ...mapGetters(['isLucky7Ticket', 'lastPurchasedTicket']),
   },
 };
 </script>

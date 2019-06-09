@@ -101,7 +101,6 @@
 <script>
 /* eslint-disable max-len */
 import { mapGetters } from 'vuex';
-import truffleContract from '@/web3/truffleContract';
 import Web3 from 'web3';
 
 const web3 = new Web3();
@@ -129,103 +128,42 @@ export default {
   methods: {
     async generateTicket() {
       try {
-        const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
         const price = this.$store.state.game.generateTicketPrice;
         const account = this.$store.state.web3.coinbase;
-        await truffleContractInstance.generateRandomTicket({
+        await this.$store.state.web3.contractInstance.generateRandomTicket({
           from: account,
           value: parseInt(price, 10),
         });
         this.$store.dispatch('askForValues', 'generateTicket');
-        truffleContractInstance
-          .NewMuReceived({ owner: account }, (error, event) => {
-            if (!error) {
-              console.log(event.returnValues.muParameter);
-              const payload = {
-                value: event.returnValues.muParameter,
-                type: 'mu',
-              };
-              this.$store.dispatch('parameterReceived', payload);
-            }
-          });
-        truffleContractInstance
-          .NewIReceived({ owner: account }, (error, event) => {
-            if (!error) {
-              console.log(event.returnValues.iParameter);
-              const payload = {
-                value: event.returnValues.iParameter,
-                type: 'i',
-              };
-              this.$store.dispatch('parameterReceived', payload);
-            }
-          });
       } catch (e) {
         console.log(e);
       }
     },
     async purchaseGeneratedTicket() {
-      const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
-      const price = this.$store.state.game.purchaseTicketPrice;
-      const account = this.$store.state.web3.coinbase;
-      await truffleContractInstance.sellGeneratedTicket({
-        from: account,
-        value: parseInt(price, 10),
-      });
-      this.$store.dispatch('askForValues', 'purchaseGeneratedTicket');
-      truffleContractInstance
-        .NewTicketReceived({ owner: account }, (error, event) => {
-          if (!error) {
-            console.log(event.returnValues.newTicket);
-            const payload = {
-              value: event.returnValues.newTicket,
-              type: 'ticket',
-            };
-            this.$store.dispatch('parameterReceived', payload);
-          }
+      try {
+        const price = this.$store.state.game.purchaseTicketPrice;
+        const account = this.$store.state.web3.coinbase;
+        await this.$store.state.web3.contractInstance.sellGeneratedTicket({
+          from: account,
+          value: parseInt(price, 10),
         });
+        this.$store.dispatch('askForValues', 'purchaseGeneratedTicket');
+      } catch (e) {
+        console.log(e);
+      }
     },
     async purchaseRandomTicket() {
-      const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
-      const price = this.$store.state.game.purchaseTicketPrice;
-      const account = this.$store.state.web3.coinbase;
-      await truffleContractInstance.sellRandomTicket({
-        from: account,
-        value: parseInt(price, 10),
-      });
-      this.$store.dispatch('askForValues', 'purchaseRandomTicket');
-      truffleContractInstance
-        .NewMuReceived({ owner: account }, (error, event) => {
-          if (!error) {
-            console.log(event.returnValues.muParameter);
-            const payload = {
-              value: event.returnValues.muParameter,
-              type: 'mu',
-            };
-            this.$store.dispatch('parameterReceived', payload);
-          }
+      try {
+        const price = this.$store.state.game.purchaseTicketPrice;
+        const account = this.$store.state.web3.coinbase;
+        await this.$store.state.web3.contractInstance.sellRandomTicket({
+          from: account,
+          value: parseInt(price, 10),
         });
-      truffleContractInstance
-        .NewIReceived({ owner: account }, (error, event) => {
-          if (!error) {
-            console.log(event.returnValues.iParameter);
-            const payload = {
-              value: event.returnValues.iParameter,
-              type: 'i',
-            };
-            this.$store.dispatch('parameterReceived', payload);
-          }
-        });
-      truffleContractInstance
-        .NewTicketReceived({ owner: account }, (error, event) => {
-          if (!error) {
-            console.log(event.returnValues.newTicket);
-            const payload = {
-              value: event.returnValues.newTicket,
-              type: 'ticket',
-            };
-            this.$store.dispatch('parameterReceived', payload);
-          }
-        });
+        this.$store.dispatch('askForValues', 'purchaseRandomTicket');
+      } catch (e) {
+        console.log(e);
+      }
     },
     generatePrice() {
       const price = this.$store.state.game.generateTicketPrice;

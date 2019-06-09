@@ -6,7 +6,7 @@
     header-text-variant="white"
   >
     <b-table
-      :items="lucky7Numbers"
+      :items="lucky7GameInfo"
       :fields="fields"
       striped
       hover
@@ -33,7 +33,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['lucky7Numbers']),
+    ...mapGetters(['lucky7GameInfo']),
   },
 };
 </script>

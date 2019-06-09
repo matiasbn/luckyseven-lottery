@@ -38,7 +38,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
     event NewIReceived(string iParameter, address indexed _owner);
     event NewTicketReceived(string newTicket, address indexed _owner);
     event NewWolframQuery(string description);
-    event NewLucky7Ticket(uint ticketID, address indexed _owner);
+    event NewLucky7Ticket(uint ticketValue, address indexed _owner, uint difference, uint index);
     event NewLucky7Number(uint value);
     
     /** @dev This modifier is used to set the gas price on the functions which do oraclize querys.
@@ -349,7 +349,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
             lucky7TicketDifference[i] = difference;
             lucky7TicketID[i] = _ticketID;
             lucky7TicketValue[i] = ticketsArray[_ticketID].ticketValue;
-            emit NewLucky7Ticket(_ticketID,ticketsArray[_ticketID].owner);
+            emit NewLucky7Ticket(lucky7TicketValue[i],lucky7TicketOwner[i], difference, i);
         }
         /** @dev Then, checks if it's a ExactLucky7Ticket.
           * Due to the high entropy of the PRNG is pretty unfeasible to get an ExactLucky7Ticket without having the same mu and i parameters than the
