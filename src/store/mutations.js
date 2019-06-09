@@ -77,6 +77,7 @@ export default{
       sellTicketPrice,
       userValues,
       currentPrize,
+      prizeGameID,
     } = payload;
     lucky7Tickets.forEach((lucky7Ticket, index) => {
       const row = {
@@ -94,5 +95,6 @@ export default{
     state.player.lastNumber1 = userValues.mu;
     state.player.lastNumber2 = userValues.i;
     state.player.currentPrize = currentPrize;
+    state.player.prizeGameID = prizeGameID;
   },
 };

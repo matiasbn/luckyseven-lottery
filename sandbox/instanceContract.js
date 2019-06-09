@@ -19,5 +19,6 @@ var account = web3.eth.accounts[0]
 // web3.eth.getAccounts(function(error, accounts){account = accounts[0];})
 lucky7Instance.sellRandomTicket({from: account, value: sellTicketPrice});
 
+
 //Getting accounts
 var account = web3.eth.accounts[0]

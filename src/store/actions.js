@@ -99,6 +99,7 @@ export default {
     ];
 
     const values = await Promise.all(valuesPromises);
+    console.log(values[3].gameID.toNumber());
     const payload = {
       lucky7Numbers,
       lucky7Tickets,
@@ -106,6 +107,7 @@ export default {
       sellTicketPrice: values[1],
       userValues: values[2],
       currentPrize: values[3],
+      prizeGameID: values[3].gameID.toNumber(),
     };
     commit('retrieveGameInfoInstance', payload);
   },

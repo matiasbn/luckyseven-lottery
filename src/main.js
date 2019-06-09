@@ -4,12 +4,21 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import BootstrapVue from 'bootstrap-vue';
 import Vue from 'vue';
+import VueRouter from 'vue-router';
 import App from './App';
-import router from './router';
+import { routes } from './router/routes';
 import { store } from './store';
 
 Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
+Vue.use(VueRouter);
+
+console.log(routes);
+
+const router = new VueRouter({
+  routes,
+  mode: 'history',
+});
 
 /* eslint-disable no-new */
 new Vue({

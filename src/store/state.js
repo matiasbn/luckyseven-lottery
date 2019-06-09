@@ -10,6 +10,7 @@ export default {
   },
   player: {
     currentPrize: '0',
+    prizeGameID: 0,
     lastPurchasedTicket: 0,
     lastNumber1: 0,
     lastNumber2: 0,

@@ -53,7 +53,11 @@ export default {
   },
   methods: {
     async claimPrize() {
-      await this.$store.state.web3.contractInstance.withdraw({ from: this.$store.state.web3.coinbase });
+      try {
+        await this.$store.state.web3.contractInstance.withdraw({ from: this.$store.state.web3.coinbase });
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
 };

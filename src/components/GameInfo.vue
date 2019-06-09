@@ -26,13 +26,11 @@
 </template>
 
 <script>
-import pollWeb3 from '@/web3/pollWeb3';
 import LastTickets from './GameInfo/LastTickets';
 import CurrentGame from './GameInfo/CurrentGame';
 import PlayerStats from './GameInfo/PlayerStats';
 import PricesAndStats from './GameInfo/PricesAndStats';
 import TicketStore from './GameInfo/TicketStore';
-
 
 export default {
   components: {
@@ -41,14 +39,6 @@ export default {
     PlayerStats,
     PricesAndStats,
     TicketStore,
-  },
-  beforeCreate() {
-    this.$store.dispatch('registerWeb3');
-    this.$store.dispatch('retrieveGameInformation');
-    pollWeb3();
-  },
-  created() {
-    this.$store.dispatch('listenEvents', this.$store.state.web3.coinbase);
   },
 };
 </script>
