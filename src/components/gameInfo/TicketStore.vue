@@ -60,34 +60,52 @@
       </b-col>
       <b-col>
         <b-card
-          header="Generated/Purchased ticket"
+          header="Last Generated ticket"
           header-tag="h2"
           title="Ticket value"
         >
-          <b-card-text>
-            {{ lastGeneratedTicket }}
+          <b-card-text
+            v-if="ticketReceived">
+            {{ lastPurchasedTicket }}
           </b-card-text>
+          <b-spinner
+            v-else
+            variant="warning"
+            label="Spinning"/>
+
         </b-card>
         <b-card title="First number">
-          <b-card-text>
-            {{ lastGeneratedNumber1 }}
+          <b-card-text
+            v-if="firstNumberReceived">
+            {{ lastNumber1 }}
           </b-card-text>
+          <b-spinner
+            v-else
+            variant="warning"
+            label="Spinning"/>
         </b-card>
         <b-card title="Second number">
-          <b-card-text>
-            {{ lastGeneratedNumber2 }}
+          <b-card-text
+            v-if="secondNumberReceived">
+            {{ lastNumber2 }}
           </b-card-text>
+          <b-spinner
+            v-else
+            variant="warning"
+            label="Spinning"/>
         </b-card>
       </b-col>
     </b-row>
   </b-card>
 </template>
 <script>
-import { mapState } from 'vuex';
+/* eslint-disable max-len */
+import { mapGetters } from 'vuex';
 import truffleContract from '@/web3/truffleContract';
 import Web3 from 'web3';
 
 const web3 = new Web3();
+
 export default {
   filters: {
     isLucky7Ticket(lucky7Ticket) {
@@ -98,24 +116,52 @@ export default {
     },
   },
   computed: {
-    ...mapState({
-      lastGeneratedTicket: state => state.player.lastGeneratedTicket,
-      lastGeneratedNumber1: state => state.player.lastGeneratedNumber1,
-      lastGeneratedNumber2: state => state.player.lastGeneratedNumber2,
-      lucky7Ticket: state => state.player.lucky7Ticket,
-      generateTicketPrice: state => state.game.generateTicketPrice,
-      purchaseTicketPrice: state => state.game.purchaseTicketPrice,
-    }),
+    ...mapGetters([
+      'lastPurchasedTicket',
+      'lastNumber1',
+      'lastNumber2',
+      'lucky7Ticket',
+      'ticketReceived',
+      'firstNumberReceived',
+      'secondNumberReceived',
+    ]),
   },
   methods: {
     async generateTicket() {
-      const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
-      const price = this.$store.state.game.generateTicketPrice;
-      const account = this.$store.state.web3.coinbase;
-      await truffleContractInstance.generateRandomTicket({
-        from: account,
-        value: parseInt(price, 10),
-      });
+      try {
+        const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
+        const price = this.$store.state.game.generateTicketPrice;
+        const account = this.$store.state.web3.coinbase;
+        await truffleContractInstance.generateRandomTicket({
+          from: account,
+          value: parseInt(price, 10),
+        });
+        this.$store.dispatch('askForValues', 'generateTicket');
+        truffleContractInstance
+          .NewMuReceived({ owner: account }, (error, event) => {
+            if (!error) {
+              console.log(event.returnValues.muParameter);
+              const payload = {
+                value: event.returnValues.muParameter,
+                type: 'mu',
+              };
+              this.$store.dispatch('parameterReceived', payload);
+            }
+          });
+        truffleContractInstance
+          .NewIReceived({ owner: account }, (error, event) => {
+            if (!error) {
+              console.log(event.returnValues.iParameter);
+              const payload = {
+                value: event.returnValues.iParameter,
+                type: 'i',
+              };
+              this.$store.dispatch('parameterReceived', payload);
+            }
+          });
+      } catch (e) {
+        console.log(e);
+      }
     },
     async purchaseGeneratedTicket() {
       const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
@@ -125,6 +171,18 @@ export default {
         from: account,
         value: parseInt(price, 10),
       });
+      this.$store.dispatch('askForValues', 'purchaseGeneratedTicket');
+      truffleContractInstance
+        .NewTicketReceived({ owner: account }, (error, event) => {
+          if (!error) {
+            console.log(event.returnValues.newTicket);
+            const payload = {
+              value: event.returnValues.newTicket,
+              type: 'ticket',
+            };
+            this.$store.dispatch('parameterReceived', payload);
+          }
+        });
     },
     async purchaseRandomTicket() {
       const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
@@ -134,6 +192,40 @@ export default {
         from: account,
         value: parseInt(price, 10),
       });
+      this.$store.dispatch('askForValues', 'purchaseRandomTicket');
+      truffleContractInstance
+        .NewMuReceived({ owner: account }, (error, event) => {
+          if (!error) {
+            console.log(event.returnValues.muParameter);
+            const payload = {
+              value: event.returnValues.muParameter,
+              type: 'mu',
+            };
+            this.$store.dispatch('parameterReceived', payload);
+          }
+        });
+      truffleContractInstance
+        .NewIReceived({ owner: account }, (error, event) => {
+          if (!error) {
+            console.log(event.returnValues.iParameter);
+            const payload = {
+              value: event.returnValues.iParameter,
+              type: 'i',
+            };
+            this.$store.dispatch('parameterReceived', payload);
+          }
+        });
+      truffleContractInstance
+        .NewTicketReceived({ owner: account }, (error, event) => {
+          if (!error) {
+            console.log(event.returnValues.newTicket);
+            const payload = {
+              value: event.returnValues.newTicket,
+              type: 'ticket',
+            };
+            this.$store.dispatch('parameterReceived', payload);
+          }
+        });
     },
     generatePrice() {
       const price = this.$store.state.game.generateTicketPrice;

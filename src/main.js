@@ -6,7 +6,6 @@ import BootstrapVue from 'bootstrap-vue';
 import Vue from 'vue';
 import App from './App';
 import router from './router';
-// import Web3 from 'web3';
 import { store } from './store/store';
 
 Vue.config.productionTip = false;

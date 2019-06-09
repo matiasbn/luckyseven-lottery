@@ -23,6 +23,9 @@ lucky7Instance.insertCustomizedTicket('mu', 'i', 7939871237 - 1, web3.eth.accoun
 //Buying tickets
 var sellTicketPrice 
 lucky7Instance.sellTicketPrice().then(price=>sellTicketPrice=parseInt(price))
-var account
-web3.eth.getAccounts(function(error, accounts){account = accounts[0];})
+var account = web3.eth.accounts[0]
+// web3.eth.getAccounts(function(error, accounts){account = accounts[0];})
 lucky7Instance.sellRandomTicket({from: account, value: sellTicketPrice});
+
+//Getting accounts
+var account = web3.eth.accounts[0]

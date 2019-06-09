@@ -19,7 +19,7 @@
     </b-row>
     <b-row>
       <b-col>
-        <Lucky7Tickets />
+        <CurrentGame />
       </b-col>
     </b-row>
   </div>
@@ -28,7 +28,7 @@
 <script>
 import pollWeb3 from '@/web3/pollWeb3';
 import LastTickets from './GameInfo/LastTickets';
-import Lucky7Tickets from './GameInfo/Lucky7Tickets';
+import CurrentGame from './GameInfo/CurrentGame';
 import PlayerStats from './GameInfo/PlayerStats';
 import PricesAndStats from './GameInfo/PricesAndStats';
 import TicketStore from './GameInfo/TicketStore';
@@ -37,7 +37,7 @@ import TicketStore from './GameInfo/TicketStore';
 export default {
   components: {
     LastTickets,
-    Lucky7Tickets,
+    CurrentGame,
     PlayerStats,
     PricesAndStats,
     TicketStore,
@@ -47,8 +47,8 @@ export default {
     this.$store.dispatch('retrieveGameInformation');
     pollWeb3();
   },
-  // beforeMount() {
-  //   this.$store.dispatch('eventListener');
+  // created() {
+  //   this.$store.dispatch('ticketGenerated');
   // },
 };
 </script>

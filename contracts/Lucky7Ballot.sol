@@ -253,6 +253,7 @@ contract Lucky7Ballot is Lucky7TicketFactory{
             lucky7TicketDifference[i]=0;
             lucky7TicketOwner[i]=0;
             lucky7TicketID[i]=0;
+            lucky7TicketValue[i]=0;
             lucky7NumbersArray[i].mu="0";
             lucky7NumbersArray[i].i="0";
             lucky7NumbersArray[i].ticketValue=0;

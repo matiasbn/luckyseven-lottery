@@ -1,0 +1,44 @@
+<template>
+  <b-card
+    header="Current game"
+    header-tag="h1"
+    header-bg-variant="warning"
+    header-text-variant="white"
+  >
+    <b-table
+      :items="lucky7Numbers"
+      :fields="fields"
+      striped
+      hover
+      responsive
+      bordered
+    />
+  </b-card>
+</template>
+<script>
+import { mapGetters } from 'vuex';
+
+export default {
+  data() {
+    return {
+      fields: [
+        { key: 'number', label: 'Lucky7Number' },
+        { key: 'ticket', label: 'Lucky7Ticket' },
+        {
+          key: 'difference', label: 'Difference', sortable: true, sort: true, center: true,
+        },
+        { key: 'owner', label: 'Owner' },
+        { key: 'prize', label: 'Prize' },
+      ],
+    };
+  },
+  computed: {
+    ...mapGetters(['lucky7Numbers']),
+  },
+};
+</script>
+<style scoped>
+  .card{
+    text-align: center;
+  }
+</style>

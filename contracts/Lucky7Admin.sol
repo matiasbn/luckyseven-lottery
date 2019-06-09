@@ -33,7 +33,7 @@ contract Lucky7Admin is Ownable{
     string public b = "1";
     string public n = "8";
     string public p = "10000"; 
-    string public j = "20";
+    string public j = "10";
     
     /** @param numberOfLucky7Numbers is the parameter that indicates the number of Lucky7Numbers which are going to be generated
       * before letting users start buying a ticket. Is used for other functions to shutdown a circuit breaker, lookup in arrays and

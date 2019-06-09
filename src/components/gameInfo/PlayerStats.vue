@@ -40,7 +40,7 @@ export default {
     ...mapState({
       account: state => state.web3.coinbase,
       balance: state => state.web3.balance,
-      currentPrize: state => state.web3.currentPrize,
+      currentPrize: state => state.player.currentPrize,
     }),
   },
 };

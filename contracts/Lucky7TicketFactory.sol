@@ -21,7 +21,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
       * OAR is the Oraclize Address Resolver to use oraclize on localhost
       */
     function Lucky7TicketFactory() payable{
-        OAR = OraclizeAddrResolverI(0x3A78BF1783a0187c1C8000e41C2a008897D0a35f);
+        OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
     }
     
     /** @dev This function is to change the OAR without compiling again and deploying again
@@ -34,11 +34,11 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
     /**@dev The events are used mainly for testing purposes
       */
     event NewOraclizeQuery(string description);
-    event NewMuReceived(string muParameter);
-    event NewIReceived(string iParameter);
-    event NewTicketReceived(string newTicket);
+    event NewMuReceived(string muParameter, address indexed _owner);
+    event NewIReceived(string iParameter, address indexed _owner);
+    event NewTicketReceived(string newTicket, address indexed _owner);
     event NewWolframQuery(string description);
-    event NewLucky7Ticket(uint ticketID);
+    event NewLucky7Ticket(uint ticketID, address indexed _owner);
     event NewLucky7Number(uint value);
     
     /** @dev This modifier is used to set the gas price on the functions which do oraclize querys.
@@ -170,6 +170,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
       */
     mapping (uint => uint) public lucky7TicketDifference;
     mapping (uint => address) public lucky7TicketOwner;
+    mapping (uint => uint) public lucky7TicketValue;
     mapping (uint => uint) public lucky7TicketID;
 
     /** @dev The next three mappings are used to storage ExactLucky7Ticket, i.e. tickets which difference with a Lucky7Number is 0 
@@ -347,7 +348,8 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
             lucky7TicketOwner[i] = ticketsArray[_ticketID].owner;
             lucky7TicketDifference[i] = difference;
             lucky7TicketID[i] = _ticketID;
-            emit NewLucky7Ticket(_ticketID);
+            lucky7TicketValue[i] = ticketsArray[_ticketID].ticketValue;
+            emit NewLucky7Ticket(_ticketID,ticketsArray[_ticketID].owner);
         }
         /** @dev Then, checks if it's a ExactLucky7Ticket.
           * Due to the high entropy of the PRNG is pretty unfeasible to get an ExactLucky7Ticket without having the same mu and i parameters than the
@@ -384,7 +386,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
           */
         if(muParameterID[myid]!=0 && userValues[muParameterID[myid]].muReady==false){
             userValues[muParameterID[myid]].mu=result;
-            emit NewMuReceived(result);
+            emit NewMuReceived(result, muParameterID[myid]);
             userValues[muParameterID[myid]].muReady=true;
             if(userValues[muParameterID[myid]].iReady == true && (userValues[muParameterID[myid]].userPaidTicket==true || settingLucky7Numbers==true )){
                 _askForTicket(muParameterID[myid]);
@@ -396,7 +398,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
           */
         else if (iParameterID[myid]!=0 && userValues[iParameterID[myid]].iReady==false){
             userValues[iParameterID[myid]].i=result;
-            emit NewIReceived(result);
+            emit NewIReceived(result, iParameterID[myid]);
             userValues[iParameterID[myid]].iReady=true;
             if(userValues[iParameterID[myid]].muReady == true && (userValues[iParameterID[myid]].userPaidTicket==true || settingLucky7Numbers==true )){
                 _askForTicket(iParameterID[myid]);
@@ -410,7 +412,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
           */
         else if (newTicketID[myid]!=0 &&  (userValues[newTicketID[myid]].userPaidTicket==true || settingLucky7Numbers==true )){
             userValues[newTicketID[myid]].ticketValue=parseInt(result);
-            emit NewTicketReceived(result);
+            emit NewTicketReceived(result,newTicketID[myid]);
             userValues[newTicketID[myid]].userPaidTicket=false;
             if(settingLucky7Numbers==true){
                 _insertLucky7Number(newTicketID[myid]);
