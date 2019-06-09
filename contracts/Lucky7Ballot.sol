@@ -49,27 +49,17 @@ contract Lucky7Ballot is Lucky7TicketFactory{
       */
     uint public initialLucky7TicketPosition = 0;
     uint public currentTicketID = 0;
-    address public prizeWinner1 = address(0);
-    address public prizeWinner2 = address(0);
-    address public prizeWinner3 = address(0);
-    address public prizeWinner4 = address(0);
-    address public prizeWinner5 = address(0);
-    address public prizeWinner6 = address(0);
-    address public prizeWinner7 = address(0);
-    uint public prizeAmount1 = 0;
-    uint public prizeAmount2 = 0;
-    uint public prizeAmount3 = 0;
-    uint public prizeAmount4 = 0;
-    uint public prizeAmount5 = 0;
-    uint public prizeAmount6 = 0;
-    uint public prizeAmount7 = 0;
-    mapping (address => uint) public pendingWithdrawals;
+    struct PrizeInfo{
+      uint amount;
+      uint gameID;
+    } 
+    mapping (address => PrizeInfo) public pendingWithdrawals;
 
     /** @dev setNewGame is a function designed to call all the functions necessary to start a new game. First, it activate the settingLucky7Numbers circuit breaker.
       * Then it stores and order the Lucky7Tickets in ascendante order depending on them difference values through the _orderLucky7Tickets. 
       * Then it set the prizes for the last winners to 0 (for security reasons), look up for Lucky7Tickets with owners different than 0 and update the 
       * pendingWithdrawals for the first, second and third winnner, deliver the prize for the enterprise, clean the necessary mappings and arrays (ExactLucky7Ticket and
-      * lucky7NumbersArray), increase the drawNumber parameter to differentiate the Lucky7Tickets and Tickets from each different game in the future, and update the value
+      * lucky7NumbersArray), increase the gameID parameter to differentiate the Lucky7Tickets and Tickets from each different game in the future, and update the value
       * of the initialLucky7TicketPosition to store the Lucky7Tickets for every game correctly.
       */
     function setNewGame()                                      
@@ -80,8 +70,8 @@ contract Lucky7Ballot is Lucky7TicketFactory{
         _orderLucky7Tickets();
         _deliverPrizes();
         _cleanMappings();
-        drawNumber++;
-        initialLucky7TicketPosition+=drawNumber*numberOfLucky7Numbers;
+        gameID++;
+        initialLucky7TicketPosition+=gameID*numberOfLucky7Numbers;
     }
     
     /** @dev _generateLucky7Number is the function that is actually used to generate the Lucky7Numbers. It have the business logic for generating the Lucky7Numbers, i.e. if 
@@ -145,7 +135,7 @@ contract Lucky7Ballot is Lucky7TicketFactory{
     }
     /** @dev _orderLucky7Tickets is a function designed to store and order the Lucky7Tickets according to its difference in asceding order.
       * First, it stores all the current Lucky7Ticket values, i.e. lucky7TicketDifference, lucky7TicketOwner and lucky7TicketID mappings from the Lucky7TicketFactory contract,
-      * the ticketValue associated to it, the Lucky7Number and Lucky7NumberID (first, second, third) associated to it, and the drawID. This is thought to be capable of verify
+      * the ticketValue associated to it, the Lucky7Number and Lucky7NumberID (first, second, third) associated to it, and the gameID. This is thought to be capable of verify
       * in the future possible problems delivering prizes.
       * Then, it order the Lucky7Tickets depending on them difference value of the Lucky7Ticket struct of the Lucky7TicketFactory contract. The order logic is the same defined
       * in the _orderLucky7Numbers function of this contract (the above function).
@@ -166,7 +156,7 @@ contract Lucky7Ballot is Lucky7TicketFactory{
                   *         uint ticketValue;
                   *         uint lucky7Number;
                   *         uint lucky7NumberID;
-                  *         uint drawID;
+                  *         uint gameID;
                   *     }  
                   */
                 Lucky7Ticket(
@@ -176,7 +166,8 @@ contract Lucky7Ballot is Lucky7TicketFactory{
                     ticketsArray[lucky7TicketID[i]].ticketValue,
                     lucky7NumbersArray[i].ticketValue,
                     i,
-                    drawNumber)
+                    gameID,
+                    0)
                     );
         }
         for(j=initialLucky7TicketPosition; j<numberOfLucky7Numbers+initialLucky7TicketPosition; j++){
@@ -208,41 +199,75 @@ contract Lucky7Ballot is Lucky7TicketFactory{
       * enterprise prize automatically, because is a known address and is first setted as the owner of the contract. 
       */
     function _deliverPrizes() public onlyOwner{
-        pendingWithdrawals[prizeWinner1] = 0;
-        pendingWithdrawals[prizeWinner2] = 0;
-        pendingWithdrawals[prizeWinner3] = 0;
         uint winnersPrize = address(this).balance.mul(7);
         winnersPrize = winnersPrize.div(10);
-        uint firstPrize = winnersPrize.mul(6);
-        uint secondPrize = winnersPrize.mul(3);
-        uint thirdPrize = winnersPrize.mul(1);
-        firstPrize = firstPrize.div(10);
-        secondPrize = secondPrize.div(10);
-        thirdPrize = thirdPrize.div(10);
+        winnersPrize = winnersPrize.div(28);
+        uint prize1 = winnersPrize.mul(7);
+        uint prize2 = winnersPrize.mul(6);
+        uint prize3 = winnersPrize.mul(5);
+        uint prize4 = winnersPrize.mul(4);
+        uint prize5 = winnersPrize.mul(3);
+        uint prize6 = winnersPrize.mul(2);
+        uint prize7 = winnersPrize.mul(1);
         uint i;
         for(i=initialLucky7TicketPosition; i<numberOfLucky7Numbers+initialLucky7TicketPosition; i++){
             if(lucky7TicketsArray[i].owner!=address(0x0)){
-                pendingWithdrawals[lucky7TicketsArray[i].owner] += firstPrize;
-                prizeAmount1 = firstPrize;
-                prizeWinner1 = lucky7TicketsArray[i].owner;
+                pendingWithdrawals[lucky7TicketsArray[i].owner].amount += prize1;
+                pendingWithdrawals[lucky7TicketsArray[i].owner].gameID = gameID;
+                lucky7TicketsArray[i].prize = prize1;
                 break;
             }
         }
         
         for(i++; i<numberOfLucky7Numbers+initialLucky7TicketPosition; i++){
             if(lucky7TicketsArray[i].owner!=address(0x0)){
-                pendingWithdrawals[lucky7TicketsArray[i].owner] += secondPrize;
-                prizeAmount2 = secondPrize;
-                prizeWinner2 = lucky7TicketsArray[i].owner;
+                pendingWithdrawals[lucky7TicketsArray[i].owner].amount += prize2;
+                pendingWithdrawals[lucky7TicketsArray[i].owner].gameID = gameID;
+                lucky7TicketsArray[i].prize = prize2;
                 break;
             }
         }
         
         for(i++; i<numberOfLucky7Numbers+initialLucky7TicketPosition; i++){
             if(lucky7TicketsArray[i].owner!=address(0x0)){
-                pendingWithdrawals[lucky7TicketsArray[i].owner] += thirdPrize;
-                prizeAmount3 = thirdPrize;
-                prizeWinner3 = lucky7TicketsArray[i].owner;
+                pendingWithdrawals[lucky7TicketsArray[i].owner].amount += prize3;
+                pendingWithdrawals[lucky7TicketsArray[i].owner].gameID = gameID;
+                lucky7TicketsArray[i].prize = prize3;
+                break;
+            }
+        }
+        for(i++; i<numberOfLucky7Numbers+initialLucky7TicketPosition; i++){
+            if(lucky7TicketsArray[i].owner!=address(0x0)){
+                pendingWithdrawals[lucky7TicketsArray[i].owner].amount += prize4;
+                pendingWithdrawals[lucky7TicketsArray[i].owner].gameID = gameID;
+                lucky7TicketsArray[i].prize = prize4;
+                break;
+            }
+        }
+
+        for(i++; i<numberOfLucky7Numbers+initialLucky7TicketPosition; i++){
+            if(lucky7TicketsArray[i].owner!=address(0x0)){
+                pendingWithdrawals[lucky7TicketsArray[i].owner].amount += prize5;
+                pendingWithdrawals[lucky7TicketsArray[i].owner].gameID = gameID;
+                lucky7TicketsArray[i].prize = prize5;
+                break;
+            }
+        }
+
+        for(i++; i<numberOfLucky7Numbers+initialLucky7TicketPosition; i++){
+            if(lucky7TicketsArray[i].owner!=address(0x0)){
+                pendingWithdrawals[lucky7TicketsArray[i].owner].amount += prize6;
+                pendingWithdrawals[lucky7TicketsArray[i].owner].gameID = gameID;
+                lucky7TicketsArray[i].prize = prize6;
+                break;
+            }
+        }
+
+        for(i++; i<numberOfLucky7Numbers+initialLucky7TicketPosition; i++){
+            if(lucky7TicketsArray[i].owner!=address(0x0)){
+                pendingWithdrawals[lucky7TicketsArray[i].owner].amount += prize7;
+                pendingWithdrawals[lucky7TicketsArray[i].owner].gameID = gameID;
+                lucky7TicketsArray[i].prize = prize7;
                 break;
             }
         }
@@ -265,7 +290,7 @@ contract Lucky7Ballot is Lucky7TicketFactory{
             lucky7NumbersArray[i].mu="0";
             lucky7NumbersArray[i].i="0";
             lucky7NumbersArray[i].ticketValue=0;
-            lucky7NumbersArray[i].drawID=drawNumber;
+            lucky7NumbersArray[i].gameID=gameID;
             ExactLucky7TicketValue[i]=0;
             ExactLucky7TicketOwner[i]=0;
             ExactLucky7TicketID[i]=0;
@@ -276,8 +301,10 @@ contract Lucky7Ballot is Lucky7TicketFactory{
       * state the owners of the first, second and third prize. It is used to avoid DoS with (Unexpected) revert attack.
       */
     function withdraw() public {
-        uint amount = pendingWithdrawals[msg.sender];
-        pendingWithdrawals[msg.sender] = 0;
+        PrizeInfo prize = pendingWithdrawals[msg.sender];
+        uint amount = prize.amount;
+        require(prize.gameID == gameID - 1 && prize.amount != 0);
+        pendingWithdrawals[msg.sender].amount = 0;
         msg.sender.transfer(amount);
     }
 
@@ -291,27 +318,16 @@ contract Lucky7Ballot is Lucky7TicketFactory{
     event CustomizedLucky7NumberInserted(uint value);
 
 
-    function insertCustomizedLucky7Number(uint _id, string _mu, string _i, uint _ticketValue,uint _drawNumber) public onlyOwner{
-        lucky7NumbersArray[_id] = Lucky7Number(_mu, _i, _ticketValue, _drawNumber);
+    function insertCustomizedLucky7Number(uint _id, string _mu, string _i, uint _ticketValue,uint _gameID) public onlyOwner{
+        lucky7NumbersArray[_id] = Lucky7Number(_mu, _i, _ticketValue, _gameID);
         emit CustomizedLucky7NumberInserted(_ticketValue);
     }
-    
-    function insertCustomizedTicket(string _mu, string _i, uint _ticketValue,address _ticketOwner, uint _drawNumber) 
-        public 
-        onlyOwner 
-        returns (uint){
-            uint id = ticketsArray.push(Ticket(_mu,_i,_ticketValue,_ticketOwner,_drawNumber)) - 1;
-            currentTicketID = id;
-        }
-    
+
     function setIndexForLucky7Array(uint _newValue) public onlyOwner{
         indexForLucky7Array = _newValue;
     }
 
-    function setInitialLucky7TicketPosition(uint _newValue) public onlyOwner{
-        initialLucky7TicketPosition = _newValue;
-    }
-    
+
     /** @dev Fallback function to make this contract payable.
       */
     function () public payable {

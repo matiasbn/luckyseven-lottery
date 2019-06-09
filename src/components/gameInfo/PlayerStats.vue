@@ -17,7 +17,7 @@
       <b-card-text>{{ balance | transformBalance }} ETH</b-card-text>
     </b-card>
     <b-card title="Your current prize">
-      <b-card-text>{{ currentPrize | transformBalance }} ETH</b-card-text>
+      <b-card-text>{{ currentPrize.amount | transformBalance }} ETH</b-card-text>
       <b-button
         variant="success"
         @click="claimPrize">
@@ -37,7 +37,11 @@ export default {
   filters: {
     transformBalance(balance) {
       const web3 = new Web3();
-      return parseFloat(web3.utils.fromWei(balance, 'ether'), 10).toFixed(4);
+      let stringBalance = String(parseInt(balance, 10));
+      if (isNaN(balance)) {
+        stringBalance = '0';
+      }
+      return parseFloat(web3.utils.fromWei(stringBalance, 'ether'), 10).toFixed(4);
     },
   },
   computed: {

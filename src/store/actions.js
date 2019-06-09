@@ -13,7 +13,6 @@ export default {
     truffleContractInstance
       .NewMuReceived({ owner: account }, (error, event) => {
         if (!error) {
-          console.log(event.returnValues.muParameter);
           const payloadEvent = {
             value: event.returnValues.muParameter,
             type: 'mu',
@@ -24,7 +23,6 @@ export default {
     truffleContractInstance
       .NewIReceived({ owner: account }, (error, event) => {
         if (!error) {
-          console.log(event.returnValues.iParameter);
           const payloadEvent = {
             value: event.returnValues.iParameter,
             type: 'i',
@@ -35,7 +33,6 @@ export default {
     truffleContractInstance
       .NewTicketReceived({ owner: account }, (error, event) => {
         if (!error) {
-          console.log(event.returnValues.newTicket);
           const payloadEvent = {
             value: event.returnValues.newTicket,
             type: 'ticket',
@@ -47,6 +44,12 @@ export default {
       .NewLucky7Ticket({ owner: account }, (error, event) => {
         if (!error) {
           commit('newLucky7Ticket', event.returnValues);
+        }
+      });
+    truffleContractInstance
+      .BalanceUpdated((error, event) => {
+        if (!error) {
+          commit('balanceUpdated', event.returnValues.balance);
         }
       });
   },
@@ -85,7 +88,7 @@ export default {
       lucky7Tickets[i] = {
         ticket: parseInt(lucky7TicketsValues[i], 10),
         owner: lucky7TicketsOwners[i],
-        difference: lucky7TicketsDiffs[i],
+        difference: parseInt(lucky7TicketsDiffs[i], 10),
       };
     }
     const valuesPromises = [

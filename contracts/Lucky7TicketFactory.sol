@@ -21,18 +21,18 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
       * OAR is the Oraclize Address Resolver to use oraclize on localhost
       */
     function Lucky7TicketFactory() payable{
-        OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
+        OAR = OraclizeAddrResolverI(0x89a9739CB33b9a552aBe468e4A41895C64EAAfA9);
     }
     
     /** @dev This function is to change the OAR without compiling again and deploying again
       * Used only for testing purposes.
       */
-    function changeOAR(address _newOAR){
+    function changeOAR(address _newOAR) onlyOwner{
         OAR = OraclizeAddrResolverI(_newOAR);
     }
     
-    /**@dev The events are used mainly for testing purposes
-      */
+    /** @dev Events
+     */
     event NewOraclizeQuery(string description);
     event NewMuReceived(string muParameter, address indexed _owner);
     event NewIReceived(string iParameter, address indexed _owner);
@@ -40,6 +40,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
     event NewWolframQuery(string description);
     event NewLucky7Ticket(uint ticketValue, address indexed _owner, uint difference, uint index);
     event NewLucky7Number(uint value);
+    event BalanceUpdated(uint balance);
     
     /** @dev This modifier is used to set the gas price on the functions which do oraclize querys.
       *  It uses the oraclizeCustomGasPrice of the Lucky7Admin contract.
@@ -86,14 +87,14 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
       * @param i is a parameter of the pseudo-random number generator (PRNG).
       * @param ticketValue is the value of ticket.
       * @param owner is the owner of the ticket.
-      * @param drawID is the number of the draw for this ticket, i.e. the game where this ticket was emitted.
+      * @param gameID is the number of the draw for this ticket, i.e. the game where this ticket was emitted.
       */
     struct Ticket{
         string mu;
         string i;
         uint ticketValue;
         address owner;
-        uint drawID;
+        uint gameID;
     }
     
     /** @dev Lucky7Number is a struct to store the information of the Lucky7Numbers. Is used for the lucky7Numbers array
@@ -102,13 +103,13 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
       * @param mu is a parameter of the pseudo-random number generator (PRNG).
       * @param i is a parameter of the pseudo-random number generator (PRNG).
       * @param ticketValue is the value of the Lucky7Number.
-      * @param drawID is the number of the draw for this Lucky7Number, i.e. the game where this Lucky7Number was emitted. 
+      * @param gameID is the number of the draw for this Lucky7Number, i.e. the game where this Lucky7Number was emitted. 
       */
     struct Lucky7Number{
         string mu;
         string i;
         uint ticketValue;
-        uint drawID;
+        uint gameID;
     }
     
     /** @dev Lucky7Ticket is a struct to store the information of the Lucky7Tickets. Is used once a new game is setted, and it store the information of the final
@@ -120,7 +121,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
       * @param ticketValue is the value of the ticket associated to this Lucky7Ticket.
       * @param lucky7Number is the value of the Lucky7Number associated to this Lucky7Ticket.
       * @param lucky7NumberID is the ID of the Lucky7Number associated to this Lucky7Ticket, i.e. if 0 is the first Lucky7Number of the draw.
-      * @param drawID is the number of the draw for this Lucky7Ticket, i.e. the game where this Lucky7Ticket was emitted.
+      * @param gameID is the number of the draw for this Lucky7Ticket, i.e. the game where this Lucky7Ticket was emitted.
       */
     struct Lucky7Ticket{
         uint difference;
@@ -129,7 +130,8 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
         uint ticketValue;
         uint lucky7Number;
         uint lucky7NumberID;
-        uint drawID;
+        uint gameID;
+        uint prize;
     }
     
     /** @dev The next two arrays are used to store information of the game permanently.
@@ -182,14 +184,14 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
     mapping (uint => address) public ExactLucky7TicketOwner;
     mapping (uint => uint) public ExactLucky7TicketID;
 
-    /** @param drawNumber is the number of the current draw. Is used to help storage Lucky7Tickets, look up for current game winners and others functions.
+    /** @param gameID is the number of the current draw. Is used to help storage Lucky7Tickets, look up for current game winners and others functions.
       * Is incremented by 1 everytime a new game is setted.
       * @param indexForLucky7Array is a uint used to count the number of Lucky7Numbers generated everytime a new game is setted. Is used to know if all the Lucky7Numbers 
       * were setted, and if they did, order them by them values in ascendant order and let users start buying tickets. Is setted to 0 after all this process.
       * @param indexForExactLucky7Ticket is a uint which increments everytime a ExactLucky7Ticket is detected and stored. It's used to look up in in the ExactLucky7 mappings
       * and is cleaned to 0 everytime a new game is setted.
       */
-    uint public drawNumber = 0;
+    uint public gameID = 0;
     uint public indexForLucky7Array = 0;
     uint public indexForExactLucky7Ticket = 0;
     
@@ -258,12 +260,12 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
     }
     
     /** @dev _insertTicket inserts a ticket in the ticketsArray array.
-      * @param _ticketOwner is the owner of the ticket already generated. It uses the UserParametersValue struct values and the drawNumber value.
+      * @param _ticketOwner is the owner of the ticket already generated. It uses the UserParametersValue struct values and the gameID value.
       * Then it call the _checkForLucky7Ticket function to check if the inserted ticket is a Lucky7Ticket.
       * Because a push return the size of the array, is necessary to decrement the id value in 1 to check the current ticket. 
       */
     function _insertTicket(address _ticketOwner) internal {
-        uint id = ticketsArray.push(Ticket(userValues[_ticketOwner].mu,userValues[_ticketOwner].i,userValues[_ticketOwner].ticketValue,_ticketOwner,drawNumber)) - 1;
+        uint id = ticketsArray.push(Ticket(userValues[_ticketOwner].mu,userValues[_ticketOwner].i,userValues[_ticketOwner].ticketValue,_ticketOwner,gameID)) - 1;
         _checkForLucky7Ticket(id);
     }
 
@@ -274,7 +276,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
       * Then an event is emited.
       */
     function _insertLucky7Number(address _ticketOwner) internal {
-        lucky7NumbersArray[indexForLucky7Array] = Lucky7Number(userValues[_ticketOwner].mu,userValues[_ticketOwner].i,userValues[_ticketOwner].ticketValue,drawNumber);
+        lucky7NumbersArray[indexForLucky7Array] = Lucky7Number(userValues[_ticketOwner].mu,userValues[_ticketOwner].i,userValues[_ticketOwner].ticketValue,gameID);
         indexForLucky7Array++;
         emit NewLucky7Number(userValues[_ticketOwner].ticketValue);
     }
@@ -375,6 +377,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
       */
     function __callback(bytes32 myid, string result) public{
         require(msg.sender == oraclize_cbAddress());
+        emit BalanceUpdated(address(this).balance);
         /** @dev First, the function checks if there's an muParameterID value associated to myid,i.e. the response is a mu parameter of the  
           * "muParameterID[myid]" user (remember that muParameterID[] maps from an bytes32, the id, to an user address).
           * Then it will check if the muReady boolean of the user's UserParametersValue struct is setted to false (explained in later contracts).

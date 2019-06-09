@@ -396,7 +396,7 @@ contract('Lucky7Ballot', (accounts) => {
     assert.equal(ownerOfLucky7Ticket6, user7, 'not the same owner for Lucky7Ticket6');
 
     // Now i'll try to insert only empty Lucky7Tickets and check if the owners are equal to 0
-    // First i'll increase the initialLucky7TicketPosition to 7 to start storing in the next "drawID"
+    // First i'll increase the initialLucky7TicketPosition to 7 to start storing in the next "gameID"
     // Is necessary to call _cleanMappings function to set all the mappings (lucky7Numbers and ExactLucky7Tickets) to 0
     // This function is going to be tested in the next test
     await lucky7Ballot._cleanMappings();
@@ -636,11 +636,11 @@ contract('Lucky7Ballot', (accounts) => {
     assert.equal(thirdPrizeAmount, parseFloat(0.7), 'third prize is not 0.7');
     assert.equal(contractBalance, 7, 'contract balance is not 7');
 
-    // Check if the drawNumber and initialLucky7TicketPosition are setted to
+    // Check if the gameID and initialLucky7TicketPosition are setted to
     // 1 and 7 respectively
-    const drawNumber = await lucky7Ballot.drawNumber();
+    const gameID = await lucky7Ballot.gameID();
     const initialLucky7Position = await lucky7Ballot.initialLucky7TicketPosition();
-    assert.equal(drawNumber, 1, 'drawNumber not equal to 1');
+    assert.equal(gameID, 1, 'gameID not equal to 1');
     assert.equal(parseInt(initialLucky7Position), 7, 'initialLucky7Position not equal to 7');
 
 

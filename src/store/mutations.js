@@ -1,4 +1,7 @@
 export default{
+  balanceUpdated(state, payload) {
+    state.web3.contractBalance = payload;
+  },
   askForValues(state, payload) {
     switch (payload) {
       case 'generateTicket':
@@ -37,7 +40,6 @@ export default{
     }
   },
   newLucky7Ticket(state, payload) {
-    console.log(payload);
     const { difference, index, _owner, ticketValue } = payload;
     state.lucky7GameInfo[index].difference = difference;
     state.lucky7GameInfo[index].owner = _owner;

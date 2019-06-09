@@ -4,3 +4,4 @@
 /*.js
 /test/unit/coverage/
 /sandbox/instanceContract.js
+/test/solidity/*

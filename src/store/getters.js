@@ -23,6 +23,8 @@ export default {
         const currentPrize = String((parseFloat(state.web3.contractBalance * 0.7 * (7 - prizeCounter), 10)) / 28);
         lucky7GameInfo[index].prize = `${web3.utils.fromWei(currentPrize, 'ether')} ETH`;
         prizeCounter += 1;
+      } else {
+        lucky7GameInfo[index].prize = '0 ETH';
       }
     });
     lucky7GameInfo = orderBy(lucky7GameInfo, 'number', 'asc');
