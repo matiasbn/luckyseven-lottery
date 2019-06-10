@@ -1,4 +1,21 @@
+import Web3 from 'web3';
+
+const web3 = new Web3();
+
 export default{
+  updatePastGames(state, payload) {
+    payload.forEach((ticket, index) => {
+      const pastTicket = {
+        lucky7Number: parseInt(ticket.lucky7Number, 10),
+        ticketValue: parseInt(ticket.ticketValue, 10),
+        difference: parseInt(ticket.difference, 10),
+        owner: ticket.owner,
+        prize: `${web3.utils.fromWei(ticket.prize, 'ether')} ETH`,
+        gameID: parseInt(ticket.gameID, 10),
+      };
+      state.lucky7PastGames[index] = pastTicket;
+    });
+  },
   balanceUpdated(state, payload) {
     state.web3.contractBalance = payload;
   },
@@ -53,17 +70,11 @@ export default{
       networkId,
       coinbase,
       balance,
-      isConnected,
-      contractInstance,
-      contractAddress,
-      contractBalance } = payload;
+      isConnected } = payload;
     state.web3.networkId = networkId;
     state.web3.coinbase = coinbase;
     state.web3.balance = balance;
     state.web3.isConnected = isConnected;
-    state.web3.contractInstance = contractInstance;
-    state.web3.contractAddress = contractAddress;
-    state.web3.contractBalance = contractBalance;
   },
   pollWeb3Instance(state, payload) {
     state.web3.coinbase = payload.coinbase;
@@ -78,6 +89,9 @@ export default{
       userValues,
       currentPrize,
       prizeGameID,
+      contractInstance,
+      contractAddress,
+      contractBalance,
     } = payload;
     lucky7Tickets.forEach((lucky7Ticket, index) => {
       const row = {
@@ -96,5 +110,8 @@ export default{
     state.player.lastNumber2 = userValues.i;
     state.player.currentPrize = currentPrize;
     state.player.prizeGameID = prizeGameID;
+    state.web3.contractInstance = contractInstance;
+    state.web3.contractAddress = contractAddress;
+    state.web3.contractBalance = contractBalance;
   },
 };

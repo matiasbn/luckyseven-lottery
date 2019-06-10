@@ -71,7 +71,7 @@ contract Lucky7Ballot is Lucky7TicketFactory{
         _deliverPrizes();
         _cleanMappings();
         gameID++;
-        initialLucky7TicketPosition+=gameID*numberOfLucky7Numbers;
+        initialLucky7TicketPosition=gameID*numberOfLucky7Numbers;
     }
     
     /** @dev _generateLucky7Number is the function that is actually used to generate the Lucky7Numbers. It have the business logic for generating the Lucky7Numbers, i.e. if 

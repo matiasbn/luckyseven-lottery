@@ -21,7 +21,10 @@
         <b-navbar-nav
           class="ml-auto"
           right>
-          <b-nav-item to="/past_games">Past Games</b-nav-item>
+          <b-nav-item
+            to="/past_games"
+            @click="updatePastGames"
+          >Past Games</b-nav-item>
           <b-nav-item to="/past_tickets">Past Tickets</b-nav-item>
           <b-nav-item to="/">Sign Out</b-nav-item>
         </b-navbar-nav>
@@ -29,3 +32,14 @@
     </b-navbar>
   </div>
 </template>
+
+<script>
+/* eslint-disable max-len */
+export default {
+  methods: {
+    async updatePastGames() {
+      this.$store.dispatch('updatePastGames', this.$store.state.web3.contractInstance);
+    },
+  },
+};
+</script>

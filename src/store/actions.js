@@ -98,8 +98,9 @@ export default {
       truffleContractInstance.pendingWithdrawals(coinbase),
     ];
 
+    const contractAddress = truffleContractInstance.address;
+    const contractBalance = await web3.eth.getBalance(contractAddress);
     const values = await Promise.all(valuesPromises);
-    console.log(values[3].gameID.toNumber());
     const payload = {
       lucky7Numbers,
       lucky7Tickets,
@@ -108,13 +109,26 @@ export default {
       userValues: values[2],
       currentPrize: values[3],
       prizeGameID: values[3].gameID.toNumber(),
+      contractInstance: truffleContractInstance,
+      contractAddress,
+      contractBalance,
     };
     commit('retrieveGameInfoInstance', payload);
   },
-  async parameterReceived({ commit }, payload) {
+  parameterReceived({ commit }, payload) {
     commit('parameterReceived', payload);
   },
-  async askForValues({ commit }, payload) {
+  askForValues({ commit }, payload) {
     commit('askForValues', payload);
+  },
+  async updatePastGames({ commit }) {
+    const contractInstance = await truffleContract(window.web3.currentProvider).deployed();
+    const counter = (await contractInstance.initialLucky7TicketPosition()).toNumber();
+    const lucky7TicketsPromises = [];
+    for (let i = 0; i < counter; i += 1) {
+      lucky7TicketsPromises.push(contractInstance.lucky7TicketsArray(i));
+    }
+    const lucky7TicketsArray = await Promise.all(lucky7TicketsPromises);
+    commit('updatePastGames', lucky7TicketsArray);
   },
 };

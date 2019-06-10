@@ -13,8 +13,6 @@ Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.use(VueRouter);
 
-console.log(routes);
-
 const router = new VueRouter({
   routes,
   mode: 'history',

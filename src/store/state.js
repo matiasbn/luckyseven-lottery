@@ -26,4 +26,5 @@ export default {
     ticketsGenerated: 0,
   },
   lucky7GameInfo: [],
+  lucky7PastGames: [],
 };
