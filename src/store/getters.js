@@ -4,8 +4,10 @@ import Web3 from 'web3';
 
 const web3 = new Web3(window.web3.currentProvider);
 
-
 export default {
+  account: state => state.web3.coinbase,
+  purchaseTicketPrice: state => state.game.purchaseTicketPrice,
+  generateTicketPrice: state => state.game.generateTicketPrice,
   lucky7PastGames: state => state.lucky7PastGames,
   lastPurchasedTicket: state => state.player.lastPurchasedTicket,
   lastNumber1: state => state.player.lastNumber1,

@@ -4,7 +4,6 @@ export default {
     coinbase: null,
     balance: '0',
     isConnected: false,
-    contractInstance: null,
     contractAddress: '0',
     contractBalance: '0',
   },

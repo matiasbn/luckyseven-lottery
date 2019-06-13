@@ -21,14 +21,14 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
       * OAR is the Oraclize Address Resolver to use oraclize on localhost
       */
     function Lucky7TicketFactory() payable{
-        OAR = OraclizeAddrResolverI(0x89a9739CB33b9a552aBe468e4A41895C64EAAfA9
+        OAR = OraclizeAddrResolverI(0xE0E7cef561e349e57fa293020ac50d0038f57F1e
         );
     }
     
     /** @dev This function is to change the OAR without compiling again and deploying again
       * Used only for testing purposes.
       */
-    function changeOAR(address _newOAR) onlyOwner{
+    function changeOAR(address _newOAR) public onlyOwner{
         OAR = OraclizeAddrResolverI(_newOAR);
     }
     
@@ -40,7 +40,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
     event NewTicketReceived(string newTicket, address indexed _owner);
     event NewWolframQuery(string description);
     event NewLucky7Ticket(uint ticketValue, address indexed _owner, uint difference, uint index);
-    event NewLucky7Number(uint value);
+    event Lucky7NumberInserted(uint value, uint index);
     event BalanceUpdated(uint balance);
     
     /** @dev This modifier is used to set the gas price on the functions which do oraclize querys.
@@ -278,8 +278,8 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
       */
     function _insertLucky7Number(address _ticketOwner) internal {
         lucky7NumbersArray[indexForLucky7Array] = Lucky7Number(userValues[_ticketOwner].mu,userValues[_ticketOwner].i,userValues[_ticketOwner].ticketValue,gameID);
+        emit Lucky7NumberInserted(userValues[_ticketOwner].ticketValue,indexForLucky7Array);
         indexForLucky7Array++;
-        emit NewLucky7Number(userValues[_ticketOwner].ticketValue);
     }
     
     /** @dev _checkForLucky7Ticket is a function that check if a ticket recently inserted in the ticketsArray is a Lucky7Ticket.

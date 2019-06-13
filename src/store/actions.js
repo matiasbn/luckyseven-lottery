@@ -1,17 +1,16 @@
 /* eslint-disable max-len */
 
 import getWeb3 from '@/web3/getWeb3';
-import truffleContract from '@/web3/truffleContract';
 import Web3 from 'web3';
+import truffleContract from '../web3/truffleContract';
 
 const web3 = new Web3(window.web3.currentProvider);
-
 export default {
   async listenEvents({ commit }, payload) {
     const account = payload;
     const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
     truffleContractInstance
-      .NewMuReceived({ owner: account }, (error, event) => {
+      .NewMuReceived({ owner: account, fromBlock: 'latest' }, (error, event) => {
         if (!error) {
           const payloadEvent = {
             value: event.returnValues.muParameter,
@@ -21,7 +20,7 @@ export default {
         }
       });
     truffleContractInstance
-      .NewIReceived({ owner: account }, (error, event) => {
+      .NewIReceived({ owner: account, fromBlock: 'latest' }, (error, event) => {
         if (!error) {
           const payloadEvent = {
             value: event.returnValues.iParameter,
@@ -31,7 +30,7 @@ export default {
         }
       });
     truffleContractInstance
-      .NewTicketReceived({ owner: account }, (error, event) => {
+      .NewTicketReceived({ owner: account, fromBlock: 'latest' }, (error, event) => {
         if (!error) {
           const payloadEvent = {
             value: event.returnValues.newTicket,
@@ -41,7 +40,7 @@ export default {
         }
       });
     truffleContractInstance
-      .NewLucky7Ticket({ owner: account }, (error, event) => {
+      .NewLucky7Ticket({ owner: account, fromBlock: 'latest' }, (error, event) => {
         if (!error) {
           commit('newLucky7Ticket', event.returnValues);
         }
@@ -50,6 +49,12 @@ export default {
       .BalanceUpdated((error, event) => {
         if (!error) {
           commit('balanceUpdated', event.returnValues.balance);
+        }
+      });
+    truffleContractInstance
+      .Lucky7NumberInserted((error, event) => {
+        if (!error) {
+          commit('lucky7NumberInserted', event.returnValues);
         }
       });
   },
@@ -109,7 +114,6 @@ export default {
       userValues: values[2],
       currentPrize: values[3],
       prizeGameID: values[3].gameID.toNumber(),
-      contractInstance: truffleContractInstance,
       contractAddress,
       contractBalance,
     };

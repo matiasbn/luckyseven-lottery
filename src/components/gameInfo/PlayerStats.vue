@@ -32,6 +32,8 @@
 /* eslint-disable max-len */
 import Web3 from 'web3';
 import { mapState } from 'vuex';
+import truffleContract from '../../web3/truffleContract';
+
 
 export default {
   filters: {
@@ -54,7 +56,8 @@ export default {
   methods: {
     async claimPrize() {
       try {
-        await this.$store.state.web3.contractInstance.withdraw({ from: this.$store.state.web3.coinbase });
+        const contractInstance = await truffleContract(window.web3.currentProvider).deployed();
+        await contractInstance.withdraw({ from: this.$store.state.web3.coinbase });
       } catch (e) {
         console.log(e);
       }

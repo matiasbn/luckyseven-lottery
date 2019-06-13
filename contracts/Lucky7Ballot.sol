@@ -66,6 +66,7 @@ contract Lucky7Ballot is Lucky7TicketFactory{
         public 
         onlyOwner 
     {
+        require(ticketsArray.length != 0, "At least 1 purchased ticket is necessary");
         toggleLucky7Setting();
         _orderLucky7Tickets();
         _deliverPrizes();
@@ -147,6 +148,7 @@ contract Lucky7Ballot is Lucky7TicketFactory{
         uint j;
         uint k;
         for (i=0; i<numberOfLucky7Numbers; i++){
+            uint lucky7TicketValue = lucky7TicketOwner[i] != address(0x0) ? ticketsArray[lucky7TicketID[i]].ticketValue : 0;       
             lucky7TicketsArray.push(
                 /** @dev The Lucky7Ticket struct is as follows:   
                   *     struct Lucky7Ticket{
@@ -163,7 +165,7 @@ contract Lucky7Ballot is Lucky7TicketFactory{
                     lucky7TicketDifference[i],
                     lucky7TicketOwner[i],
                     lucky7TicketID[i],
-                    ticketsArray[lucky7TicketID[i]].ticketValue,
+                    lucky7TicketValue,
                     lucky7NumbersArray[i].ticketValue,
                     i,
                     gameID,
@@ -314,13 +316,16 @@ contract Lucky7Ballot is Lucky7TicketFactory{
       * maliciously.
       */
 
-    event CustomizedTicketInserted(uint value);
-    event CustomizedLucky7NumberInserted(uint value);
+    event Lucky7NumberInserted(uint value, uint index);
 
 
-    function insertCustomizedLucky7Number(uint _id, string _mu, string _i, uint _ticketValue,uint _gameID) public onlyOwner{
-        lucky7NumbersArray[_id] = Lucky7Number(_mu, _i, _ticketValue, _gameID);
-        emit CustomizedLucky7NumberInserted(_ticketValue);
+    function insertLucky7Numbers(uint[] memory values) public onlyOwner{
+        for(uint i = 0 ; i < 7; i++){
+            lucky7NumbersArray[i] = Lucky7Number("mu", "i", values[i], gameID);
+            emit Lucky7NumberInserted(values[i], i);
+        }
+        indexForLucky7Array = 7;
+        _generateLucky7Number();
     }
 
     function setIndexForLucky7Array(uint _newValue) public onlyOwner{

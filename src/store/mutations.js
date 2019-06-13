@@ -3,6 +3,10 @@ import Web3 from 'web3';
 const web3 = new Web3();
 
 export default{
+  lucky7NumberInserted(state, payload) {
+    const { value, index } = payload;
+    state.lucky7GameInfo[index].number = value;
+  },
   updatePastGames(state, payload) {
     payload.forEach((ticket, index) => {
       const pastTicket = {
@@ -89,7 +93,6 @@ export default{
       userValues,
       currentPrize,
       prizeGameID,
-      contractInstance,
       contractAddress,
       contractBalance,
     } = payload;
@@ -110,7 +113,6 @@ export default{
     state.player.lastNumber2 = userValues.i;
     state.player.currentPrize = currentPrize;
     state.player.prizeGameID = prizeGameID;
-    state.web3.contractInstance = contractInstance;
     state.web3.contractAddress = contractAddress;
     state.web3.contractBalance = contractBalance;
   },

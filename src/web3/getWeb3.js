@@ -1,10 +1,18 @@
 /* eslint-disable no-param-reassign */
 import Web3 from 'web3';
 
-const web3 = new Web3(window.web3.currentProvider);
 
 const getWeb3 = new Promise(async (resolve, reject) => {
   try {
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum);
+      try {
+        window.ethereum.enable();
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    const web3 = new Web3(window.web3.currentProvider);
     const networkId = await web3.eth.net.getId();
     const coinbase = await web3.eth.getCoinbase();
     web3.eth.defaultAccount = coinbase;

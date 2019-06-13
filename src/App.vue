@@ -17,6 +17,7 @@ export default {
   beforeCreate() {
     this.$store.dispatch('registerWeb3');
     this.$store.dispatch('retrieveGameInformation');
+    this.$store.dispatch('updatePastGames');
     pollWeb3();
   },
   beforeMount() {

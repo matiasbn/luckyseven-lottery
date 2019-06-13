@@ -103,6 +103,8 @@
 import { mapGetters } from 'vuex';
 import Web3 from 'web3';
 
+import truffleContract from '@/web3/truffleContract';
+
 const web3 = new Web3();
 
 export default {
@@ -114,8 +116,16 @@ export default {
       return 'No, best luck for the next game';
     },
   },
+  data() {
+    return {
+      contract: null,
+    };
+  },
   computed: {
     ...mapGetters([
+      'account',
+      'purchaseTicketPrice',
+      'generateTicketPrice',
       'lastPurchasedTicket',
       'lastNumber1',
       'lastNumber2',
@@ -125,14 +135,15 @@ export default {
       'secondNumberReceived',
     ]),
   },
+  async beforeCreate() {
+    this.contract = await truffleContract(window.web3.currentProvider).deployed();
+  },
   methods: {
     async generateTicket() {
       try {
-        const price = this.$store.state.game.generateTicketPrice;
-        const account = this.$store.state.web3.coinbase;
-        await this.$store.state.web3.contractInstance.generateRandomTicket({
-          from: account,
-          value: parseInt(price, 10),
+        await this.contract.generateRandomTicket({
+          from: this.account,
+          value: parseInt(this.generateTicketPrice, 10),
         });
         this.$store.dispatch('askForValues', 'generateTicket');
       } catch (e) {
@@ -141,11 +152,9 @@ export default {
     },
     async purchaseGeneratedTicket() {
       try {
-        const price = this.$store.state.game.purchaseTicketPrice;
-        const account = this.$store.state.web3.coinbase;
-        await this.$store.state.web3.contractInstance.sellGeneratedTicket({
-          from: account,
-          value: parseInt(price, 10),
+        await this.contract.purchaseGeneratedTicket({
+          from: this.account,
+          value: parseInt(this.purchaseTicketPrice, 10),
         });
         this.$store.dispatch('askForValues', 'purchaseGeneratedTicket');
       } catch (e) {
@@ -154,11 +163,9 @@ export default {
     },
     async purchaseRandomTicket() {
       try {
-        const price = this.$store.state.game.purchaseTicketPrice;
-        const account = this.$store.state.web3.coinbase;
-        await this.$store.state.web3.contractInstance.sellRandomTicket({
-          from: account,
-          value: parseInt(price, 10),
+        await this.contract.sellRandomTicket({
+          from: this.account,
+          value: parseInt(this.purchaseTicketPrice, 10),
         });
         this.$store.dispatch('askForValues', 'purchaseRandomTicket');
       } catch (e) {

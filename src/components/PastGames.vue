@@ -28,20 +28,17 @@ export default {
         { key: 'lucky7Number', label: 'Lucky7Number' },
         { key: 'ticketValue', label: 'Lucky7Ticket' },
         {
-          key: 'difference', label: 'Difference', sortable: true, sort: true, center: true,
+          key: 'difference', label: 'Difference', sortable: true,
         },
         { key: 'owner', label: 'Owner' },
-        { key: 'prize', label: 'Prize' },
-        { key: 'gameID', label: 'Game ID' },
+        { key: 'prize', label: 'Prize', sortable: true },
+        { key: 'gameID', label: 'Game ID', sort: true, sortable: true },
       ],
       valuesReady: true,
     };
   },
   computed: {
     ...mapGetters(['lucky7PastGames']),
-  },
-  beforeCreate() {
-    this.$store.dispatch('updatePastGames');
   },
 };
 </script>

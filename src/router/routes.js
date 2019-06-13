@@ -3,13 +3,14 @@ import Landing from '../components/Landing';
 import Rules from '../components/Rules';
 import HowNumbersGenerate from '../components/HowNumbersGenerate';
 import GameInfo from '../components/GameInfo';
-import PastTickets from '../components/PastTickets';
 import PastGames from '../components/PastGames';
+import UserDashboard from '../components/UserDashboard';
+import { store } from '../store';
 
 export const routes = [
   {
     path: '/',
-    component: GameInfo,
+    component: Landing,
   },
   {
     path: '/rules',
@@ -20,15 +21,19 @@ export const routes = [
     component: HowNumbersGenerate,
   },
   {
-    path: '/game_info',
-    component: Landing,
+    path: '/current_game',
+    component: GameInfo,
   },
   {
     path: '/past_games',
     component: PastGames,
+    beforeRouteEnter(to, from, next) {
+      store.dispatch('updatePastGames');
+      next();
+    },
   },
   {
-    path: '/past_tickets',
-    component: PastTickets,
+    path: '/user_dashboard',
+    component: UserDashboard,
   },
 ];

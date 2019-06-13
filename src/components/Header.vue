@@ -14,19 +14,18 @@
         is-nav>
         <b-navbar-nav>
           <b-nav-item to="/rules">Rules</b-nav-item>
-          <b-nav-item to="/prng">How Numbers Generates</b-nav-item>
-          <b-nav-item to="/game_info">Current Game</b-nav-item>
+          <b-nav-item to="/prng">How numbers are generated</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav
           class="ml-auto"
           right>
+          <b-nav-item to="/current_game">Current Game</b-nav-item>
           <b-nav-item
             to="/past_games"
             @click="updatePastGames"
           >Past Games</b-nav-item>
-          <b-nav-item to="/past_tickets">Past Tickets</b-nav-item>
-          <b-nav-item to="/">Sign Out</b-nav-item>
+          <b-nav-item to="/user_dashboard">User</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
