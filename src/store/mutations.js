@@ -1,8 +1,19 @@
 import Web3 from 'web3';
+import has from 'lodash.has';
 
 const web3 = new Web3();
 
 export default{
+  statsUpdated(state, payload) {
+    if (has(payload, 'randomTicketCounter')) {
+      state.game.randomTicketsSelled = payload.randomTicketCounter;
+    } else if (has(payload, 'generatedTicketCounter')) {
+      state.game.generatedTickets = payload.generatedTicketCounter;
+    } else {
+      state.game.generatedTicketsSelled = payload.selledGeneratedTicketCounter;
+    }
+    console.log(payload);
+  },
   lucky7NumberInserted(state, payload) {
     const { value, index } = payload;
     state.lucky7GameInfo[index].number = value;

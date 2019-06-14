@@ -57,6 +57,24 @@ export default {
           commit('lucky7NumberInserted', event.returnValues);
         }
       });
+    truffleContractInstance
+      .RandomTicketSelled((error, event) => {
+        if (!error) {
+          commit('statsUpdated', event.returnValues);
+        }
+      });
+    truffleContractInstance
+      .GeneratedTicket((error, event) => {
+        if (!error) {
+          commit('statsUpdated', event.returnValues);
+        }
+      });
+    truffleContractInstance
+      .GeneratedTicketSelled((error, event) => {
+        if (!error) {
+          commit('statsUpdated', event.returnValues);
+        }
+      });
   },
   registerWeb3({ commit }) {
     getWeb3.then((result) => {

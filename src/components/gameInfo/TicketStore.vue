@@ -6,7 +6,8 @@
     header-bg-variant="warning"
     header-text-variant="white"
   >
-    <b-row>
+    <b-card-group deck>
+
       <b-col>
         <b-card
           header="Try your luck!"
@@ -77,7 +78,7 @@
         <b-card title="First number">
           <b-card-text
             v-if="firstNumberReceived">
-            {{ lastNumber1 }}
+            {{ lastNumberPurchased1 }}
           </b-card-text>
           <b-spinner
             v-else
@@ -87,15 +88,63 @@
         <b-card title="Second number">
           <b-card-text
             v-if="secondNumberReceived">
-            {{ lastNumber2 }}
+            {{ lastNumberPurchased2 }}
           </b-card-text>
           <b-spinner
             v-else
             variant="warning"
             label="Spinning"/>
         </b-card>
+        <b-card title="Lucky7Ticket?">
+          <b-card-text>
+            {{ isLucky7Ticket | checkLucky7Ticket }}
+          </b-card-text>
+        </b-card>
       </b-col>
-    </b-row>
+
+      <b-col>
+        <b-card
+          header="Last Purchased ticket"
+          header-tag="h2"
+          title="Ticket value"
+        >
+          <b-card-text
+            v-if="ticketReceived">
+            {{ lastPurchasedTicket }}
+          </b-card-text>
+          <b-spinner
+            v-else
+            variant="warning"
+            label="Spinning"/>
+
+        </b-card>
+        <b-card title="First number">
+          <b-card-text
+            v-if="firstNumberReceived">
+            {{ lastNumberGenerated1 }}
+          </b-card-text>
+          <b-spinner
+            v-else
+            variant="warning"
+            label="Spinning"/>
+        </b-card>
+        <b-card title="Second number">
+          <b-card-text
+            v-if="secondNumberReceived">
+            {{ lastNumberGenerated2 }}
+          </b-card-text>
+          <b-spinner
+            v-else
+            variant="warning"
+            label="Spinning"/>
+        </b-card>
+        <b-card title="Lucky7Ticket?">
+          <b-card-text>
+            {{ isLucky7Ticket | checkLucky7Ticket }}
+          </b-card-text>
+        </b-card>
+      </b-col>
+    </b-card-group>
   </b-card>
 </template>
 <script>
@@ -109,12 +158,13 @@ const web3 = new Web3();
 
 export default {
   filters: {
-    isLucky7Ticket(lucky7Ticket) {
+    checkLucky7Ticket(lucky7Ticket) {
       if (lucky7Ticket) {
-        return 'Yes!, Congratulations';
+        return 'Yes!, Congratulations!';
       }
       return 'No, best luck for the next game';
     },
+
   },
   data() {
     return {
@@ -123,12 +173,15 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'isLucky7Ticket',
       'account',
       'purchaseTicketPrice',
       'generateTicketPrice',
       'lastPurchasedTicket',
-      'lastNumber1',
-      'lastNumber2',
+      'lastNumberGenerated1',
+      'lastNumberGenerated2',
+      'lastNumberPurchased1',
+      'lastNumberPurchased2',
       'lucky7Ticket',
       'ticketReceived',
       'firstNumberReceived',
@@ -152,7 +205,7 @@ export default {
     },
     async purchaseGeneratedTicket() {
       try {
-        await this.contract.purchaseGeneratedTicket({
+        await this.contract.sellGeneratedTicket({
           from: this.account,
           value: parseInt(this.purchaseTicketPrice, 10),
         });

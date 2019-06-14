@@ -1,29 +1,29 @@
 <template>
   <div>
-    <b-card
-      header="Player stats"
-      header-tag="h2"
-      title="Your account"
-      header-bg-variant="warning"
-      header-text-variant="white"
-    >
-      <b-card-text>{{ account }}</b-card-text>
-    </b-card>
-    <b-card
-      title="Your balance"
-      header-bg-variant="warning"
-      header-text-variant="white"
-    >
-      <b-card-text>{{ balance | transformBalance }} ETH</b-card-text>
-    </b-card>
-    <b-card title="Your current prize">
-      <b-card-text>{{ currentPrize.amount | transformBalance }} ETH</b-card-text>
-      <b-button
-        variant="success"
-        @click="claimPrize">
-        Claim your prize now!
-      </b-button>
-    </b-card>
+    <b-card-group deck>
+      <b-card
+        header="Your account"
+        header-tag="h2"
+      >
+        <b-card-text text-tag="h4">{{ account }}</b-card-text>
+      </b-card>
+      <b-card
+        header="Your balance"
+        header-tag="h2"
+      >
+        <b-card-text text-tag="h4">{{ balance | transformBalance }} ETH</b-card-text>
+      </b-card>
+      <b-card
+        header="Your current prize"
+        header-tag="h2">
+        <b-card-text text-tag="h4">{{ currentPrize.amount | transformBalance }} ETH</b-card-text>
+        <b-button
+          variant="success"
+          @click="claimPrize">
+          Claim your prize now!
+        </b-button>
+      </b-card>
+    </b-card-group>
   </div>
 </template>
 
@@ -69,5 +69,6 @@ export default {
 <style scoped>
   .card{
     text-align:center;
+    margin: 20px;
   }
 </style>

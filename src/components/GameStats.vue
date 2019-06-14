@@ -1,10 +1,9 @@
 <template>
   <div>
+    <PricesAndStats/>
     <b-card
-      title="Past Games"
-      header-tag="h1"
-      header-bg-variant="warning"
-      header-text-variant="white">
+      header="Past Games"
+      header-tag="h2">
       <b-table
         :items="lucky7PastGames"
         :fields="fields"
@@ -20,8 +19,12 @@
 <script>
 
 import { mapGetters } from 'vuex';
+import PricesAndStats from './GameStats/PricesAndStats';
 
 export default {
+  components: {
+    PricesAndStats,
+  },
   data() {
     return {
       fields: [
@@ -40,11 +43,13 @@ export default {
   computed: {
     ...mapGetters(['lucky7PastGames']),
   },
+
 };
 </script>
 
 <style scoped>
   .card{
     text-align: center;
+    margin: 20px;
   }
 </style>

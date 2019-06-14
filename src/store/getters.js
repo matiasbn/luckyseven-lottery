@@ -1,17 +1,29 @@
 /* eslint-disable max-len */
 import orderBy from 'lodash.orderby';
 import Web3 from 'web3';
+import { NETWORKS } from '@/web3/constants/networks';
 
 const web3 = new Web3(window.web3.currentProvider);
 
 export default {
+  randomTicketsSelled: state => state.game.randomTicketsSelled,
+  generatedTickets: state => state.game.generatedTickets,
+  generatedTicketsSelled: state => state.game.generatedTicketsSelled,
+  network: (state) => {
+    if (state.web3.networkId > 5777) {
+      return 'Local network';
+    }
+    return NETWORKS[state.web3.networkId];
+  },
   account: state => state.web3.coinbase,
   purchaseTicketPrice: state => state.game.purchaseTicketPrice,
   generateTicketPrice: state => state.game.generateTicketPrice,
   lucky7PastGames: state => state.lucky7PastGames,
   lastPurchasedTicket: state => state.player.lastPurchasedTicket,
-  lastNumber1: state => state.player.lastNumber1,
-  lastNumber2: state => state.player.lastNumber2,
+  lastNumberGenerated1: state => state.player.lastNumberGenerated1,
+  lastNumberGenerated2: state => state.player.lastNumberGenerated2,
+  lastNumberPurchased1: state => state.player.lastNumberPurchased1,
+  lastNumberPurchased2: state => state.player.lastNumberPurchased2,
   lucky7Ticket: state => state.player.lucky7Ticket,
   isLucky7Ticket: state => state.player.isLucky7Ticket,
   ticketReceived: state => state.player.ticketReceived,

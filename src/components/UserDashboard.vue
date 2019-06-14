@@ -2,6 +2,7 @@
   <div>
     <b-card
       :title="setTitle"/>
+    <PlayerStats/>
     <b-card-group deck>
 
       <b-card
@@ -43,9 +44,13 @@
 /* eslint-disable no-underscore-dangle */
 
 import { mapGetters } from 'vuex';
+import PlayerStats from './UserDashboard/PlayerStats';
 import truffleContract from '../web3/truffleContract';
 
 export default {
+  components: {
+    PlayerStats,
+  },
   data() {
     return {
       adminFooter: 'If you can see this option, is because you current account is the contract owner',

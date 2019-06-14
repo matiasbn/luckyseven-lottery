@@ -18,6 +18,7 @@ contract Lucky7Store is Lucky7Ballot, Destructible{
     function Lucky7Store() payable public{
         
     }
+
     /** @dev userBoughtTicket is a modifier to check if the user paid the necessary amount to buy a ticket.
       */
     modifier userBoughtTicket(address _ticketOwner){
@@ -52,6 +53,14 @@ contract Lucky7Store is Lucky7Ballot, Destructible{
     }
     //------------------------
     
+    event RandomTicketSelled(uint randomTicketCounter, address indexed owner);
+    event GeneratedTicket(uint generatedTicketCounter, address indexed owner);
+    event GeneratedTicketSelled(uint selledGeneratedTicketCounter, address indexed owner);
+    // maps from gameID to every counter
+    mapping (uint=>uint) public randomTicketCounter;
+    mapping (uint=>uint) public generatedTicketCounter;
+    mapping (uint=>uint) public selledGeneratedTicketCounter;
+
     /** @dev sellRandomTicket is a function used to sell a random ticket to the user. It checks if the user sent the correct amount and if the game is not
       * in the setting Lucky7Numbers phase. If so, then sets the user muReady and iReady of the UserParameters value of the Lucky7TicketFactory contract to false and 
       calls the _generateTicket function of the Lucky7TicketFactory contract with the msg.sender as the owner.
@@ -62,7 +71,9 @@ contract Lucky7Store is Lucky7Ballot, Destructible{
         userBoughtTicket(msg.sender)
         setParametersToReady(msg.sender)
         sellingIsActive
-    {
+    { 
+        randomTicketCounter[gameID]++;
+        emit RandomTicketSelled(randomTicketCounter[gameID], msg.sender); 
         _generateTicket(msg.sender);
     }
     
@@ -77,6 +88,8 @@ contract Lucky7Store is Lucky7Ballot, Destructible{
         setParametersToReady(msg.sender)
         sellingIsActive
     {
+        generatedTicketCounter[gameID]++;
+        emit GeneratedTicket(generatedTicketCounter[gameID], msg.sender);
         _generateTicket(msg.sender);
     }
     
@@ -92,6 +105,8 @@ contract Lucky7Store is Lucky7Ballot, Destructible{
         sellingIsActive
     {
         require(keccak256(userValues[msg.sender].mu)!=keccak256('') && keccak256(userValues[msg.sender].i)!=keccak256(''));
+        selledGeneratedTicketCounter[gameID]++;
+        emit GeneratedTicketSelled(selledGeneratedTicketCounter[gameID], msg.sender);
         _askForTicket(msg.sender);
     }
     

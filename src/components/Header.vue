@@ -22,9 +22,10 @@
           right>
           <b-nav-item to="/current_game">Current Game</b-nav-item>
           <b-nav-item
-            to="/past_games"
-            @click="updatePastGames"
-          >Past Games</b-nav-item>
+            to="/game_stats"
+            @click="updatePastGames" >
+            Game stats
+          </b-nav-item>
           <b-nav-item to="/user_dashboard">User</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
