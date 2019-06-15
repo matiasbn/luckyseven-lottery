@@ -46,31 +46,31 @@ export default {
         }
       });
     truffleContractInstance
-      .BalanceUpdated((error, event) => {
+      .BalanceUpdated({ fromBlock: 'latest' }, (error, event) => {
         if (!error) {
           commit('balanceUpdated', event.returnValues.balance);
         }
       });
     truffleContractInstance
-      .Lucky7NumberInserted((error, event) => {
+      .Lucky7NumberInserted({ fromBlock: 'latest' }, (error, event) => {
         if (!error) {
           commit('lucky7NumberInserted', event.returnValues);
         }
       });
     truffleContractInstance
-      .RandomTicketSelled((error, event) => {
+      .RandomTicketSelled({ fromBlock: 'latest' }, (error, event) => {
         if (!error) {
           commit('statsUpdated', event.returnValues);
         }
       });
     truffleContractInstance
-      .GeneratedTicket((error, event) => {
+      .GeneratedTicket({ fromBlock: 'latest' }, (error, event) => {
         if (!error) {
           commit('statsUpdated', event.returnValues);
         }
       });
     truffleContractInstance
-      .GeneratedTicketSelled((error, event) => {
+      .GeneratedTicketSelled({ fromBlock: 'latest' }, (error, event) => {
         if (!error) {
           commit('statsUpdated', event.returnValues);
         }
@@ -119,11 +119,18 @@ export default {
       truffleContractInstance.sellTicketPrice(),
       truffleContractInstance.userValues(coinbase),
       truffleContractInstance.pendingWithdrawals(coinbase),
+      truffleContractInstance.userTicketsCounter(coinbase),
+      truffleContractInstance.b(),
+      truffleContractInstance.n(),
+      truffleContractInstance.p(),
+      truffleContractInstance.j(),
     ];
 
     const contractAddress = truffleContractInstance.address;
     const contractBalance = await web3.eth.getBalance(contractAddress);
     const values = await Promise.all(valuesPromises);
+    const lastPurchasedTicketID = await truffleContractInstance.userTickets(coinbase, values[4] - 1);
+    const lastPurchasedTicket = await truffleContractInstance.ticketsArray(lastPurchasedTicketID);
     const payload = {
       lucky7Numbers,
       lucky7Tickets,
@@ -134,6 +141,13 @@ export default {
       prizeGameID: values[3].gameID.toNumber(),
       contractAddress,
       contractBalance,
+      userTicketsCounter: values[4],
+      lastPurchasedTicketID,
+      lastPurchasedTicket,
+      b: values[5],
+      n: values[6],
+      p: values[7],
+      j: values[8],
     };
     commit('retrieveGameInfoInstance', payload);
   },

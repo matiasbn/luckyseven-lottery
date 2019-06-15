@@ -16,6 +16,10 @@ export default {
     return NETWORKS[state.web3.networkId];
   },
   account: state => state.web3.coinbase,
+  b: state => state.game.b,
+  n: state => state.game.n,
+  p: state => state.game.p,
+  j: state => state.game.j,
   purchaseTicketPrice: state => state.game.purchaseTicketPrice,
   generateTicketPrice: state => state.game.generateTicketPrice,
   lucky7PastGames: state => state.lucky7PastGames,
@@ -27,8 +31,10 @@ export default {
   lucky7Ticket: state => state.player.lucky7Ticket,
   isLucky7Ticket: state => state.player.isLucky7Ticket,
   ticketReceived: state => state.player.ticketReceived,
-  firstNumberReceived: state => state.player.firstNumberReceived,
-  secondNumberReceived: state => state.player.secondNumberReceived,
+  firstGenerateNumberReceived: state => state.player.firstGenerateNumberReceived,
+  secondGenerateNumberReceived: state => state.player.secondGenerateNumberReceived,
+  firstPurchaseNumberReceived: state => state.player.firstPurchaseNumberReceived,
+  secondPurchaseNumberReceived: state => state.player.secondPurchaseNumberReceived,
   lucky7GameInfo: (state) => {
     let lucky7GameInfo = state.lucky7GameInfo;
     lucky7GameInfo = orderBy(lucky7GameInfo, 'difference', 'asc');

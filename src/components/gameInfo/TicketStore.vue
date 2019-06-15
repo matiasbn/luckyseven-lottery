@@ -66,8 +66,8 @@
           title="Ticket value"
         >
           <b-card-text
-            v-if="ticketReceived">
-            {{ lastPurchasedTicket }}
+            v-if="firstGenerateNumberReceived && secondGenerateNumberReceived">
+            {{ lastGeneratedTicket }}
           </b-card-text>
           <b-spinner
             v-else
@@ -77,8 +77,8 @@
         </b-card>
         <b-card title="First number">
           <b-card-text
-            v-if="firstNumberReceived">
-            {{ lastNumberPurchased1 }}
+            v-if="firstGenerateNumberReceived">
+            {{ lastNumberGenerated1 }}
           </b-card-text>
           <b-spinner
             v-else
@@ -87,8 +87,8 @@
         </b-card>
         <b-card title="Second number">
           <b-card-text
-            v-if="secondNumberReceived">
-            {{ lastNumberPurchased2 }}
+            v-if="secondGenerateNumberReceived">
+            {{ lastNumberGenerated2 }}
           </b-card-text>
           <b-spinner
             v-else
@@ -97,7 +97,7 @@
         </b-card>
         <b-card title="Lucky7Ticket?">
           <b-card-text>
-            {{ isLucky7Ticket | checkLucky7Ticket }}
+            {{ isLucky7Ticket | checkLucky7TicketPurchased }}
           </b-card-text>
         </b-card>
       </b-col>
@@ -120,8 +120,8 @@
         </b-card>
         <b-card title="First number">
           <b-card-text
-            v-if="firstNumberReceived">
-            {{ lastNumberGenerated1 }}
+            v-if="firstPurchaseNumberReceived">
+            {{ lastNumberPurchased1 }}
           </b-card-text>
           <b-spinner
             v-else
@@ -130,8 +130,8 @@
         </b-card>
         <b-card title="Second number">
           <b-card-text
-            v-if="secondNumberReceived">
-            {{ lastNumberGenerated2 }}
+            v-if="secondPurchaseNumberReceived">
+            {{ lastNumberPurchased2 }}
           </b-card-text>
           <b-spinner
             v-else
@@ -140,7 +140,7 @@
         </b-card>
         <b-card title="Lucky7Ticket?">
           <b-card-text>
-            {{ isLucky7Ticket | checkLucky7Ticket }}
+            {{ isLucky7Ticket | checkLucky7TicketPurchased }}
           </b-card-text>
         </b-card>
       </b-col>
@@ -149,6 +149,7 @@
 </template>
 <script>
 /* eslint-disable max-len */
+import BigNumber from 'bignumber.js';
 import { mapGetters } from 'vuex';
 import Web3 from 'web3';
 
@@ -158,13 +159,12 @@ const web3 = new Web3();
 
 export default {
   filters: {
-    checkLucky7Ticket(lucky7Ticket) {
+    checkLucky7TicketPurchased(lucky7Ticket) {
       if (lucky7Ticket) {
         return 'Yes!, Congratulations!';
       }
       return 'No, best luck for the next game';
     },
-
   },
   data() {
     return {
@@ -173,6 +173,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'b', 'n', 'p', 'j',
       'isLucky7Ticket',
       'account',
       'purchaseTicketPrice',
@@ -184,9 +185,31 @@ export default {
       'lastNumberPurchased2',
       'lucky7Ticket',
       'ticketReceived',
-      'firstNumberReceived',
-      'secondNumberReceived',
+      'firstGenerateNumberReceived',
+      'secondGenerateNumberReceived',
+      'firstPurchaseNumberReceived',
+      'secondPurchaseNumberReceived',
     ]),
+    lastGeneratedTicket() {
+      const mu = BigNumber(this.lastNumberGenerated1);
+      const i = BigNumber(this.lastNumberGenerated2);
+      const b = BigNumber(this.b);
+      const n = BigNumber(this.n);
+      const p = BigNumber(this.p);
+      const j = BigNumber(this.j);
+      const ten = BigNumber(10);
+      const tenPowerN = ten.exponentiatedBy(n);
+      const tenPowerP = ten.exponentiatedBy(p);
+      const M = tenPowerN.minus(mu);
+      const P = b.multipliedBy(tenPowerP).dividedBy(M).precision(10000);
+      const tenPowerIJ = ten.exponentiatedBy(i.plus(j));
+      const tenPowerI = ten.exponentiatedBy(i);
+      const numerator1 = P.modulo(tenPowerIJ);
+      const numerator2 = P.modulo(tenPowerI);
+      const numeratorTotal = numerator1.minus(numerator2);
+      const R = numeratorTotal.dividedBy(tenPowerI);
+      return R;
+    },
   },
   async beforeCreate() {
     this.contract = await truffleContract(window.web3.currentProvider).deployed();

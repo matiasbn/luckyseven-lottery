@@ -106,6 +106,13 @@ export default{
       prizeGameID,
       contractAddress,
       contractBalance,
+      userTicketsCounter,
+      lastPurchasedTicketID,
+      lastPurchasedTicket,
+      b,
+      n,
+      p,
+      j,
     } = payload;
     lucky7Tickets.forEach((lucky7Ticket, index) => {
       const row = {
@@ -119,11 +126,19 @@ export default{
     });
     state.game.generateTicketPrice = generateTicketPrice;
     state.game.purchaseTicketPrice = sellTicketPrice;
-    state.player.lastPurchasedTicket = userValues.ticketValue;
-    state.player.lastNumber1 = userValues.mu;
-    state.player.lastNumber2 = userValues.i;
+    state.game.b = b;
+    state.game.n = n;
+    state.game.p = p;
+    state.game.j = j;
+    state.player.lastPurchasedTicketID = lastPurchasedTicketID;
+    state.player.lastPurchasedTicket = lastPurchasedTicket.ticketValue;
+    state.player.lastNumberPurchased1 = lastPurchasedTicket.mu;
+    state.player.lastNumberPurchased2 = lastPurchasedTicket.i;
+    state.player.lastNumberGenerated1 = userValues.mu;
+    state.player.lastNumberGenerated2 = userValues.i;
     state.player.currentPrize = currentPrize;
     state.player.prizeGameID = prizeGameID;
+    state.player.userTicketsCounter = userTicketsCounter;
     state.web3.contractAddress = contractAddress;
     state.web3.contractBalance = contractBalance;
   },

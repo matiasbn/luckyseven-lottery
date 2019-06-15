@@ -21,7 +21,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
       * OAR is the Oraclize Address Resolver to use oraclize on localhost
       */
     function Lucky7TicketFactory() payable{
-        OAR = OraclizeAddrResolverI(0xE0E7cef561e349e57fa293020ac50d0038f57F1e
+        OAR = OraclizeAddrResolverI(0x604D239542cB1e6A13148AC0EC7eEB5FD0b82598
         );
     }
     
@@ -138,10 +138,14 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
     /** @dev The next two arrays are used to store information of the game permanently.
       * @param lucky7TicketsArray stores the Lucky7Tickets once a new game is setted.
       * @param ticketsArray stores the tickets everytime a user buys a ticket.
+      * @param userTickets is an array which stores the ticketsID for certain user.
+      * @param userTicketsCounter is a counter of tickets purchased by the user. Used to return userTickets values array.
       */
     Lucky7Ticket[] public lucky7TicketsArray;
     Ticket[] public ticketsArray;
-    
+    mapping (address => uint[]) public userTickets;
+    mapping (address => uint) public userTicketsCounter;
+
     /** @param lucky7NumbersArray stores the Lucky7Numbers for the current draw. Once a new game is called, it is cleand to 0 to be reused. 
       */
     Lucky7Number[7] public lucky7NumbersArray;
@@ -263,10 +267,13 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
     /** @dev _insertTicket inserts a ticket in the ticketsArray array.
       * @param _ticketOwner is the owner of the ticket already generated. It uses the UserParametersValue struct values and the gameID value.
       * Then it call the _checkForLucky7Ticket function to check if the inserted ticket is a Lucky7Ticket.
-      * Because a push return the size of the array, is necessary to decrement the id value in 1 to check the current ticket. 
+      * Because a push return the size of the array, is necessary to decrement the id value in 1 to check the current ticket.
+      * Then we add the ticket to user collection of tickets (userTickets mapping) and increase the ticket counter (userTicketsCounter) 
       */
     function _insertTicket(address _ticketOwner) internal {
         uint id = ticketsArray.push(Ticket(userValues[_ticketOwner].mu,userValues[_ticketOwner].i,userValues[_ticketOwner].ticketValue,_ticketOwner,gameID)) - 1;
+        userTickets[_ticketOwner].push(id);
+        userTicketsCounter[_ticketOwner]++;
         _checkForLucky7Ticket(id);
     }
 

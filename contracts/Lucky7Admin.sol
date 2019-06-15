@@ -55,7 +55,7 @@ contract Lucky7Admin is Ownable{
       */
     uint public generateTicketPrice = 0.005 ether;
     uint public sellTicketPrice = 0.012 ether;
-    uint public oraclizeGasLimit = 300000 wei;
+    uint public oraclizeGasLimit = 3000000 wei;
     uint public oraclizeCustomGasPrice = 4000000000 wei;
 
     /**
@@ -67,40 +67,40 @@ contract Lucky7Admin is Ownable{
       * @dev The next functions are self explanatory
       * Everyone emits an event to register changes, so there is a register of evolution of the game in the time
      */
-    function modifyNumberOfLucky7Numbers(uint _newValue) public onlyOwner{
-        uint oldValue = numberOfLucky7Numbers;
-        numberOfLucky7Numbers = _newValue;
-        emit numberModified("Sell ticket price changed", oldValue, _newValue);
-    }
+    // function modifyNumberOfLucky7Numbers(uint _newValue) public onlyOwner{
+    //     uint oldValue = numberOfLucky7Numbers;
+    //     numberOfLucky7Numbers = _newValue;
+    //     emit numberModified("Sell ticket price changed", oldValue, _newValue);
+    // }
         
-    function modifySellTicketPrice(uint _newValue) public onlyOwner{
-        uint oldValue = sellTicketPrice;
-        sellTicketPrice = _newValue;
-        emit numberModified("Sell ticket price changed", oldValue, _newValue);
-    }
+    // function modifySellTicketPrice(uint _newValue) public onlyOwner{
+    //     uint oldValue = sellTicketPrice;
+    //     sellTicketPrice = _newValue;
+    //     emit numberModified("Sell ticket price changed", oldValue, _newValue);
+    // }
     
-    function modifyGenerateTicketPrice(uint _newValue) public onlyOwner{
-        uint oldValue = generateTicketPrice;
-        generateTicketPrice = _newValue;
-        emit numberModified("Generate ticket price changed", oldValue, _newValue);
-    }
+    // function modifyGenerateTicketPrice(uint _newValue) public onlyOwner{
+    //     uint oldValue = generateTicketPrice;
+    //     generateTicketPrice = _newValue;
+    //     emit numberModified("Generate ticket price changed", oldValue, _newValue);
+    // }
     
-    function modifyOraclizeGasLimit(uint _newValue) public onlyOwner{
-        uint oldValue = oraclizeGasLimit;
-        oraclizeGasLimit = _newValue;
-        emit numberModified("Oraclize gas limit changed", oldValue, _newValue);
-    }
+    // function modifyOraclizeGasLimit(uint _newValue) public onlyOwner{
+    //     uint oldValue = oraclizeGasLimit;
+    //     oraclizeGasLimit = _newValue;
+    //     emit numberModified("Oraclize gas limit changed", oldValue, _newValue);
+    // }
     
-    function modifyOraclizeCustomGasPrice(uint _newValue) public onlyOwner{
-        uint oldValue = oraclizeCustomGasPrice;
-        oraclizeCustomGasPrice = _newValue;
-        emit numberModified("Oraclize custom gas price changed", oldValue, _newValue);
-    }
+    // function modifyOraclizeCustomGasPrice(uint _newValue) public onlyOwner{
+    //     uint oldValue = oraclizeCustomGasPrice;
+    //     oraclizeCustomGasPrice = _newValue;
+    //     emit numberModified("Oraclize custom gas price changed", oldValue, _newValue);
+    // }
     
-    function modifyEnterpriseWallet(address _newAddress) public onlyOwner{
-        address oldAddress = enterpriseWallet;
-        enterpriseWallet = _newAddress;
-        emit walletModified("Enterprise wallet changed", oldAddress, _newAddress);
-    }
+    // function modifyEnterpriseWallet(address _newAddress) public onlyOwner{
+    //     address oldAddress = enterpriseWallet;
+    //     enterpriseWallet = _newAddress;
+    //     emit walletModified("Enterprise wallet changed", oldAddress, _newAddress);
+    // }
 }   
                                            
