@@ -8,8 +8,8 @@
   * Inherits from Lucky7Admin and usingOraclize to do the oraclize querys. 
 */
 
-pragma solidity >=0.4.20 <0.6.0;
-import "./usingOraclize.sol";
+pragma solidity  ^0.5.0;
+import "./Oraclize.sol";
 import "./Lucky7Admin.sol";
 
 contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
@@ -20,9 +20,8 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
     /** @dev The constructor needs to set the OAR, Oraclize Address Resolver
       * OAR is the Oraclize Address Resolver to use oraclize on localhost
       */
-    function Lucky7TicketFactory() payable{
-        OAR = OraclizeAddrResolverI(0x604D239542cB1e6A13148AC0EC7eEB5FD0b82598
-        );
+    constructor() internal payable{
+        OAR = OraclizeAddrResolverI(0xE0E7cef561e349e57fa293020ac50d0038f57F1e);
     }
     
     /** @dev This function is to change the OAR without compiling again and deploying again
@@ -34,11 +33,9 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
     
     /** @dev Events
      */
-    event NewOraclizeQuery(string description);
     event NewMuReceived(string muParameter, address indexed _owner);
     event NewIReceived(string iParameter, address indexed _owner);
-    event NewTicketReceived(string newTicket, address indexed _owner);
-    event NewWolframQuery(string description);
+    event NewTicketReceived(uint newTicket, address indexed _owner);
     event NewLucky7Ticket(uint ticketValue, address indexed _owner, uint difference, uint index);
     event Lucky7NumberInserted(uint value, uint index);
     event BalanceUpdated(uint balance);
@@ -55,11 +52,13 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
       *i.e. when a new game is started, previous winners are erased, the Lucky7Numbers are getting setted and prizes are delivered.
       */
     bool public settingLucky7Numbers = true;
+    event SettingNumbersChanged(bool settingLucky7Numbers);
     
     /** @dev Function to toggle the settingLucky7Numbers to stop users to buy tickets. 
       */
     function toggleLucky7Setting() public onlyOwner{
         settingLucky7Numbers = !settingLucky7Numbers;
+        emit SettingNumbersChanged(settingLucky7Numbers);
     }
 
     /** @dev UserParametersValue is a struct where the values of the user ticket is stored temporarily.
@@ -206,7 +205,6 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
       * Finally it associate this muID with the _ticketOwner through the muParameterID mapping, so the oraclize's callback function know it is a mu petition and it belongs to the _ticketOwner user.
       */
     function _askForMuParameter(address _ticketOwner) public oraclizeGasPriceCustomized{
-        emit NewOraclizeQuery("Asking for a new mu parameter...");
         bytes32 muID = oraclize_query("WolframAlpha","4 random number",oraclizeGasLimit);
         muParameterID[muID] = _ticketOwner;
     }
@@ -217,7 +215,6 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
       * Finally it associate this iID with the _ticketOwner through the iParameterID mapping, so the oraclize's callback function know it is a i petition and it belongs to the _ticketOwner user.
       */
     function _askForIParameter(address _ticketOwner) public oraclizeGasPriceCustomized{
-        emit NewOraclizeQuery("Asking for a new i parameter...");
         bytes32 iID = oraclize_query("WolframAlpha","4 random number",oraclizeGasLimit);
         iParameterID[iID] = _ticketOwner;
     }
@@ -230,7 +227,6 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
       * depending on the UserParametersValue struct of the _ticketOwner user.
       */
     function _askForTicket(address _ticketOwner) public oraclizeGasPriceCustomized{
-        emit NewOraclizeQuery("Asking for a new ticket...");
         bytes32 userTicketID = oraclize_query("WolframAlpha", _setTicketQuery(_ticketOwner), oraclizeGasLimit);
         newTicketID[userTicketID] = _ticketOwner;
     }
@@ -241,7 +237,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
       * the usingOraclize contract to concat the parts with the parameters of the user.
       * Every line explains how the query is getting it shape. The meaning of this query is going to be explained on the paper of the project.
       */
-    function _setTicketQuery(address _parametersOwner) internal returns (string){
+    function _setTicketQuery(address _parametersOwner) internal view returns (string memory){
         string memory queryWolfram;
         //This line => (mod((1/(10^n-mu))*10^    
         queryWolfram = strConcat("(mod((1/(10^",n,"-",userValues[_parametersOwner].mu,"))*10^");
@@ -253,7 +249,6 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
         queryWolfram = strConcat(queryWolfram,userValues[_parametersOwner].mu,"))*10^",p,",10^");
         //This line => (mod((1/(10^n-mu))*10^p,10^(j+i))-mod((1/(10^n-mu))*10^p,10^(i)))/10^i
         queryWolfram = strConcat(queryWolfram,"(",userValues[_parametersOwner].i,")))/10^",userValues[_parametersOwner].i);
-        emit NewWolframQuery(queryWolfram);
         return queryWolfram;
     }
 
@@ -383,7 +378,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
       * @param result is the result of the query.
       * Once the query is resolved, oraclize sends back the answer, and the function check that the one calling the function is indeed a oraclize contract. 
       */
-    function __callback(bytes32 myid, string result) public{
+    function __callback(bytes32 myid, string memory result) public{
         require(msg.sender == oraclize_cbAddress());
         emit BalanceUpdated(address(this).balance);
         /** @dev First, the function checks if there's an muParameterID value associated to myid,i.e. the response is a mu parameter of the  
@@ -395,7 +390,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
           * is true, or if the settingLucky7Numbers circuit breaker is on, which means that currently the game is in the setting Lucky7Numbers phase.
           * In any of those cases, the function calls the _askForTicketFunction for the "muParameterID[myid]" user.
           */
-        if(muParameterID[myid]!=0 && userValues[muParameterID[myid]].muReady==false){
+        if(muParameterID[myid]!=address(0x0) && userValues[muParameterID[myid]].muReady==false){
             userValues[muParameterID[myid]].mu=result;
             emit NewMuReceived(result, muParameterID[myid]);
             userValues[muParameterID[myid]].muReady=true;
@@ -407,7 +402,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
         /** @dev If above don't fit, then checks if the result is the i parameter of the user and proceeds the same way, checking if already have the mu parameter setted,
           * and if the user paid for the ticket or the game is in the setting Lucky7Number phase.
           */
-        else if (iParameterID[myid]!=0 && userValues[iParameterID[myid]].iReady==false){
+        else if (iParameterID[myid]!=address(0x0) && userValues[iParameterID[myid]].iReady== false){
             userValues[iParameterID[myid]].i=result;
             emit NewIReceived(result, iParameterID[myid]);
             userValues[iParameterID[myid]].iReady=true;
@@ -421,18 +416,18 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
           * Finally, it checks if the game is currently in the setting Lucky7Numbers phase. If so, calls the _insertLucky7Number function, else it calls the 
           * _insertTicket function, both explained above.
           */
-        else if (newTicketID[myid]!=0 &&  (userValues[newTicketID[myid]].userPaidTicket==true || settingLucky7Numbers==true )){
+        else if (newTicketID[myid]!=address(0x0) &&  (userValues[newTicketID[myid]].userPaidTicket==true || settingLucky7Numbers==true )){
             userValues[newTicketID[myid]].ticketValue=parseInt(result);
-            emit NewTicketReceived(result,newTicketID[myid]);
             userValues[newTicketID[myid]].userPaidTicket=false;
             if(settingLucky7Numbers==true){
                 _insertLucky7Number(newTicketID[myid]);
             }
             else{
+                emit NewTicketReceived(userValues[newTicketID[myid]].ticketValue, newTicketID[myid]);
                 _insertTicket(newTicketID[myid]);
             }
         }
     }
 
-    function() public payable{}
+    function() external payable{}
 } 

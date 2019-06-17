@@ -8,12 +8,12 @@
   * Particularly contains function that have the business logic for generating Lucky7Numbers and Lucky7Tickets, order them, deliver prizes and clean necessary arrays.
 */
 
-pragma solidity >=0.4.20 <0.6.0;
+pragma solidity ^0.5.0;
 
 import "./Lucky7TicketFactory.sol";
 
 contract Lucky7Ballot is Lucky7TicketFactory{
-    function Lucky7Ballot() payable {
+    constructor() internal payable {
         
     }
 
@@ -66,7 +66,7 @@ contract Lucky7Ballot is Lucky7TicketFactory{
         public 
         onlyOwner 
     {
-        require(ticketsArray.length != 0, "At least 1 purchased ticket is necessary");
+        require(ticketsArray.length != 0);
         toggleLucky7Setting();
         _orderLucky7Tickets();
         _deliverPrizes();
@@ -90,9 +90,9 @@ contract Lucky7Ballot is Lucky7TicketFactory{
             toggleLucky7Setting();
         }
         else{
-            userValues[this].muReady = false;
-            userValues[this].iReady = false;
-            _generateTicket(this);
+            userValues[address(this)].muReady = false;
+            userValues[address(this)].iReady = false;
+            _generateTicket(address(this));
         }
     }
     
@@ -286,7 +286,7 @@ contract Lucky7Ballot is Lucky7TicketFactory{
     function _cleanMappings() public{
         for(uint i=0; i<numberOfLucky7Numbers; i++){
             lucky7TicketDifference[i]=0;
-            lucky7TicketOwner[i]=0;
+            lucky7TicketOwner[i]=address(0x0);
             lucky7TicketID[i]=0;
             lucky7TicketValue[i]=0;
             lucky7NumbersArray[i].mu="0";
@@ -294,7 +294,7 @@ contract Lucky7Ballot is Lucky7TicketFactory{
             lucky7NumbersArray[i].ticketValue=0;
             lucky7NumbersArray[i].gameID=gameID;
             ExactLucky7TicketValue[i]=0;
-            ExactLucky7TicketOwner[i]=0;
+            ExactLucky7TicketOwner[i]=address(0x0);
             ExactLucky7TicketID[i]=0;
         }
         indexForExactLucky7Ticket =0;
@@ -303,7 +303,7 @@ contract Lucky7Ballot is Lucky7TicketFactory{
       * state the owners of the first, second and third prize. It is used to avoid DoS with (Unexpected) revert attack.
       */
     function withdraw() public {
-        PrizeInfo prize = pendingWithdrawals[msg.sender];
+        PrizeInfo memory prize = pendingWithdrawals[msg.sender];
         uint amount = prize.amount;
         require(prize.gameID == gameID - 1 && prize.amount != 0);
         pendingWithdrawals[msg.sender].amount = 0;
@@ -335,7 +335,7 @@ contract Lucky7Ballot is Lucky7TicketFactory{
 
     /** @dev Fallback function to make this contract payable.
       */
-    function () public payable {
+    function () external payable {
         
     }
 }

@@ -9,9 +9,12 @@
   * All the functions inside this contract are setted with the onlyOwner modifier.
   */
 
-pragma solidity >=0.4.20 <0.6.0;
-import "./Ownable.sol";
-import "./SafeMath.sol";
+pragma solidity ^0.5.0;
+import "../node_modules/openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
+
+// import "./Ownable.sol";
+// import "./SafeMath.sol";
 
 contract Lucky7Admin is Ownable{
 
@@ -61,7 +64,7 @@ contract Lucky7Admin is Ownable{
     /**
       * @param enterpriseWallet is the address of the wallet which will recieve 30% of the balance of this contract when the prizes are delivered
       */
-    address public enterpriseWallet = owner;
+    address payable enterpriseWallet = address(uint160(owner()));
 
     /**
       * @dev The next functions are self explanatory

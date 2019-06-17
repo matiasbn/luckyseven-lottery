@@ -1,5 +1,5 @@
 import Web3 from 'web3';
-import Lucky7Artifact from '../../build/contracts/Lucky7FrontEndFunctions.json';
+import Lucky7Artifact from '../../build/contracts/Lucky7Store.json';
 
 const web3 = new Web3();
 

@@ -8,14 +8,13 @@
   * The front end interacts with this functions to make the necessary transactions to play the game.
 */
 
-pragma solidity >=0.4.20 <0.6.0;
+pragma solidity ^0.5.0;
 import "./Lucky7Ballot.sol";
-import "./Destructible.sol";
 
-contract Lucky7Store is Lucky7Ballot, Destructible{
+contract Lucky7Store is Lucky7Ballot{
     /** @dev Constructor to make the contract payable
       */
-    function Lucky7Store() payable public{
+    constructor() payable public{
         
     }
 
@@ -49,6 +48,15 @@ contract Lucky7Store is Lucky7Ballot, Destructible{
       */
     modifier sellingIsActive {
         require(settingLucky7Numbers==false);
+        _;
+    }
+
+    /** @dev notEmptyParameters checks if the user have mu and i parameters
+      */
+    modifier notEmptyParameters(address ticketRequester) {
+        bytes memory userMu = bytes(userValues[ticketRequester].mu);
+        bytes memory userI = bytes(userValues[ticketRequester].i); 
+        require(userMu.length != 0  && userI.length != 0);
         _;
     }
     //------------------------
@@ -103,14 +111,14 @@ contract Lucky7Store is Lucky7Ballot, Destructible{
         payable 
         userBoughtTicket(msg.sender)
         sellingIsActive
+        notEmptyParameters(msg.sender)
     {
-        require(keccak256(userValues[msg.sender].mu)!=keccak256('') && keccak256(userValues[msg.sender].i)!=keccak256(''));
         selledGeneratedTicketCounter[gameID]++;
         emit GeneratedTicketSelled(selledGeneratedTicketCounter[gameID], msg.sender);
         _askForTicket(msg.sender);
     }
     
-    function () public payable{
+    function () external payable{
         
     }
 }   
