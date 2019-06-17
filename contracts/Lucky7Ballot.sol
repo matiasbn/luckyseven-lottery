@@ -58,8 +58,8 @@ contract Lucky7Ballot is Lucky7TicketFactory{
     /** @dev setNewGame is a function designed to call all the functions necessary to start a new game. First, it activate the settingLucky7Numbers circuit breaker.
       * Then it stores and order the Lucky7Tickets in ascendante order depending on them difference values through the _orderLucky7Tickets. 
       * Then it set the prizes for the last winners to 0 (for security reasons), look up for Lucky7Tickets with owners different than 0 and update the 
-      * pendingWithdrawals for the first, second and third winnner, deliver the prize for the enterprise, clean the necessary mappings and arrays (ExactLucky7Ticket and
-      * lucky7NumbersArray), increase the gameID parameter to differentiate the Lucky7Tickets and Tickets from each different game in the future, and update the value
+      * pendingWithdrawals for the first, second and third winnner, deliver the prize for the enterprise, clean the necessary mappings and arrays (lucky7NumbersArray), 
+      * increase the gameID parameter to differentiate the Lucky7Tickets and Tickets from each different game in the future, and update the value
       * of the initialLucky7TicketPosition to store the Lucky7Tickets for every game correctly.
       */
     function setNewGame()                                      
@@ -293,11 +293,7 @@ contract Lucky7Ballot is Lucky7TicketFactory{
             lucky7NumbersArray[i].i="0";
             lucky7NumbersArray[i].ticketValue=0;
             lucky7NumbersArray[i].gameID=gameID;
-            ExactLucky7TicketValue[i]=0;
-            ExactLucky7TicketOwner[i]=address(0x0);
-            ExactLucky7TicketID[i]=0;
         }
-        indexForExactLucky7Ticket =0;
     }
     /** @dev withdraw is a function used for winners to claim them prices. It is updated in the _deliverPrizesFunction of this contract to
       * state the owners of the first, second and third prize. It is used to avoid DoS with (Unexpected) revert attack.

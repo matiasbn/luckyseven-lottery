@@ -144,7 +144,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
     Ticket[] public ticketsArray;
     mapping (address => uint[]) public userTickets;
     mapping (address => uint) public userTicketsCounter;
-
+    mapping (address => uint) public userGeneratedTicketCounter;
     /** @param lucky7NumbersArray stores the Lucky7Numbers for the current draw. Once a new game is called, it is cleand to 0 to be reused. 
       */
     Lucky7Number[7] public lucky7NumbersArray;
@@ -179,25 +179,13 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
     mapping (uint => uint) public lucky7TicketValue;
     mapping (uint => uint) public lucky7TicketID;
 
-    /** @dev The next three mappings are used to storage ExactLucky7Ticket, i.e. tickets which difference with a Lucky7Number is 0 
-      * They follow the same logic as the previous three mapings. They're setted for future development, because this project is meant to emit tokens and ExactLucky7Tickets
-      * are going to be specially awarded.
-      * They're cleaned to 0 everytime a new game is setted.
-      */
-    mapping (uint => uint) public ExactLucky7TicketValue;
-    mapping (uint => address) public ExactLucky7TicketOwner;
-    mapping (uint => uint) public ExactLucky7TicketID;
-
     /** @param gameID is the number of the current draw. Is used to help storage Lucky7Tickets, look up for current game winners and others functions.
       * Is incremented by 1 everytime a new game is setted.
       * @param indexForLucky7Array is a uint used to count the number of Lucky7Numbers generated everytime a new game is setted. Is used to know if all the Lucky7Numbers 
       * were setted, and if they did, order them by them values in ascendant order and let users start buying tickets. Is setted to 0 after all this process.
-      * @param indexForExactLucky7Ticket is a uint which increments everytime a ExactLucky7Ticket is detected and stored. It's used to look up in in the ExactLucky7 mappings
-      * and is cleaned to 0 everytime a new game is setted.
       */
     uint public gameID = 0;
     uint public indexForLucky7Array = 0;
-    uint public indexForExactLucky7Ticket = 0;
     
     /** @dev _askForMuParameter is a function to ask for a new mu parameter through an oraclize query.
       * @param _ticketOwner is the address of the user which is calling this function through a generation of new parameters or by buying a new random ticket.
@@ -355,21 +343,6 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
             lucky7TicketID[i] = _ticketID;
             lucky7TicketValue[i] = ticketsArray[_ticketID].ticketValue;
             emit NewLucky7Ticket(lucky7TicketValue[i],lucky7TicketOwner[i], difference, i);
-        }
-        /** @dev Then, checks if it's a ExactLucky7Ticket.
-          * Due to the high entropy of the PRNG is pretty unfeasible to get an ExactLucky7Ticket without having the same mu and i parameters than the
-          * Lucky7Number. The probability of having two identical ExactLucky7Tickets in the same game is even lower.
-          * If in determinated unfortunate case an user gets a ExacyLucky7Ticket which is already occupied, then it will not replace the old one.
-          * That's why is necessary to storage all the ExactLucky7Tickets to award them specially, e.g. giving them tokens according to some rules, which would be
-          * specified in future developments.
-          * The next step, then, is to check if it is indeed a ExactLucky7Ticket. If so, then store the information in the ExactLucky7Tickets mappings and increment
-          * indexForExactLucky7Ticket by 1.
-          */
-        if(difference == 0){
-            ExactLucky7TicketOwner[indexForExactLucky7Ticket] = ticketsArray[_ticketID].owner;
-            ExactLucky7TicketValue[indexForExactLucky7Ticket] = ticketsArray[_ticketID].ticketValue;
-            ExactLucky7TicketID[indexForExactLucky7Ticket] = _ticketID;
-            indexForExactLucky7Ticket++;
         }
     }
     
