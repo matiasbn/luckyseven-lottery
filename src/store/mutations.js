@@ -1,9 +1,14 @@
+/* eslint-disable max-len */
+/* eslint-disable no-case-declarations */
 import Web3 from 'web3';
 import has from 'lodash.has';
 
 const web3 = new Web3();
 
 export default{
+  settingNumbersChanged(state, payload) {
+    state.game.settingLucky7Numbers = payload.settingLucky7Numbers;
+  },
   statsUpdated(state, payload) {
     if (has(payload, 'randomTicketCounter')) {
       state.game.randomTicketsSelled = payload.randomTicketCounter;
@@ -12,7 +17,6 @@ export default{
     } else {
       state.game.generatedTicketsSelled = payload.selledGeneratedTicketCounter;
     }
-    console.log(payload);
   },
   lucky7NumberInserted(state, payload) {
     const { value, index } = payload;
@@ -37,16 +41,16 @@ export default{
   askForValues(state, payload) {
     switch (payload) {
       case 'generateTicket':
-        state.player.firstNumberReceived = false;
-        state.player.secondNumberReceived = false;
+        state.player.firstGenerateNumberReceived = false;
+        state.player.secondGenerateNumberReceived = false;
         break;
       case 'purchaseRandomTicket':
-        state.player.ticketReceived = false;
-        state.player.firstNumberReceived = false;
-        state.player.secondNumberReceived = false;
+        state.player.purchasedTicketReceived = false;
+        state.player.firstPurchaseNumberReceived = false;
+        state.player.secondPurchaseNumberReceived = false;
         break;
       case 'purchaseGeneratedTicket':
-        state.player.ticketReceived = false;
+        state.player.generatedTicketReceived = false;
         break;
       default:
         break;
@@ -56,16 +60,22 @@ export default{
     const { type, value } = payload;
     switch (type) {
       case 'mu':
-        state.player.lastNumber1 = value;
-        state.player.firstNumberReceived = true;
+        state.player.lastNumberPurchased1 = state.player.purchasedTicketReceived ? state.player.lastNumberPurchased1 : value;
+        state.player.lastNumberGenerated1 = state.player.generatedTicketReceived ? state.player.lastNumberGenerated1 : value;
+        state.player.firstGenerateNumberReceived = true;
+        state.player.firstPurchaseNumberReceived = true;
+        state.player.generatedTicketReceived = state.player.secondGenerateNumberReceived;
         break;
       case 'i':
-        state.player.lastNumber2 = value;
-        state.player.secondNumberReceived = true;
+        state.player.lastNumberPurchased2 = state.player.purchasedTicketReceived ? state.player.lastNumberPurchased2 : value;
+        state.player.lastNumberGenerated2 = state.player.generatedTicketReceived ? state.player.lastNumberGenerated2 : value;
+        state.player.secondGenerateNumberReceived = true;
+        state.player.secondPurchaseNumberReceived = true;
+        state.player.generatedTicketReceived = state.player.firstGenerateNumberReceived;
         break;
       case 'ticket':
         state.player.lastPurchasedTicket = value;
-        state.player.ticketReceived = true;
+        state.player.purchasedTicketReceived = true;
         break;
       default:
         break;
@@ -113,6 +123,7 @@ export default{
       n,
       p,
       j,
+      settingLucky7Numbers,
     } = payload;
     lucky7Tickets.forEach((lucky7Ticket, index) => {
       const row = {
@@ -130,12 +141,13 @@ export default{
     state.game.n = n;
     state.game.p = p;
     state.game.j = j;
+    state.game.settingLucky7Numbers = settingLucky7Numbers;
     state.player.lastPurchasedTicketID = lastPurchasedTicketID;
-    state.player.lastPurchasedTicket = lastPurchasedTicket.ticketValue;
-    state.player.lastNumberPurchased1 = lastPurchasedTicket.mu;
-    state.player.lastNumberPurchased2 = lastPurchasedTicket.i;
-    state.player.lastNumberGenerated1 = userValues.mu;
-    state.player.lastNumberGenerated2 = userValues.i;
+    state.player.lastPurchasedTicket = lastPurchasedTicket.ticketValue || '0';
+    state.player.lastNumberPurchased1 = lastPurchasedTicket.mu || '0';
+    state.player.lastNumberPurchased2 = lastPurchasedTicket.i || '0';
+    state.player.lastNumberGenerated1 = userValues.mu || '0';
+    state.player.lastNumberGenerated2 = userValues.i || '0';
     state.player.currentPrize = currentPrize;
     state.player.prizeGameID = prizeGameID;
     state.player.userTicketsCounter = userTicketsCounter;

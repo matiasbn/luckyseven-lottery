@@ -2,6 +2,7 @@
 import orderBy from 'lodash.orderby';
 import Web3 from 'web3';
 import { NETWORKS } from '@/web3/constants/networks';
+import BigNumber from 'bignumber.js';
 
 const web3 = new Web3(window.web3.currentProvider);
 
@@ -21,6 +22,7 @@ export default {
   p: state => state.game.p,
   j: state => state.game.j,
   purchaseTicketPrice: state => state.game.purchaseTicketPrice,
+  settingLucky7Numbers: state => state.game.settingLucky7Numbers,
   generateTicketPrice: state => state.game.generateTicketPrice,
   lucky7PastGames: state => state.lucky7PastGames,
   lastPurchasedTicket: state => state.player.lastPurchasedTicket,
@@ -30,7 +32,8 @@ export default {
   lastNumberPurchased2: state => state.player.lastNumberPurchased2,
   lucky7Ticket: state => state.player.lucky7Ticket,
   isLucky7Ticket: state => state.player.isLucky7Ticket,
-  ticketReceived: state => state.player.ticketReceived,
+  purchasedTicketReceived: state => state.player.purchasedTicketReceived,
+  generatedTicketReceived: state => state.player.generatedTicketReceived,
   firstGenerateNumberReceived: state => state.player.firstGenerateNumberReceived,
   secondGenerateNumberReceived: state => state.player.secondGenerateNumberReceived,
   firstPurchaseNumberReceived: state => state.player.firstPurchaseNumberReceived,
@@ -50,5 +53,25 @@ export default {
     });
     lucky7GameInfo = orderBy(lucky7GameInfo, 'number', 'asc');
     return state.lucky7GameInfo;
+  },
+  lastGeneratedTicket: (state) => {
+    const mu = BigNumber(state.player.lastNumberGenerated1);
+    const i = BigNumber(state.player.lastNumberGenerated2);
+    const b = BigNumber(state.game.b);
+    const n = BigNumber(state.game.n);
+    const p = BigNumber(state.game.p);
+    const j = BigNumber(state.game.j);
+    const ten = BigNumber(10);
+    const tenPowerN = ten.exponentiatedBy(n);
+    const tenPowerP = ten.exponentiatedBy(p);
+    const M = tenPowerN.minus(mu);
+    const P = b.multipliedBy(tenPowerP).dividedBy(M).precision(10000);
+    const tenPowerIJ = ten.exponentiatedBy(i.plus(j));
+    const tenPowerI = ten.exponentiatedBy(i);
+    const numerator1 = P.modulo(tenPowerIJ);
+    const numerator2 = P.modulo(tenPowerI);
+    const numeratorTotal = numerator1.minus(numerator2);
+    const R = numeratorTotal.dividedBy(tenPowerI);
+    return R;
   },
 };

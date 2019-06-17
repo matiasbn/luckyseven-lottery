@@ -17,29 +17,24 @@
           <b-row>
             <b-col>
               <p>
-                Generate a ticket for a lower price than purchasing it!. <br>
+                Generate a ticket for a lower price than purchasing it! If the ticket
+                generated is a Lucky7Ticket you'll have the option to buy it. <br>
               </p>
               <b-button
                 v-b-popover.hover="generatePrice"
+                v-if="purchasedTicketReceived && generatedTicketReceived"
+                :disabled="settingLucky7Numbers"
+                size="lg"
                 title="Price"
                 variant="warning"
                 @click="generateTicket"
               >
                 Generate Ticket
               </b-button>
-            </b-col>
-            <b-col>
-              <p>
-                Buy your generated ticket to win the prize instantly!
-              </p>
-              <b-button
-                v-b-popover.hover="purchasePrice"
-                title="Price"
+              <b-spinner
+                v-else
                 variant="warning"
-                @click="purchaseGeneratedTicket"
-              >
-                Buy Ticket
-              </b-button>
+                label="Spinning"/>
             </b-col>
           </b-row>
           <b-row>
@@ -49,12 +44,19 @@
               </p>
               <b-button
                 v-b-popover.hover="purchasePrice"
+                v-if="purchasedTicketReceived && generatedTicketReceived"
+                :disabled="settingLucky7Numbers"
+                size="lg"
                 title="Price"
                 variant="warning"
                 @click="purchaseRandomTicket"
               >
                 Give me a random ticket!
               </b-button>
+              <b-spinner
+                v-else
+                variant="warning"
+                label="Spinning"/>
             </b-col>
           </b-row>
         </b-card>
@@ -96,8 +98,26 @@
             label="Spinning"/>
         </b-card>
         <b-card title="Lucky7Ticket?">
-          <b-card-text>
-            {{ isLucky7Ticket | checkLucky7TicketPurchased }}
+          <b-card-text v-if="checkLucky7TicketGenerated && !ticketAlreadyPurchased">
+            <p>
+              Yes! What are you waiting? Buy it!
+            </p>
+            <b-button
+              v-b-popover.hover="purchasePrice"
+              title="Price"
+              variant="warning"
+              @click="purchaseGeneratedTicket"
+            >
+              Buy Ticket
+            </b-button>
+          </b-card-text>
+          <b-card-text v-else-if="ticketAlreadyPurchased">
+            <p>
+              You already own this ticket
+            </p>
+          </b-card-text>
+          <b-card-text v-else>
+            No, better luck for the next time.
           </b-card-text>
         </b-card>
       </b-col>
@@ -109,7 +129,7 @@
           title="Ticket value"
         >
           <b-card-text
-            v-if="ticketReceived">
+            v-if="purchasedTicketReceived && generatedTicketReceived">
             {{ lastPurchasedTicket }}
           </b-card-text>
           <b-spinner
@@ -149,7 +169,8 @@
 </template>
 <script>
 /* eslint-disable max-len */
-import BigNumber from 'bignumber.js';
+/* eslint-disable vue/no-side-effects-in-computed-properties */
+
 import { mapGetters } from 'vuex';
 import Web3 from 'web3';
 
@@ -163,52 +184,77 @@ export default {
       if (lucky7Ticket) {
         return 'Yes!, Congratulations!';
       }
-      return 'No, best luck for the next game';
+      return 'No, better luck for the next game';
     },
   },
   data() {
     return {
       contract: null,
+      generatedDifference: '0',
+      generatedPosition: '0',
     };
   },
   computed: {
     ...mapGetters([
-      'b', 'n', 'p', 'j',
+      'settingLucky7Numbers',
+      'lucky7GameInfo',
       'isLucky7Ticket',
       'account',
       'purchaseTicketPrice',
       'generateTicketPrice',
       'lastPurchasedTicket',
+      'lastGeneratedTicket',
       'lastNumberGenerated1',
       'lastNumberGenerated2',
       'lastNumberPurchased1',
       'lastNumberPurchased2',
       'lucky7Ticket',
-      'ticketReceived',
+      'purchasedTicketReceived',
+      'generatedTicketReceived',
       'firstGenerateNumberReceived',
       'secondGenerateNumberReceived',
       'firstPurchaseNumberReceived',
       'secondPurchaseNumberReceived',
     ]),
-    lastGeneratedTicket() {
-      const mu = BigNumber(this.lastNumberGenerated1);
-      const i = BigNumber(this.lastNumberGenerated2);
-      const b = BigNumber(this.b);
-      const n = BigNumber(this.n);
-      const p = BigNumber(this.p);
-      const j = BigNumber(this.j);
-      const ten = BigNumber(10);
-      const tenPowerN = ten.exponentiatedBy(n);
-      const tenPowerP = ten.exponentiatedBy(p);
-      const M = tenPowerN.minus(mu);
-      const P = b.multipliedBy(tenPowerP).dividedBy(M).precision(10000);
-      const tenPowerIJ = ten.exponentiatedBy(i.plus(j));
-      const tenPowerI = ten.exponentiatedBy(i);
-      const numerator1 = P.modulo(tenPowerIJ);
-      const numerator2 = P.modulo(tenPowerI);
-      const numeratorTotal = numerator1.minus(numerator2);
-      const R = numeratorTotal.dividedBy(tenPowerI);
-      return R;
+    checkLucky7TicketGenerated() {
+      const lucky7GameInfo = this.lucky7GameInfo;
+      for (let i = 0; i < 7; i += 1) {
+        if (lucky7GameInfo[i] === undefined) return false;
+      }
+      const lastGeneratedTicket = this.lastGeneratedTicket;
+      let difference = 0;
+      let position = 0;
+      if (lastGeneratedTicket < lucky7GameInfo[0].number) {
+        difference = lucky7GameInfo[0].number - lastGeneratedTicket;
+      } else if (lastGeneratedTicket > lucky7GameInfo[6].number) {
+        difference = lastGeneratedTicket - lucky7GameInfo[6].number;
+        position = 6;
+      } else {
+        while (lastGeneratedTicket > lucky7GameInfo[position].number) {
+          position += 1;
+        }
+        if (lastGeneratedTicket === lucky7GameInfo[position].number) {
+          difference = 0;
+        } else {
+          const upperDifference = lucky7GameInfo[position].number - lastGeneratedTicket;
+          const lowerDifference = lastGeneratedTicket - lucky7GameInfo[position - 1].number;
+          if (upperDifference > lowerDifference) {
+            position -= 1;
+            difference = lowerDifference;
+          } else {
+            difference = upperDifference;
+          }
+        }
+      }
+      this.generatedDifference = difference;
+      this.generatedPosition = position;
+      if ((lucky7GameInfo[position].owner === '0x0000000000000000000000000000000000000000') || difference < lucky7GameInfo[position].difference) {
+        return true;
+      }
+      return false;
+    },
+    ticketAlreadyPurchased() {
+      return String(this.lastGeneratedTicket) === String(this.lastPurchasedTicket);
     },
   },
   async beforeCreate() {
@@ -263,6 +309,7 @@ export default {
 <style>
   .ticket-store {
     text-align:center;
+    margin: 10px;
   }
   .btn {
     margin:5px;

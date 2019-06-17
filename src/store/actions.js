@@ -10,7 +10,7 @@ export default {
     const account = payload;
     const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
     truffleContractInstance
-      .NewMuReceived({ owner: account, fromBlock: 'latest' }, (error, event) => {
+      .NewMuReceived({ filter: { owner: account }, fromBlock: 'latest' }, (error, event) => {
         if (!error) {
           const payloadEvent = {
             value: event.returnValues.muParameter,
@@ -20,7 +20,7 @@ export default {
         }
       });
     truffleContractInstance
-      .NewIReceived({ owner: account, fromBlock: 'latest' }, (error, event) => {
+      .NewIReceived({ filter: { owner: account }, fromBlock: 'latest' }, (error, event) => {
         if (!error) {
           const payloadEvent = {
             value: event.returnValues.iParameter,
@@ -30,7 +30,7 @@ export default {
         }
       });
     truffleContractInstance
-      .NewTicketReceived({ owner: account, fromBlock: 'latest' }, (error, event) => {
+      .NewTicketReceived({ filter: { owner: account }, fromBlock: 'latest' }, (error, event) => {
         if (!error) {
           const payloadEvent = {
             value: event.returnValues.newTicket,
@@ -40,7 +40,7 @@ export default {
         }
       });
     truffleContractInstance
-      .NewLucky7Ticket({ owner: account, fromBlock: 'latest' }, (error, event) => {
+      .NewLucky7Ticket({ filter: { owner: account }, fromBlock: 'latest' }, (error, event) => {
         if (!error) {
           commit('newLucky7Ticket', event.returnValues);
         }
@@ -73,6 +73,12 @@ export default {
       .GeneratedTicketSelled({ fromBlock: 'latest' }, (error, event) => {
         if (!error) {
           commit('statsUpdated', event.returnValues);
+        }
+      });
+    truffleContractInstance
+      .SettingNumbersChanged({ fromBlock: 'latest' }, (error, event) => {
+        if (!error) {
+          commit('settingNumbersChanged', event.returnValues);
         }
       });
   },
@@ -124,13 +130,14 @@ export default {
       truffleContractInstance.n(),
       truffleContractInstance.p(),
       truffleContractInstance.j(),
+      truffleContractInstance.settingLucky7Numbers(),
     ];
 
     const contractAddress = truffleContractInstance.address;
     const contractBalance = await web3.eth.getBalance(contractAddress);
     const values = await Promise.all(valuesPromises);
-    const lastPurchasedTicketID = await truffleContractInstance.userTickets(coinbase, values[4] - 1);
-    const lastPurchasedTicket = await truffleContractInstance.ticketsArray(lastPurchasedTicketID);
+    const lastPurchasedTicketID = values[4] > 0 ? await truffleContractInstance.userTickets(coinbase, values[4] - 1) : null;
+    const lastPurchasedTicket = lastPurchasedTicketID !== null ? await truffleContractInstance.ticketsArray(lastPurchasedTicketID) : '0';
     const payload = {
       lucky7Numbers,
       lucky7Tickets,
@@ -148,6 +155,7 @@ export default {
       n: values[6],
       p: values[7],
       j: values[8],
+      settingLucky7Numbers: values[9],
     };
     commit('retrieveGameInfoInstance', payload);
   },
