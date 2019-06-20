@@ -56,8 +56,8 @@ contract Lucky7Admin is Ownable{
       * because oraclize don't send back the remaining gas
       * @param oraclizeCustomGasPrice is the price of the gas for the oraclize querys
       */
-    uint public generateTicketPrice = 0.005 ether;
-    uint public sellTicketPrice = 0.012 ether;
+    uint public generateTicketPrice = 0.02 ether;
+    uint public sellTicketPrice = 0.019 ether;
     uint public oraclizeGasLimit = 3000000 wei;
     uint public oraclizeCustomGasPrice = 4000000000 wei;
 

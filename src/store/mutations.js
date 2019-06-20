@@ -51,6 +51,8 @@ export default{
         break;
       case 'purchaseGeneratedTicket':
         state.player.generatedTicketReceived = false;
+        state.player.lastNumberPurchased1 = state.player.lastNumberGenerated1;
+        state.player.lastNumberPurchased2 = state.player.lastNumberGenerated2;
         break;
       default:
         break;
@@ -59,23 +61,22 @@ export default{
   parameterReceived(state, payload) {
     const { type, value } = payload;
     switch (type) {
-      case 'mu':
-        state.player.lastNumberPurchased1 = state.player.purchasedTicketReceived ? state.player.lastNumberPurchased1 : value;
-        state.player.lastNumberGenerated1 = state.player.generatedTicketReceived ? state.player.lastNumberGenerated1 : value;
+      case 'parameters':
+        state.player.lastNumberPurchased1 = state.player.firstPurchaseNumberReceived ? state.player.lastNumberPurchased1 : value.muParameter;
+        state.player.lastNumberGenerated1 = state.player.firstGenerateNumberReceived ? state.player.lastNumberGenerated1 : value.muParameter;
+        state.player.lastNumberPurchased2 = state.player.secondPurchaseNumberReceived ? state.player.lastNumberPurchased2 : value.iParameter;
+        state.player.lastNumberGenerated2 = state.player.secondGenerateNumberReceived ? state.player.lastNumberGenerated2 : value.iParameter;
         state.player.firstGenerateNumberReceived = true;
         state.player.firstPurchaseNumberReceived = true;
-        state.player.generatedTicketReceived = state.player.secondGenerateNumberReceived;
-        break;
-      case 'i':
-        state.player.lastNumberPurchased2 = state.player.purchasedTicketReceived ? state.player.lastNumberPurchased2 : value;
-        state.player.lastNumberGenerated2 = state.player.generatedTicketReceived ? state.player.lastNumberGenerated2 : value;
         state.player.secondGenerateNumberReceived = true;
         state.player.secondPurchaseNumberReceived = true;
         state.player.generatedTicketReceived = state.player.firstGenerateNumberReceived;
+        state.player.generatedTicketReceived = state.player.secondGenerateNumberReceived;
         break;
       case 'ticket':
         state.player.lastPurchasedTicket = value;
         state.player.purchasedTicketReceived = true;
+        state.player.generatedTicketReceived = true;
         break;
       default:
         break;
@@ -116,14 +117,13 @@ export default{
       prizeGameID,
       contractAddress,
       contractBalance,
-      userTicketsCounter,
-      lastPurchasedTicketID,
       lastPurchasedTicket,
       b,
       n,
       p,
       j,
       settingLucky7Numbers,
+      gameID,
     } = payload;
     lucky7Tickets.forEach((lucky7Ticket, index) => {
       const row = {
@@ -132,6 +132,7 @@ export default{
         owner: lucky7Ticket.owner,
         difference: lucky7Ticket.difference,
         number: lucky7Numbers[index],
+        position: index + 1,
       };
       state.lucky7GameInfo.push(row);
     });
@@ -142,16 +143,16 @@ export default{
     state.game.p = p;
     state.game.j = j;
     state.game.settingLucky7Numbers = settingLucky7Numbers;
-    state.player.lastPurchasedTicketID = lastPurchasedTicketID;
     state.player.lastPurchasedTicket = lastPurchasedTicket.ticketValue || '0';
     state.player.lastNumberPurchased1 = lastPurchasedTicket.mu || '0';
     state.player.lastNumberPurchased2 = lastPurchasedTicket.i || '0';
+    state.player.lastTicketGameID = lastPurchasedTicket.gameID ? lastPurchasedTicket.gameID.toNumber() : '0';
     state.player.lastNumberGenerated1 = userValues.mu || '0';
     state.player.lastNumberGenerated2 = userValues.i || '0';
     state.player.currentPrize = currentPrize;
     state.player.prizeGameID = prizeGameID;
-    state.player.userTicketsCounter = userTicketsCounter;
     state.web3.contractAddress = contractAddress;
     state.web3.contractBalance = contractBalance;
+    state.game.gameID = gameID.toNumber();
   },
 };

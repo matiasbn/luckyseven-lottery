@@ -21,20 +21,11 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
       * OAR is the Oraclize Address Resolver to use oraclize on localhost
       */
     constructor() internal payable{
-        OAR = OraclizeAddrResolverI(0xE0E7cef561e349e57fa293020ac50d0038f57F1e);
+        OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
     }
-    
-    /** @dev This function is to change the OAR without compiling again and deploying again
-      * Used only for testing purposes.
-      */
-    function changeOAR(address _newOAR) public onlyOwner{
-        OAR = OraclizeAddrResolverI(_newOAR);
-    }
-    
     /** @dev Events
      */
-    event NewMuReceived(string muParameter, address indexed _owner);
-    event NewIReceived(string iParameter, address indexed _owner);
+    event ParametersReceived(string muParameter, string iParameter, address indexed _owner);
     event NewTicketReceived(uint newTicket, address indexed _owner);
     event NewLucky7Ticket(uint ticketValue, address indexed _owner, uint difference, uint index);
     event Lucky7NumberInserted(uint value, uint index);
@@ -137,14 +128,12 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
     /** @dev The next two arrays are used to store information of the game permanently.
       * @param lucky7TicketsArray stores the Lucky7Tickets once a new game is setted.
       * @param ticketsArray stores the tickets everytime a user buys a ticket.
-      * @param userTickets is an array which stores the ticketsID for certain user.
-      * @param userTicketsCounter is a counter of tickets purchased by the user. Used to return userTickets values array.
+      * @param userLastPurchasedTicket last purchased ticket ID.
       */
     Lucky7Ticket[] public lucky7TicketsArray;
     Ticket[] public ticketsArray;
-    mapping (address => uint[]) public userTickets;
-    mapping (address => uint) public userTicketsCounter;
-    mapping (address => uint) public userGeneratedTicketCounter;
+    mapping (address => uint) public userLastPurchasedTicket;
+
     /** @param lucky7NumbersArray stores the Lucky7Numbers for the current draw. Once a new game is called, it is cleand to 0 to be reused. 
       */
     Lucky7Number[7] public lucky7NumbersArray;
@@ -255,8 +244,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
       */
     function _insertTicket(address _ticketOwner) internal {
         uint id = ticketsArray.push(Ticket(userValues[_ticketOwner].mu,userValues[_ticketOwner].i,userValues[_ticketOwner].ticketValue,_ticketOwner,gameID)) - 1;
-        userTickets[_ticketOwner].push(id);
-        userTicketsCounter[_ticketOwner]++;
+        userLastPurchasedTicket[_ticketOwner] = id;
         _checkForLucky7Ticket(id);
     }
 
@@ -365,10 +353,12 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
           */
         if(muParameterID[myid]!=address(0x0) && userValues[muParameterID[myid]].muReady==false){
             userValues[muParameterID[myid]].mu=result;
-            emit NewMuReceived(result, muParameterID[myid]);
             userValues[muParameterID[myid]].muReady=true;
-            if(userValues[muParameterID[myid]].iReady == true && (userValues[muParameterID[myid]].userPaidTicket==true || settingLucky7Numbers==true )){
-                _askForTicket(muParameterID[myid]);
+            if(userValues[muParameterID[myid]].iReady == true){
+                emit ParametersReceived(userValues[muParameterID[myid]].mu, userValues[muParameterID[myid]].i, muParameterID[myid]);
+                if((userValues[muParameterID[myid]].userPaidTicket==true || settingLucky7Numbers==true )){
+                    _askForTicket(muParameterID[myid]);
+                }
             }
         }
 
@@ -377,10 +367,12 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
           */
         else if (iParameterID[myid]!=address(0x0) && userValues[iParameterID[myid]].iReady== false){
             userValues[iParameterID[myid]].i=result;
-            emit NewIReceived(result, iParameterID[myid]);
             userValues[iParameterID[myid]].iReady=true;
-            if(userValues[iParameterID[myid]].muReady == true && (userValues[iParameterID[myid]].userPaidTicket==true || settingLucky7Numbers==true )){
-                _askForTicket(iParameterID[myid]);
+            if(userValues[iParameterID[myid]].muReady == true){
+                emit ParametersReceived(userValues[iParameterID[myid]].mu, userValues[iParameterID[myid]].i, iParameterID[myid]);
+                if( (userValues[iParameterID[myid]].userPaidTicket==true || settingLucky7Numbers==true )){
+                    _askForTicket(iParameterID[myid]);
+                }
             }
         }
 
@@ -400,6 +392,10 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
                 _insertTicket(newTicketID[myid]);
             }
         }
+    }
+
+    function ticketsArrayLength() public view returns (uint){
+        return ticketsArray.length;
     }
 
     function() external payable{}

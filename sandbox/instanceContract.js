@@ -1,7 +1,7 @@
 // var values = [1293812983,2139812893,3237182731,4224567890,5224567890,6123819273,7939871237]
 // lucky7Instance.insertLucky7Numbers(values)
 
-var lucky7Instance = await Lucky7Store.deployed()
+let lucky7Instance = await Lucky7Store.deployed()
 lucky7Instance.insertCustomizedLucky7Number(0, 'mu', 'i', 1293812983, 0)
 lucky7Instance.insertCustomizedLucky7Number(1, 'mu', 'i', 2139812893, 0)
 lucky7Instance.insertCustomizedLucky7Number(2, 'mu', 'i', 3237182731, 0)
@@ -20,6 +20,8 @@ const account = (await web3.eth.getAccounts())[0]
 lucky7Instance.sellRandomTicket({from: account, value: sellTicketPrice});
 // web3.eth.getAccounts(function(error, accounts){account = accounts[0];})
 
+//Retrieve user values 
+await lucky7Instance.userValues(account)
 
 //Getting accounts
 var account = web3.eth.accounts[0]
