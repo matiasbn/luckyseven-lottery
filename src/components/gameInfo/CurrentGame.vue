@@ -22,6 +22,7 @@ export default {
   data() {
     return {
       fields: [
+        { key: 'position', label: 'Position' },
         { key: 'number', label: 'Lucky7Number' },
         { key: 'ticket', label: 'Lucky7Ticket' },
         {
