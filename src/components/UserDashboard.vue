@@ -54,7 +54,6 @@ export default {
   data() {
     return {
       adminFooter: 'If you can see this option, is because you current account is the contract owner',
-      contractInstance: null,
       contractOwner: '',
       coinbase: '',
     };
@@ -70,17 +69,23 @@ export default {
   },
   async beforeCreate() {
     const contractInstance = await truffleContract(window.web3.currentProvider).deployed();
-    this.contractInstance = contractInstance;
+    this.contractOwner = await contractInstance.owner();
+    this.coinbase = this.$store.state.web3.coinbase;
+  },
+  async updated() {
+    const contractInstance = await truffleContract(window.web3.currentProvider).deployed();
     this.contractOwner = await contractInstance.owner();
     this.coinbase = this.$store.state.web3.coinbase;
   },
   methods: {
     async setNewGame() {
-      await this.contractInstance.setNewGame({ from: this.coinbase });
+      const contractInstance = await truffleContract(window.web3.currentProvider).deployed();
+      await contractInstance.setNewGame({ from: this.coinbase });
     },
     async setLucky7Numbers() {
+      const contractInstance = await truffleContract(window.web3.currentProvider).deployed();
       const values = [1293812983, 2139812893, 3237182731, 4224567890, 5224567890, 6123819273, 7939871237];
-      await this.contractInstance.insertLucky7Numbers(values, { from: this.coinbase });
+      await contractInstance.insertLucky7Numbers(values, { from: this.coinbase });
     },
   },
 };
