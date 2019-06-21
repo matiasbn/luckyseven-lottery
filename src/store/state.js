@@ -24,6 +24,7 @@ export default {
     purchasedTicketReceived: true,
     generatedTicketReceived: true,
     userTicketsCounter: 0,
+    lastTicketGameID: '0',
   },
   game: {
     b: '0',
@@ -36,6 +37,7 @@ export default {
     generatedTickets: 0,
     generatedTicketsSelled: 0,
     settingLucky7Numbers: true,
+    gameID: '0',
   },
   lucky7GameInfo: [],
   lucky7PastGames: [],

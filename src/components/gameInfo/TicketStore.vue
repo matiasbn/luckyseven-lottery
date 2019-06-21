@@ -22,7 +22,7 @@
               </p>
               <b-button
                 v-b-popover.hover="generatePrice"
-                v-if="purchasedTicketReceived && generatedTicketReceived"
+                v-if="purchasedTicketReceived && generatedTicketReceived && buttonsEnabled"
                 :disabled="settingLucky7Numbers"
                 size="lg"
                 title="Price"
@@ -44,7 +44,7 @@
               </p>
               <b-button
                 v-b-popover.hover="purchasePrice"
-                v-if="purchasedTicketReceived && generatedTicketReceived"
+                v-if="purchasedTicketReceived && generatedTicketReceived && buttonsEnabled"
                 :disabled="settingLucky7Numbers"
                 size="lg"
                 title="Price"
@@ -77,6 +77,7 @@
             label="Spinning"/>
 
         </b-card>
+
         <b-card title="First number">
           <b-card-text
             v-if="firstGenerateNumberReceived">
@@ -87,6 +88,7 @@
             variant="warning"
             label="Spinning"/>
         </b-card>
+
         <b-card title="Second number">
           <b-card-text
             v-if="secondGenerateNumberReceived">
@@ -97,13 +99,38 @@
             variant="warning"
             label="Spinning"/>
         </b-card>
+
+        <b-card title="Difference">
+          <b-card-text
+            v-if="generatedTicketReceived">
+            {{ generatedDifference }}
+          </b-card-text>
+          <b-spinner
+            v-else
+            variant="warning"
+            label="Spinning"/>
+        </b-card>
+
+        <b-card title="Position">
+          <b-card-text
+            v-if="generatedTicketReceived">
+            {{ generatedPosition }}
+          </b-card-text>
+          <b-spinner
+            v-else
+            variant="warning"
+            label="Spinning"/>
+        </b-card>
+
         <b-card title="Lucky7Ticket?">
-          <b-card-text v-if="checkLucky7TicketGenerated && !ticketAlreadyPurchased">
+          <b-card-text
+            v-if="isLucky7TicketGenerated && !ticketOwned && ticketGeneratedNotZero">
             <p>
               Yes! What are you waiting? Buy it!
             </p>
             <b-button
               v-b-popover.hover="purchasePrice"
+              :disabled="!generatedTicketReceived"
               title="Price"
               variant="warning"
               @click="purchaseGeneratedTicket"
@@ -111,13 +138,16 @@
               Buy Ticket
             </b-button>
           </b-card-text>
-          <b-card-text v-else-if="ticketAlreadyPurchased">
+          <b-card-text v-else-if="ticketOwned && ticketGeneratedNotZero">
             <p>
               You already own this ticket
             </p>
           </b-card-text>
+          <b-card-text v-else-if="!isLucky7TicketGenerated && ticketGeneratedNotZero">
+            No, try again!.
+          </b-card-text>
           <b-card-text v-else>
-            No, better luck for the next time.
+            No tickets generated yet.
           </b-card-text>
         </b-card>
       </b-col>
@@ -130,44 +160,74 @@
         >
           <b-card-text
             v-if="purchasedTicketReceived && generatedTicketReceived">
-            {{ lastPurchasedTicket }}
+            {{ checkPurchasedTicket.lastPurchasedTicket || 0 }}
           </b-card-text>
           <b-spinner
             v-else
             variant="warning"
             label="Spinning"/>
-
         </b-card>
+
         <b-card title="First number">
           <b-card-text
             v-if="firstPurchaseNumberReceived">
-            {{ lastNumberPurchased1 }}
+            {{ checkPurchasedTicket.lastNumberPurchased1 || 0 }}
           </b-card-text>
           <b-spinner
             v-else
             variant="warning"
             label="Spinning"/>
         </b-card>
+
         <b-card title="Second number">
           <b-card-text
             v-if="secondPurchaseNumberReceived">
-            {{ lastNumberPurchased2 }}
+            {{ checkPurchasedTicket.lastNumberPurchased2 || 0 }}
           </b-card-text>
           <b-spinner
             v-else
             variant="warning"
             label="Spinning"/>
         </b-card>
-        <b-card title="Lucky7Ticket?">
-          <b-card-text>
-            {{ isLucky7Ticket | checkLucky7TicketPurchased }}
+
+        <b-card title="Difference">
+          <b-card-text
+            v-if="purchasedTicketReceived">
+            {{ purchasedDifference }}
           </b-card-text>
+          <b-spinner
+            v-else
+            variant="warning"
+            label="Spinning"/>
         </b-card>
+
+        <b-card title="Position">
+          <b-card-text
+            v-if="purchasedTicketReceived">
+            {{ purchasedPosition }}
+          </b-card-text>
+          <b-spinner
+            v-else
+            variant="warning"
+            label="Spinning"/>
+        </b-card>
+
+        <b-card title="Lucky7Ticket?">
+          <b-card-text v-if="purchasedTicketReceived">
+            {{ isLucky7TicketPurchased | checkLucky7Ticket }}
+          </b-card-text>
+          <b-spinner
+            v-else
+            variant="warning"
+            label="Spinning"/>
+        </b-card>
+
       </b-col>
     </b-card-group>
   </b-card>
 </template>
 <script>
+/* eslint-disable consistent-return */
 /* eslint-disable max-len */
 /* eslint-disable vue/no-side-effects-in-computed-properties */
 
@@ -180,25 +240,25 @@ const web3 = new Web3();
 
 export default {
   filters: {
-    checkLucky7TicketPurchased(lucky7Ticket) {
-      if (lucky7Ticket) {
-        return 'Yes!, Congratulations!';
-      }
-      return 'No, better luck for the next game';
+    checkLucky7Ticket(lucky7Ticket) {
+      return lucky7Ticket ? 'Yes!, Congratulations!' : 'No, try again!';
     },
   },
   data() {
     return {
-      contract: null,
       generatedDifference: '0',
       generatedPosition: '0',
+      purchasedDifference: '0',
+      purchasedPosition: '0',
+      isLucky7TicketPurchased: false,
+      isLucky7TicketGenerated: false,
+      currentGameTicket: true,
     };
   },
   computed: {
     ...mapGetters([
       'settingLucky7Numbers',
       'lucky7GameInfo',
-      'isLucky7Ticket',
       'account',
       'purchaseTicketPrice',
       'generateTicketPrice',
@@ -208,7 +268,9 @@ export default {
       'lastNumberGenerated2',
       'lastNumberPurchased1',
       'lastNumberPurchased2',
+      'lastTicketGameID',
       'lucky7Ticket',
+      'gameID',
       'purchasedTicketReceived',
       'generatedTicketReceived',
       'firstGenerateNumberReceived',
@@ -216,12 +278,135 @@ export default {
       'firstPurchaseNumberReceived',
       'secondPurchaseNumberReceived',
     ]),
+    ticketOwned() {
+      return String(this.lastGeneratedTicket) === String(this.lastPurchasedTicket);
+    },
+    ticketGeneratedNotZero() {
+      return String(this.lastGeneratedTicket) !== '0';
+    },
+    ticketPurchasedNotZero() {
+      return String(this.lastPurchasedTicket) !== '0';
+    },
+    buttonsEnabled() {
+      return this.firstGenerateNumberReceived
+      && this.secondGenerateNumberReceived
+      && this.firstPurchaseNumberReceived
+      && this.secondPurchaseNumberReceived
+      && this.purchasedTicketReceived
+      && this.generatedTicketReceived;
+    },
+    checkPurchasedTicket() {
+      return String(this.lastTicketGameID) === String(this.gameID) ? {
+        lastPurchasedTicket: this.lastPurchasedTicket,
+        lastNumberPurchased1: this.lastNumberPurchased1,
+        lastNumberPurchased2: this.lastNumberPurchased2,
+      } : '0';
+    },
+  },
+  updated() {
+    this.checkLucky7TicketGenerated();
+    this.checkLucky7TicketPurchased();
+  },
+  created() {
+    this.checkLucky7TicketGenerated();
+    this.checkLucky7TicketPurchased();
+  },
+  methods: {
+    async generateTicket() {
+      try {
+        const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
+        await truffleContractInstance.generateRandomTicket({
+          from: this.account,
+          value: parseInt(this.generateTicketPrice, 10),
+        });
+        this.$store.dispatch('askForValues', 'generateTicket');
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async purchaseGeneratedTicket() {
+      try {
+        const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
+        await truffleContractInstance.sellGeneratedTicket({
+          from: this.account,
+          value: parseInt(this.purchaseTicketPrice, 10),
+        });
+        this.$store.dispatch('askForValues', 'purchaseGeneratedTicket');
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async purchaseRandomTicket() {
+      try {
+        const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
+        await truffleContractInstance.sellRandomTicket({
+          from: this.account,
+          value: parseInt(this.purchaseTicketPrice, 10),
+        });
+        this.$store.dispatch('askForValues', 'purchaseRandomTicket');
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    generatePrice() {
+      const price = this.$store.state.game.generateTicketPrice;
+      return `${web3.utils.fromWei(price, 'ether')} ETH + fees`;
+    },
+    purchasePrice() {
+      const price = this.$store.state.game.purchaseTicketPrice;
+      return `${web3.utils.fromWei(price, 'ether')} ETH + fees`;
+    },
+    checkLucky7TicketPurchased() {
+      const lucky7GameInfo = this.lucky7GameInfo;
+      if (this.lastPurchasedTicket === '0') return false;
+      if (this.settingLucky7Numbers) return false;
+      for (let i = 0; i < 7; i += 1) {
+        if (lucky7GameInfo[i] === undefined) return false;
+      }
+      const lastPurchasedTicket = this.lastPurchasedTicket;
+      let difference = 0;
+      let position = 0;
+      if (lastPurchasedTicket < lucky7GameInfo[0].number) {
+        difference = lucky7GameInfo[0].number - lastPurchasedTicket;
+      } else if (lastPurchasedTicket > lucky7GameInfo[6].number) {
+        difference = lastPurchasedTicket - lucky7GameInfo[6].number;
+        position = 6;
+      } else {
+        while (lastPurchasedTicket > lucky7GameInfo[position].number) {
+          position += 1;
+        }
+        if (lastPurchasedTicket === lucky7GameInfo[position].number) {
+          difference = 0;
+        } else {
+          const upperDifference = lucky7GameInfo[position].number - lastPurchasedTicket;
+          const lowerDifference = lastPurchasedTicket - lucky7GameInfo[position - 1].number;
+          if (upperDifference > lowerDifference) {
+            position -= 1;
+            difference = lowerDifference;
+          } else {
+            difference = upperDifference;
+          }
+        }
+      }
+      this.purchasedDifference = difference;
+      this.purchasedPosition = position + 1;
+      if ((lucky7GameInfo[position].owner === '0x0000000000000000000000000000000000000000')
+      || difference < lucky7GameInfo[position].difference
+      || (lucky7GameInfo[position].owner).toUpperCase() === this.account.toUpperCase()) {
+        this.isLucky7TicketPurchased = true;
+      } else {
+        this.isLucky7TicketPurchased = false;
+      }
+    },
     checkLucky7TicketGenerated() {
       const lucky7GameInfo = this.lucky7GameInfo;
+      if (this.lastGeneratedTicket === '0') return false;
+      if (this.settingLucky7Numbers) return false;
       for (let i = 0; i < 7; i += 1) {
         if (lucky7GameInfo[i] === undefined) return false;
       }
       const lastGeneratedTicket = this.lastGeneratedTicket;
+      if (String(lastGeneratedTicket) === '0') return false;
       let difference = 0;
       let position = 0;
       if (lastGeneratedTicket < lucky7GameInfo[0].number) {
@@ -247,60 +432,14 @@ export default {
         }
       }
       this.generatedDifference = difference;
-      this.generatedPosition = position;
-      if ((lucky7GameInfo[position].owner === '0x0000000000000000000000000000000000000000') || difference < lucky7GameInfo[position].difference) {
-        return true;
+      this.generatedPosition = position + 1;
+      if ((lucky7GameInfo[position].owner === '0x0000000000000000000000000000000000000000'
+      || difference < lucky7GameInfo[position].difference)
+      && (lucky7GameInfo[position].owner).toUpperCase() !== this.account.toUpperCase()) {
+        this.isLucky7TicketGenerated = true;
+      } else {
+        this.isLucky7TicketGenerated = false;
       }
-      return false;
-    },
-    ticketAlreadyPurchased() {
-      return String(this.lastGeneratedTicket) === String(this.lastPurchasedTicket);
-    },
-  },
-  async beforeCreate() {
-    this.contract = await truffleContract(window.web3.currentProvider).deployed();
-  },
-  methods: {
-    async generateTicket() {
-      try {
-        await this.contract.generateRandomTicket({
-          from: this.account,
-          value: parseInt(this.generateTicketPrice, 10),
-        });
-        this.$store.dispatch('askForValues', 'generateTicket');
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    async purchaseGeneratedTicket() {
-      try {
-        await this.contract.sellGeneratedTicket({
-          from: this.account,
-          value: parseInt(this.purchaseTicketPrice, 10),
-        });
-        this.$store.dispatch('askForValues', 'purchaseGeneratedTicket');
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    async purchaseRandomTicket() {
-      try {
-        await this.contract.sellRandomTicket({
-          from: this.account,
-          value: parseInt(this.purchaseTicketPrice, 10),
-        });
-        this.$store.dispatch('askForValues', 'purchaseRandomTicket');
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    generatePrice() {
-      const price = this.$store.state.game.generateTicketPrice;
-      return `${web3.utils.fromWei(price, 'ether')} ETH`;
-    },
-    purchasePrice() {
-      const price = this.$store.state.game.purchaseTicketPrice;
-      return `${web3.utils.fromWei(price, 'ether')} ETH`;
     },
   },
 };
