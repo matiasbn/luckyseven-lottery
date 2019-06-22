@@ -24,7 +24,8 @@ export default {
     purchasedTicketReceived: true,
     generatedTicketReceived: true,
     userTicketsCounter: 0,
-    lastTicketGameID: '0',
+    lastPurchasedTicketGameID: '0',
+    lastGeneratedTicketGameID: '0',
   },
   game: {
     b: '0',

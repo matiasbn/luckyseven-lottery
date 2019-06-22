@@ -69,7 +69,7 @@
         >
           <b-card-text
             v-if="firstGenerateNumberReceived && secondGenerateNumberReceived">
-            {{ lastGeneratedTicket }}
+            {{ checkGeneratedTicket.lastGeneratedTicket||0 }}
           </b-card-text>
           <b-spinner
             v-else
@@ -81,7 +81,7 @@
         <b-card title="First number">
           <b-card-text
             v-if="firstGenerateNumberReceived">
-            {{ lastNumberGenerated1 }}
+            {{ checkGeneratedTicket.lastNumberGenerated1||0 }}
           </b-card-text>
           <b-spinner
             v-else
@@ -92,7 +92,7 @@
         <b-card title="Second number">
           <b-card-text
             v-if="secondGenerateNumberReceived">
-            {{ lastNumberGenerated2 }}
+            {{ checkGeneratedTicket.lastNumberGenerated2||0 }}
           </b-card-text>
           <b-spinner
             v-else
@@ -103,7 +103,7 @@
         <b-card title="Difference">
           <b-card-text
             v-if="generatedTicketReceived">
-            {{ generatedDifference }}
+            {{ checkGeneratedTicket.generatedDifference||0 }}
           </b-card-text>
           <b-spinner
             v-else
@@ -114,7 +114,7 @@
         <b-card title="Position">
           <b-card-text
             v-if="generatedTicketReceived">
-            {{ generatedPosition }}
+            {{ checkGeneratedTicket.generatedPosition||0 }}
           </b-card-text>
           <b-spinner
             v-else
@@ -193,7 +193,7 @@
         <b-card title="Difference">
           <b-card-text
             v-if="purchasedTicketReceived">
-            {{ purchasedDifference }}
+            {{ checkPurchasedTicket.purchasedDifference || 0 }}
           </b-card-text>
           <b-spinner
             v-else
@@ -204,7 +204,7 @@
         <b-card title="Position">
           <b-card-text
             v-if="purchasedTicketReceived">
-            {{ purchasedPosition }}
+            {{ checkPurchasedTicket.purchasedPosition || 0 }}
           </b-card-text>
           <b-spinner
             v-else
@@ -243,6 +243,9 @@ export default {
     checkLucky7Ticket(lucky7Ticket) {
       return lucky7Ticket ? 'Yes!, Congratulations!' : 'No, try again!';
     },
+    checkCurrentGame(ticket, ticketGameID, gameID) {
+      return ticketGameID === gameID ? ticket : '0';
+    },
   },
   data() {
     return {
@@ -257,6 +260,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'lastGeneratedTicketGameID',
       'settingLucky7Numbers',
       'lucky7GameInfo',
       'account',
@@ -268,7 +272,7 @@ export default {
       'lastNumberGenerated2',
       'lastNumberPurchased1',
       'lastNumberPurchased2',
-      'lastTicketGameID',
+      'lastPurchasedTicketGameID',
       'lucky7Ticket',
       'gameID',
       'purchasedTicketReceived',
@@ -296,10 +300,21 @@ export default {
       && this.generatedTicketReceived;
     },
     checkPurchasedTicket() {
-      return String(this.lastTicketGameID) === String(this.gameID) ? {
+      return String(this.lastPurchasedTicketGameID) === String(this.gameID) ? {
         lastPurchasedTicket: this.lastPurchasedTicket,
         lastNumberPurchased1: this.lastNumberPurchased1,
         lastNumberPurchased2: this.lastNumberPurchased2,
+        purchasedDifference: this.purchasedDifference,
+        purchasedPosition: this.purchasedPosition,
+      } : '0';
+    },
+    checkGeneratedTicket() {
+      return String(this.lastGeneratedTicketGameID) === String(this.gameID) ? {
+        lastGeneratedTicket: this.lastGeneratedTicket,
+        lastNumberGenerated1: this.lastNumberGenerated1,
+        lastNumberGenerated2: this.lastNumberGenerated2,
+        generatedDifference: this.generatedDifference,
+        generatedPosition: this.generatedPosition,
       } : '0';
     },
   },
@@ -388,7 +403,7 @@ export default {
           }
         }
       }
-      this.purchasedDifference = difference;
+      this.purchasedDifference = Math.abs(difference);
       this.purchasedPosition = position + 1;
       if ((lucky7GameInfo[position].owner === '0x0000000000000000000000000000000000000000')
       || difference < lucky7GameInfo[position].difference
@@ -431,7 +446,7 @@ export default {
           }
         }
       }
-      this.generatedDifference = difference;
+      this.generatedDifference = Math.abs(difference);
       this.generatedPosition = position + 1;
       if ((lucky7GameInfo[position].owner === '0x0000000000000000000000000000000000000000'
       || difference < lucky7GameInfo[position].difference)

@@ -6,6 +6,20 @@ import has from 'lodash.has';
 const web3 = new Web3();
 
 export default{
+  newGameStarted(state, payload) {
+    state.game.gameID = payload.gameID;
+    for (let i = 0; i < 7; i += 1) {
+      const row = {
+        prize: '0',
+        ticket: '0',
+        owner: '0x0000000000000000000000000000000000000000',
+        difference: '0',
+        number: '0',
+        position: i + 1,
+      };
+      state.lucky7GameInfo[i] = row;
+    }
+  },
   settingNumbersChanged(state, payload) {
     state.game.settingLucky7Numbers = payload.settingLucky7Numbers;
   },
@@ -70,8 +84,10 @@ export default{
         state.player.firstPurchaseNumberReceived = true;
         state.player.secondGenerateNumberReceived = true;
         state.player.secondPurchaseNumberReceived = true;
+        state.player.lastGeneratedTicketGameID = value.gameID;
         state.player.generatedTicketReceived = state.player.firstGenerateNumberReceived;
         state.player.generatedTicketReceived = state.player.secondGenerateNumberReceived;
+        state.player.lastPurchasedTicketGameID = state.player.lastGeneratedTicketGameID;
         break;
       case 'ticket':
         state.player.lastPurchasedTicket = value;
@@ -83,11 +99,11 @@ export default{
     }
   },
   newLucky7Ticket(state, payload) {
-    const { difference, index, _owner, ticketValue } = payload;
+    const { difference, index, owner, ticketValue } = payload;
     state.lucky7GameInfo[index].difference = difference;
-    state.lucky7GameInfo[index].owner = _owner;
+    state.lucky7GameInfo[index].owner = owner;
     state.lucky7GameInfo[index].ticket = ticketValue;
-    if (_owner.toUpperCase() === state.web3.coinbase.toUpperCase()) {
+    if (owner.toUpperCase() === state.web3.coinbase.toUpperCase()) {
       state.player.isLucky7Ticket = true;
     }
   },
@@ -112,7 +128,7 @@ export default{
       lucky7Tickets,
       generateTicketPrice,
       sellTicketPrice,
-      userValues,
+      lastParameters,
       currentPrize,
       prizeGameID,
       contractAddress,
@@ -146,9 +162,10 @@ export default{
     state.player.lastPurchasedTicket = lastPurchasedTicket.ticketValue || '0';
     state.player.lastNumberPurchased1 = lastPurchasedTicket.mu || '0';
     state.player.lastNumberPurchased2 = lastPurchasedTicket.i || '0';
-    state.player.lastTicketGameID = lastPurchasedTicket.gameID ? lastPurchasedTicket.gameID.toNumber() : '0';
-    state.player.lastNumberGenerated1 = userValues.mu || '0';
-    state.player.lastNumberGenerated2 = userValues.i || '0';
+    state.player.lastPurchasedTicketGameID = lastPurchasedTicket.gameID ? lastPurchasedTicket.gameID.toNumber() : '0';
+    state.player.lastNumberGenerated1 = lastParameters.muParameter || '0';
+    state.player.lastNumberGenerated2 = lastParameters.iParameter || '0';
+    state.player.lastGeneratedTicketGameID = lastParameters.gameID || '0';
     state.player.currentPrize = currentPrize;
     state.player.prizeGameID = prizeGameID;
     state.web3.contractAddress = contractAddress;

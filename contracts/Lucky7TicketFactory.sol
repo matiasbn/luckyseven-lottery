@@ -17,19 +17,19 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
       */
     using SafeMath for uint256;
     
+    /** @dev Events
+     */
+    event ParametersReceived(string muParameter, string iParameter, address indexed owner, uint indexed gameID);
+    event NewTicketReceived(uint newTicket, address indexed owner);
+    event NewLucky7Ticket(uint ticketValue, address indexed owner, uint difference, uint index);
+    event Lucky7NumberInserted(uint value, uint index);
+    event BalanceUpdated(uint balance);
     /** @dev The constructor needs to set the OAR, Oraclize Address Resolver
       * OAR is the Oraclize Address Resolver to use oraclize on localhost
       */
     constructor() internal payable{
         OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
     }
-    /** @dev Events
-     */
-    event ParametersReceived(string muParameter, string iParameter, address indexed _owner);
-    event NewTicketReceived(uint newTicket, address indexed _owner);
-    event NewLucky7Ticket(uint ticketValue, address indexed _owner, uint difference, uint index);
-    event Lucky7NumberInserted(uint value, uint index);
-    event BalanceUpdated(uint balance);
     
     /** @dev This modifier is used to set the gas price on the functions which do oraclize querys.
       *  It uses the oraclizeCustomGasPrice of the Lucky7Admin contract.
@@ -355,7 +355,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
             userValues[muParameterID[myid]].mu=result;
             userValues[muParameterID[myid]].muReady=true;
             if(userValues[muParameterID[myid]].iReady == true){
-                emit ParametersReceived(userValues[muParameterID[myid]].mu, userValues[muParameterID[myid]].i, muParameterID[myid]);
+                emit ParametersReceived(userValues[muParameterID[myid]].mu, userValues[muParameterID[myid]].i, muParameterID[myid],gameID);
                 if((userValues[muParameterID[myid]].userPaidTicket==true || settingLucky7Numbers==true )){
                     _askForTicket(muParameterID[myid]);
                 }
@@ -369,7 +369,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
             userValues[iParameterID[myid]].i=result;
             userValues[iParameterID[myid]].iReady=true;
             if(userValues[iParameterID[myid]].muReady == true){
-                emit ParametersReceived(userValues[iParameterID[myid]].mu, userValues[iParameterID[myid]].i, iParameterID[myid]);
+                emit ParametersReceived(userValues[iParameterID[myid]].mu, userValues[iParameterID[myid]].i, iParameterID[myid],gameID);
                 if( (userValues[iParameterID[myid]].userPaidTicket==true || settingLucky7Numbers==true )){
                     _askForTicket(iParameterID[myid]);
                 }

@@ -20,7 +20,7 @@ const pollWeb3 = () => {
     } catch (e) {
       console.log(e);
     }
-  }, 500);
+  }, 2000);
 };
 
 export default pollWeb3;

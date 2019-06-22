@@ -14,8 +14,9 @@ import "./Lucky7Ballot.sol";
 contract Lucky7Store is Lucky7Ballot{
     /** @dev Constructor to make the contract payable
       */
+    event GameParameters(string b, string n, string p, string j, uint numberOfLucky7Numbers, uint generateTicketPrice, uint sellTicketPrice);
     constructor() payable public{
-        
+        emit GameParameters(b,n,p,j,numberOfLucky7Numbers, generateTicketPrice, sellTicketPrice);
     }
 
     /** @dev userBoughtTicket is a modifier to check if the user paid the necessary amount to buy a ticket.

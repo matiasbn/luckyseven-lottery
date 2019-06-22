@@ -13,10 +13,14 @@ pragma solidity ^0.5.0;
 import "./Lucky7TicketFactory.sol";
 
 contract Lucky7Ballot is Lucky7TicketFactory{
+    
     constructor() internal payable {
         
     }
-
+    /**
+      * @dev To communicate front end that a new game was stablished
+     */
+    event NewGameStarted(uint gameID);
     /** @dev This modifier is meant to block the Lucky7Number generation when the game is on course
       * Is used to block the action of the _generateLucky7Number function of this contract if the circuit breaker
       * is not 
@@ -73,6 +77,7 @@ contract Lucky7Ballot is Lucky7TicketFactory{
         _cleanMappings();
         gameID++;
         initialLucky7TicketPosition=gameID*numberOfLucky7Numbers;
+        emit NewGameStarted(gameID);
     }
     
     /** @dev _generateLucky7Number is the function that is actually used to generate the Lucky7Numbers. It have the business logic for generating the Lucky7Numbers, i.e. if 
