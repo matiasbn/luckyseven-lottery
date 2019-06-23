@@ -6,7 +6,7 @@
 </template>
 <script>
 
-// import pollWeb3 from '@/web3/pollWeb3';
+import pollWeb3 from '@/web3/pollWeb3';
 import Header from './components/Header';
 
 export default {
@@ -16,9 +16,7 @@ export default {
   },
   beforeCreate() {
     this.$store.dispatch('registerWeb3');
-    this.$store.dispatch('retrieveGameInformation');
-    // this.$store.dispatch('updatePastGames');
-    // pollWeb3();
+    pollWeb3();
   },
   beforeMount() {
     this.$store.dispatch('listenEvents', this.$store.state.web3.coinbase);

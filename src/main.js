@@ -5,6 +5,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 import BootstrapVue from 'bootstrap-vue';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import AsyncComputed from 'vue-async-computed';
 import App from './App';
 import { routes } from './router/routes';
 import { store } from './store';
@@ -12,6 +13,7 @@ import { store } from './store';
 Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.use(VueRouter);
+Vue.use(AsyncComputed);
 
 const router = new VueRouter({
   routes,

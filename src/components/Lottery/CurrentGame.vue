@@ -16,7 +16,7 @@
   </b-card>
 </template>
 <script>
-import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   data() {
@@ -24,7 +24,7 @@ export default {
       fields: [
         { key: 'position', label: 'Position' },
         { key: 'number', label: 'Lucky7Number' },
-        { key: 'ticket', label: 'Lucky7Ticket' },
+        { key: 'ticketValue', label: 'Lucky7Ticket' },
         {
           key: 'difference', label: 'Difference', sortable: true, sort: true, center: true,
         },
@@ -34,7 +34,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['lucky7GameInfo']),
+    ...mapState(['lucky7GameInfo']),
   },
 };
 </script>

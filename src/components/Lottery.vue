@@ -15,13 +15,16 @@
 </template>
 
 <script>
-import CurrentGame from './GameInfo/CurrentGame';
-import TicketStore from './GameInfo/TicketStore';
+import CurrentGame from './Lottery/CurrentGame';
+import TicketStore from './Lottery/TicketStore';
 
 export default {
   components: {
     CurrentGame,
     TicketStore,
+  },
+  beforeCreate() {
+    this.$store.dispatch('getGameSettings');
   },
 };
 </script>

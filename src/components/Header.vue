@@ -20,10 +20,9 @@
         <b-navbar-nav
           class="ml-auto"
           right>
-          <b-nav-item to="/current_game">Current Game</b-nav-item>
+          <b-nav-item to="/lottery">Lottery</b-nav-item>
           <b-nav-item
-            to="/game_stats"
-            @click="updatePastGames" >
+            to="/game_stats" >
             Game stats
           </b-nav-item>
           <b-nav-item to="/user_dashboard">User</b-nav-item>
@@ -34,12 +33,4 @@
 </template>
 
 <script>
-/* eslint-disable max-len */
-export default {
-  methods: {
-    async updatePastGames() {
-      this.$store.dispatch('updatePastGames', this.$store.state.web3.contractInstance);
-    },
-  },
-};
 </script>

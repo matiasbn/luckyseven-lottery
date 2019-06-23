@@ -19,8 +19,8 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
     
     /** @dev Events
      */
-    event ParametersReceived(string muParameter, string iParameter, address indexed owner, uint indexed gameID);
-    event NewTicketReceived(uint newTicket, address indexed owner);
+    event GeneratedParametersReceived(string mu, string i, address indexed owner, uint indexed gameID);
+    event NewTicketReceived(uint ticketValue, string mu, string i, uint ticketID, address indexed owner, uint indexed gameID);
     event NewLucky7Ticket(uint ticketValue, address indexed owner, uint difference, uint index);
     event Lucky7NumberInserted(uint value, uint index);
     event BalanceUpdated(uint balance);
@@ -128,7 +128,6 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
     /** @dev The next two arrays are used to store information of the game permanently.
       * @param lucky7TicketsArray stores the Lucky7Tickets once a new game is setted.
       * @param ticketsArray stores the tickets everytime a user buys a ticket.
-      * @param userLastPurchasedTicket last purchased ticket ID.
       */
     Lucky7Ticket[] public lucky7TicketsArray;
     Ticket[] public ticketsArray;
@@ -243,8 +242,9 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
       * Then we add the ticket to user collection of tickets (userTickets mapping) and increase the ticket counter (userTicketsCounter) 
       */
     function _insertTicket(address _ticketOwner) internal {
-        uint id = ticketsArray.push(Ticket(userValues[_ticketOwner].mu,userValues[_ticketOwner].i,userValues[_ticketOwner].ticketValue,_ticketOwner,gameID)) - 1;
-        userLastPurchasedTicket[_ticketOwner] = id;
+        UserParametersValue memory values = userValues[_ticketOwner];
+        uint id = ticketsArray.push(Ticket(values.mu,values.i,values.ticketValue,_ticketOwner,gameID)) - 1;
+        emit NewTicketReceived(values.ticketValue, values.mu, values.i, id, _ticketOwner, gameID);
         _checkForLucky7Ticket(id);
     }
 
@@ -355,8 +355,12 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
             userValues[muParameterID[myid]].mu=result;
             userValues[muParameterID[myid]].muReady=true;
             if(userValues[muParameterID[myid]].iReady == true){
-                emit ParametersReceived(userValues[muParameterID[myid]].mu, userValues[muParameterID[myid]].i, muParameterID[myid],gameID);
-                if((userValues[muParameterID[myid]].userPaidTicket==true || settingLucky7Numbers==true )){
+                if((userValues[muParameterID[myid]].userPaidTicket==true)){
+                    _askForTicket(muParameterID[myid]);
+                }else{
+                    emit GeneratedParametersReceived(userValues[muParameterID[myid]].mu, userValues[muParameterID[myid]].i, muParameterID[myid],gameID);
+                }
+                if(settingLucky7Numbers==true){
                     _askForTicket(muParameterID[myid]);
                 }
             }
@@ -369,8 +373,12 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
             userValues[iParameterID[myid]].i=result;
             userValues[iParameterID[myid]].iReady=true;
             if(userValues[iParameterID[myid]].muReady == true){
-                emit ParametersReceived(userValues[iParameterID[myid]].mu, userValues[iParameterID[myid]].i, iParameterID[myid],gameID);
-                if( (userValues[iParameterID[myid]].userPaidTicket==true || settingLucky7Numbers==true )){
+                if( (userValues[iParameterID[myid]].userPaidTicket==true)){
+                    _askForTicket(iParameterID[myid]);
+                }else{
+                    emit GeneratedParametersReceived(userValues[iParameterID[myid]].mu, userValues[iParameterID[myid]].i, iParameterID[myid],gameID);
+                }
+                if(settingLucky7Numbers==true){
                     _askForTicket(iParameterID[myid]);
                 }
             }
@@ -388,7 +396,6 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize{
                 _insertLucky7Number(newTicketID[myid]);
             }
             else{
-                emit NewTicketReceived(userValues[newTicketID[myid]].ticketValue, newTicketID[myid]);
                 _insertTicket(newTicketID[myid]);
             }
         }
