@@ -17,6 +17,7 @@ contract Lucky7Ballot is Lucky7TicketFactory{
     constructor() internal payable {
         
     }
+
     /**
       * @dev To communicate front end that a new game was stablished
      */
@@ -280,7 +281,7 @@ contract Lucky7Ballot is Lucky7TicketFactory{
         }
         uint enterprisePrize = address(this).balance.mul(3);
         enterprisePrize = enterprisePrize.div(10);
-        enterpriseWallet.transfer(enterprisePrize);
+        lucky7Wallet.transfer(enterprisePrize);
     }
 
     /** @dev _cleanMappings is a function used by the setNewGame function of this contract to clean the necessary mappings, 

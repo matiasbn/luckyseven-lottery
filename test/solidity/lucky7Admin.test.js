@@ -12,13 +12,13 @@ contract('Lucky7Admin', (accounts) => {
     assert.equal(result, 6, 'the new value does not match with the numberOfLucky7Numbers value');
   });
 
-  it('should change the sellTicketPrice value', async () => {
+  it('should change the purchaseTicketPrice value', async () => {
     const lucky7Admin = await Lucky7Admin.new();
     const price = web3.toWei(0.013, 'ether');
-    await lucky7Admin.modifySellTicketPrice(price, { from: owner });
-    const result = await lucky7Admin.sellTicketPrice();
+    await lucky7Admin.modifypurchaseTicketPrice(price, { from: owner });
+    const result = await lucky7Admin.purchaseTicketPrice();
 
-    assert.equal(result, price, 'the new value does not match with the sellTicketPrice value');
+    assert.equal(result, price, 'the new value does not match with the purchaseTicketPrice value');
   });
 
   it('should change the generateTicketPrice value', async () => {
@@ -51,8 +51,8 @@ contract('Lucky7Admin', (accounts) => {
   it('should change the enterprize wallet address value', async () => {
     const lucky7Admin = await Lucky7Admin.new();
     const value = '0x90f8bf6a479f320ead074411a4b0e7944ea8c9c1';
-    await lucky7Admin.modifyEnterpriseWallet(value, { from: owner });
-    const result = await lucky7Admin.enterpriseWallet();
+    await lucky7Admin.modifylucky7Wallet(value, { from: owner });
+    const result = await lucky7Admin.lucky7Wallet();
 
     assert.equal(result, value, 'the new value does not match with the p parameter value');
   });

@@ -15,9 +15,9 @@ lucky7Instance._generateLucky7Number()
 lucky7Instance.settingLucky7Numbers().then(setting=>{console.log(setting)})
 lucky7Instance.settingLucky7Numbers().then(setting=>{if(!setting)lucky7Instance.toggleLucky7Setting()})
 //Buying tickets
-const sellTicketPrice = await lucky7Instance.sellTicketPrice()
+const purchaseTicketPrice = await lucky7Instance.purchaseTicketPrice()
 const account = (await web3.eth.getAccounts())[0]
-lucky7Instance.sellRandomTicket({from: account, value: sellTicketPrice});
+lucky7Instance.sellRandomTicket({from: account, value: purchaseTicketPrice});
 // web3.eth.getAccounts(function(error, accounts){account = accounts[0];})
 
 //Retrieve user values 

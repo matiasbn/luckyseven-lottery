@@ -14,15 +14,15 @@ import "./Lucky7Ballot.sol";
 contract Lucky7Store is Lucky7Ballot{
     /** @dev Constructor to make the contract payable
       */
-    event GameParameters(string b, string n, string p, string j, uint numberOfLucky7Numbers, uint generateTicketPrice, uint sellTicketPrice);
+    event GameParameters(string b, string n, string p, string j, uint numberOfLucky7Numbers, uint generateTicketPrice, uint purchaseTicketPrice);
     constructor() payable public{
-        emit GameParameters(b,n,p,j,numberOfLucky7Numbers, generateTicketPrice, sellTicketPrice);
+        emit GameParameters(b,n,p,j,numberOfLucky7Numbers, generateTicketPrice, purchaseTicketPrice);
     }
 
     /** @dev userBoughtTicket is a modifier to check if the user paid the necessary amount to buy a ticket.
       */
     modifier userBoughtTicket(address _ticketOwner){
-        require(msg.value >= sellTicketPrice);
+        require(msg.value >= purchaseTicketPrice);
         userValues[_ticketOwner].userPaidTicket = true;
         _;
     }
@@ -61,15 +61,13 @@ contract Lucky7Store is Lucky7Ballot{
         _;
     }
     //------------------------
+    /** @dev events used on front-end to count the amount of tickets selled, i.e. the amount of events are equal to the amount
+      * of events emitted
+     */
+    event RandomTicketSelled(uint indexed gameID);
+    event GeneratedTicket(uint indexed gameID);
+    event GeneratedTicketSelled(uint indexed gameID);
     
-    event RandomTicketSelled(uint randomTicketCounter, address indexed owner);
-    event GeneratedTicket(uint generatedTicketCounter, address indexed owner);
-    event GeneratedTicketSelled(uint selledGeneratedTicketCounter, address indexed owner);
-    // maps from gameID to every counter
-    mapping (uint=>uint) public randomTicketCounter;
-    mapping (uint=>uint) public generatedTicketCounter;
-    mapping (uint=>uint) public selledGeneratedTicketCounter;
-
     /** @dev sellRandomTicket is a function used to sell a random ticket to the user. It checks if the user sent the correct amount and if the game is not
       * in the setting Lucky7Numbers phase. If so, then sets the user muReady and iReady of the UserParameters value of the Lucky7TicketFactory contract to false and 
       calls the _generateTicket function of the Lucky7TicketFactory contract with the msg.sender as the owner.
@@ -81,8 +79,7 @@ contract Lucky7Store is Lucky7Ballot{
         setParametersToReady(msg.sender)
         sellingIsActive
     { 
-        randomTicketCounter[gameID]++;
-        emit RandomTicketSelled(randomTicketCounter[gameID], msg.sender); 
+        emit RandomTicketSelled(gameID); 
         _generateTicket(msg.sender);
     }
     
@@ -97,8 +94,7 @@ contract Lucky7Store is Lucky7Ballot{
         setParametersToReady(msg.sender)
         sellingIsActive
     {
-        generatedTicketCounter[gameID]++;
-        emit GeneratedTicket(generatedTicketCounter[gameID], msg.sender);
+        emit GeneratedTicket(gameID);
         _generateTicket(msg.sender);
     }
     
@@ -114,8 +110,7 @@ contract Lucky7Store is Lucky7Ballot{
         sellingIsActive
         notEmptyParameters(msg.sender)
     {
-        selledGeneratedTicketCounter[gameID]++;
-        emit GeneratedTicketSelled(selledGeneratedTicketCounter[gameID], msg.sender);
+        emit GeneratedTicketSelled(gameID);
         _askForTicket(msg.sender);
     }
     
