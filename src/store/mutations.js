@@ -1,11 +1,17 @@
 /* eslint-disable max-len */
 /* eslint-disable no-case-declarations */
-import Web3 from 'web3';
 import has from 'lodash.has';
-
-const web3 = new Web3();
+import muGenerator from '@/helpers/muGenerator';
+import checkLucky7Ticket from '@/helpers/checkLucky7Ticket';
+import BigNumber from 'bignumber.js';
 
 export default{
+  ticketsCounter(state, payload) {
+    const { randomTicketsCounter, generatedTicketsCounter, generatedTicketsSelledCounter } = payload;
+    state.game.stats.randomTickets = randomTicketsCounter;
+    state.game.stats.generatedTickets = generatedTicketsCounter;
+    state.game.stats.generatedTicketsSelled = generatedTicketsSelledCounter;
+  },
   newGameStarted(state, payload) {
     state.game.gameID = payload.gameID;
     for (let i = 0; i < 7; i += 1) {
@@ -21,7 +27,7 @@ export default{
     }
   },
   settingNumbersChanged(state, payload) {
-    state.game.settingLucky7Numbers = payload.settingLucky7Numbers;
+    state.game.settings.storeEnabled = payload.settingLucky7Numbers;
   },
   statsUpdated(state, payload) {
     if (has(payload, 'randomTicketCounter')) {
@@ -36,75 +42,102 @@ export default{
     const { value, index } = payload;
     state.lucky7GameInfo[index].number = value;
   },
-  updatePastGames(state, payload) {
-    payload.forEach((ticket, index) => {
-      const pastTicket = {
-        lucky7Number: parseInt(ticket.lucky7Number, 10),
-        ticketValue: parseInt(ticket.ticketValue, 10),
-        difference: parseInt(ticket.difference, 10),
-        owner: ticket.owner,
-        prize: `${web3.utils.fromWei(ticket.prize, 'ether')} ETH`,
-        gameID: parseInt(ticket.gameID, 10),
-      };
-      state.lucky7PastGames[index] = pastTicket;
-    });
-  },
   balanceUpdated(state, payload) {
     state.web3.contractBalance = payload;
   },
   askForValues(state, payload) {
     switch (payload) {
       case 'generateTicket':
-        state.player.firstGenerateNumberReceived = false;
-        state.player.secondGenerateNumberReceived = false;
+        state.player.generatedTicket.received = false;
         break;
       case 'purchaseRandomTicket':
-        state.player.purchasedTicketReceived = false;
-        state.player.firstPurchaseNumberReceived = false;
-        state.player.secondPurchaseNumberReceived = false;
+        state.player.purchasedTicket.received = false;
+        state.player.purchasedTicket.lucky7Ticket = false;
         break;
       case 'purchaseGeneratedTicket':
-        state.player.generatedTicketReceived = false;
-        state.player.lastNumberPurchased1 = state.player.lastNumberGenerated1;
-        state.player.lastNumberPurchased2 = state.player.lastNumberGenerated2;
+        state.player.generatedTicket.received = false;
+        state.player.purchasedTicket.received = false;
         break;
       default:
         break;
     }
   },
-  parameterReceived(state, payload) {
-    const { type, value } = payload;
-    switch (type) {
-      case 'parameters':
-        state.player.lastNumberPurchased1 = state.player.firstPurchaseNumberReceived ? state.player.lastNumberPurchased1 : value.muParameter;
-        state.player.lastNumberGenerated1 = state.player.firstGenerateNumberReceived ? state.player.lastNumberGenerated1 : value.muParameter;
-        state.player.lastNumberPurchased2 = state.player.secondPurchaseNumberReceived ? state.player.lastNumberPurchased2 : value.iParameter;
-        state.player.lastNumberGenerated2 = state.player.secondGenerateNumberReceived ? state.player.lastNumberGenerated2 : value.iParameter;
-        state.player.firstGenerateNumberReceived = true;
-        state.player.firstPurchaseNumberReceived = true;
-        state.player.secondGenerateNumberReceived = true;
-        state.player.secondPurchaseNumberReceived = true;
-        state.player.lastGeneratedTicketGameID = value.gameID;
-        state.player.generatedTicketReceived = state.player.firstGenerateNumberReceived;
-        state.player.generatedTicketReceived = state.player.secondGenerateNumberReceived;
-        state.player.lastPurchasedTicketGameID = state.player.lastGeneratedTicketGameID;
-        break;
-      case 'ticket':
-        state.player.lastPurchasedTicket = value;
-        state.player.purchasedTicketReceived = true;
-        state.player.generatedTicketReceived = true;
-        break;
-      default:
-        break;
-    }
+  recoverPurchasedParameters(state, payload) {
+    state.player.purchasedTicket.ticketValue = payload.ticketValue;
+    state.player.purchasedTicket.number1 = payload.mu;
+    state.player.purchasedTicket.number2 = payload.i;
+    state.player.purchasedTicket.ticketID = payload.ticketID;
+    state.player.purchasedTicket.gameID = payload.gameID;
+    const value = { ticket: state.player.purchasedTicket.ticketValue, grantType: 'recoverPurchased' };
+    const { difference, position, lucky7Ticket } = checkLucky7Ticket(state, value);
+    state.player.purchasedTicket.lucky7Ticket = lucky7Ticket;
+    state.player.purchasedTicket.difference = difference;
+    state.player.purchasedTicket.position = position + 1;
+  },
+  recoverGeneratedParameters(state, payload) {
+    state.player.generatedTicket.number1 = payload.mu;
+    state.player.generatedTicket.number2 = payload.i;
+    state.player.generatedTicket.gameID = payload.gameID;
+    const parameters = {
+      mu: payload.mu,
+      i: payload.i,
+      b: state.game.settings.b,
+      p: state.game.settings.p,
+      n: state.game.settings.n,
+      j: state.game.settings.j,
+    };
+    const generatedTicket = muGenerator(parameters);
+    const value = { ticket: generatedTicket, grantType: 'recoverGenerated' };
+    const { difference, position, lucky7Ticket } = checkLucky7Ticket(state, value);
+    state.player.generatedTicket.ticketValue = generatedTicket;
+    state.player.generatedTicket.difference = difference;
+    state.player.generatedTicket.position = position + 1;
+    state.player.generatedTicket.lucky7Ticket = lucky7Ticket;
+  },
+  generatedParametersReceived(state, payload) {
+    state.player.generatedTicket.number1 = payload.mu;
+    state.player.generatedTicket.number2 = payload.i;
+    state.player.generatedTicket.received = true;
+    state.player.generatedTicket.gameID = payload.gameID;
+    const parameters = {
+      mu: payload.mu,
+      i: payload.i,
+      b: state.game.settings.b,
+      p: state.game.settings.p,
+      n: state.game.settings.n,
+      j: state.game.settings.j,
+    };
+    const generatedTicket = muGenerator(parameters);
+    const value = { ticket: generatedTicket, grantType: 'generatedTicket' };
+    const { difference, position, lucky7Ticket } = checkLucky7Ticket(state, value);
+    state.player.generatedTicket.ticketValue = generatedTicket;
+    state.player.generatedTicket.difference = difference;
+    state.player.generatedTicket.position = position + 1;
+    state.player.generatedTicket.lucky7Ticket = lucky7Ticket;
+  },
+  newTicketReceived(state, payload) {
+    state.player.purchasedTicket.ticketValue = payload.ticketValue;
+    state.player.purchasedTicket.number1 = payload.mu;
+    state.player.purchasedTicket.number2 = payload.i;
+    state.player.purchasedTicket.ticketID = payload.ticketID;
+    state.player.purchasedTicket.gameID = payload.gameID;
+    state.player.purchasedTicket.received = true;
+    state.player.generatedTicket.received = true;
+    const value = { ticket: BigNumber(state.player.purchasedTicket.ticketValue) };
+    const { difference, position, lucky7Ticket } = checkLucky7Ticket(state, value);
+    state.player.purchasedTicket.lucky7Ticket = lucky7Ticket;
+    state.player.purchasedTicket.difference = difference;
+    state.player.purchasedTicket.position = position + 1;
   },
   newLucky7Ticket(state, payload) {
     const { difference, index, owner, ticketValue } = payload;
     state.lucky7GameInfo[index].difference = difference;
     state.lucky7GameInfo[index].owner = owner;
-    state.lucky7GameInfo[index].ticket = ticketValue;
+    state.lucky7GameInfo[index].ticketValue = String(ticketValue);
     if (owner.toUpperCase() === state.web3.coinbase.toUpperCase()) {
-      state.player.isLucky7Ticket = true;
+      state.player.purchasedTicket.position = Number(index) + 1;
+      state.player.purchasedTicket.difference = difference;
+      state.player.purchasedTicket.lucky7Ticket = true;
     }
   },
   registerWeb3Instance(state, payload) {
@@ -122,29 +155,14 @@ export default{
     state.web3.coinbase = payload.coinbase;
     state.web3.balance = payload.balance;
   },
-  retrieveGameInfoInstance(state, payload) {
+  getGameSettings(state, payload) {
     const {
-      lucky7Numbers,
-      lucky7Tickets,
-      generateTicketPrice,
-      sellTicketPrice,
-      lastParameters,
-      currentPrize,
-      prizeGameID,
-      contractAddress,
-      contractBalance,
-      lastPurchasedTicket,
-      b,
-      n,
-      p,
-      j,
-      settingLucky7Numbers,
-      gameID,
+      lucky7Numbers, lucky7Tickets, generateTicketPrice, purchaseTicketPrice, b, n, p, j, settingLucky7Numbers, gameID,
     } = payload;
     lucky7Tickets.forEach((lucky7Ticket, index) => {
       const row = {
         prize: lucky7Ticket.prize,
-        ticket: lucky7Ticket.ticket,
+        ticketValue: String(lucky7Ticket.ticket),
         owner: lucky7Ticket.owner,
         difference: lucky7Ticket.difference,
         number: lucky7Numbers[index],
@@ -152,24 +170,14 @@ export default{
       };
       state.lucky7GameInfo.push(row);
     });
-    state.game.generateTicketPrice = generateTicketPrice;
-    state.game.purchaseTicketPrice = sellTicketPrice;
-    state.game.b = b;
-    state.game.n = n;
-    state.game.p = p;
-    state.game.j = j;
-    state.game.settingLucky7Numbers = settingLucky7Numbers;
-    state.player.lastPurchasedTicket = lastPurchasedTicket.ticketValue || '0';
-    state.player.lastNumberPurchased1 = lastPurchasedTicket.mu || '0';
-    state.player.lastNumberPurchased2 = lastPurchasedTicket.i || '0';
-    state.player.lastPurchasedTicketGameID = lastPurchasedTicket.gameID ? lastPurchasedTicket.gameID.toNumber() : '0';
-    state.player.lastNumberGenerated1 = lastParameters.muParameter || '0';
-    state.player.lastNumberGenerated2 = lastParameters.iParameter || '0';
-    state.player.lastGeneratedTicketGameID = lastParameters.gameID || '0';
-    state.player.currentPrize = currentPrize;
-    state.player.prizeGameID = prizeGameID;
-    state.web3.contractAddress = contractAddress;
-    state.web3.contractBalance = contractBalance;
-    state.game.gameID = gameID.toNumber();
+    state.lucky7GameInfoReady = true;
+    state.game.prices.generate = generateTicketPrice;
+    state.game.prices.purchase = purchaseTicketPrice;
+    state.game.settings.b = b;
+    state.game.settings.n = n;
+    state.game.settings.p = p;
+    state.game.settings.j = j;
+    state.game.settings.storeEnabled = settingLucky7Numbers;
+    state.game.settings.gameID = gameID;
   },
 };
