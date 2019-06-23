@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/matiasbn/luckyseven.win/compare/v1.1.0...v1.2.0) (2019-06-23)
+
+
+### Bug Fixes
+
+* ticket store messages ([e1f3528](https://github.com/matiasbn/luckyseven.win/commit/e1f3528))
+
+
+### Features
+
+* ticket stats counter ([5fc7aca](https://github.com/matiasbn/luckyseven.win/commit/5fc7aca))
+
+
+
 ## 1.1.0 (2019-06-22)
 
 
