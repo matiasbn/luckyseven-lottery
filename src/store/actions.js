@@ -3,6 +3,9 @@
 
 import getWeb3 from '@/web3/getWeb3';
 import truffleContract from '@/web3/truffleContract';
+import Web3 from 'web3';
+
+const web3 = new Web3(window.web3.currentProvider);
 
 export default {
   recoverPurchasedParameters({ commit }, payload) {
@@ -10,9 +13,6 @@ export default {
   },
   recoverGeneratedParameters({ commit }, payload) {
     commit('recoverGeneratedParameters', payload);
-  },
-  ticketsCounter({ commit }, payload) {
-    commit('ticketsCounter', payload);
   },
   async listenEvents({ commit }, payload) {
     const account = payload;
@@ -84,11 +84,13 @@ export default {
       truffleContractInstance.getPastEvents('GameParameters', { fromBlock: 0 }),
       truffleContractInstance.settingLucky7Numbers(),
       truffleContractInstance.gameID(),
+      web3.eth.getBalance(truffleContractInstance.address),
     ];
     const values = await Promise.all(valuesPromises);
     const gameParameters = values[0]['0'].returnValues;
     const settingLucky7Numbers = values[1];
     const gameID = values[2];
+    const contractBalance = values[3];
     const b = gameParameters.b;
     const n = gameParameters.n;
     const p = gameParameters.p;
@@ -122,7 +124,7 @@ export default {
     }
 
     const payload = {
-      lucky7Numbers, lucky7Tickets, generateTicketPrice, purchaseTicketPrice, b, n, p, j, settingLucky7Numbers, gameID,
+      lucky7Numbers, lucky7Tickets, generateTicketPrice, purchaseTicketPrice, b, n, p, j, settingLucky7Numbers, gameID, contractBalance,
     };
 
     commit('getGameSettings', payload);

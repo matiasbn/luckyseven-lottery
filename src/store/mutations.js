@@ -3,17 +3,12 @@
 import has from 'lodash.has';
 import muGenerator from '@/helpers/muGenerator';
 import checkLucky7Ticket from '@/helpers/checkLucky7Ticket';
+import lucky7PrizesInfo from '@/helpers/lucky7PrizesInfo';
 import BigNumber from 'bignumber.js';
 
 export default{
-  ticketsCounter(state, payload) {
-    const { randomTicketsCounter, generatedTicketsCounter, generatedTicketsSelledCounter } = payload;
-    state.game.stats.randomTickets = randomTicketsCounter;
-    state.game.stats.generatedTickets = generatedTicketsCounter;
-    state.game.stats.generatedTicketsSelled = generatedTicketsSelledCounter;
-  },
   newGameStarted(state, payload) {
-    state.game.gameID = payload.gameID;
+    state.game.settings.gameID = payload.gameID;
     for (let i = 0; i < 7; i += 1) {
       const row = {
         prize: '0',
@@ -139,6 +134,7 @@ export default{
       state.player.purchasedTicket.difference = difference;
       state.player.purchasedTicket.lucky7Ticket = true;
     }
+    state.lucky7GameInfo = lucky7PrizesInfo(state);
   },
   registerWeb3Instance(state, payload) {
     const {
@@ -157,7 +153,7 @@ export default{
   },
   getGameSettings(state, payload) {
     const {
-      lucky7Numbers, lucky7Tickets, generateTicketPrice, purchaseTicketPrice, b, n, p, j, settingLucky7Numbers, gameID,
+      lucky7Numbers, lucky7Tickets, generateTicketPrice, purchaseTicketPrice, b, n, p, j, settingLucky7Numbers, gameID, contractBalance,
     } = payload;
     lucky7Tickets.forEach((lucky7Ticket, index) => {
       const row = {
@@ -168,8 +164,10 @@ export default{
         number: lucky7Numbers[index],
         position: index + 1,
       };
-      state.lucky7GameInfo.push(row);
+      state.lucky7GameInfo[index] = row;
     });
+    state.web3.contractBalance = contractBalance;
+    state.lucky7GameInfo = lucky7PrizesInfo(state);
     state.lucky7GameInfoReady = true;
     state.game.prices.generate = generateTicketPrice;
     state.game.prices.purchase = purchaseTicketPrice;
