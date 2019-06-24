@@ -1,6 +1,6 @@
 <template>
   <b-card
-    header="Tickets Stats"
+    header="Tickets stats per game"
     header-tag="h2">
     <b-table
       v-if="valuesReady"
@@ -67,12 +67,9 @@ export default {
         };
         stats.push(result);
       }
-      const totalTicketsStats = {
-        randomTicketsCounter,
-        generatedTicketsCounter,
-        generatedTicketsSelledCounter,
-      };
-      this.$store.dispatch('ticketsCounter', totalTicketsStats);
+      this.$store.state.game.stats.randomTickets = randomTicketsCounter;
+      this.$store.state.game.stats.generatedTickets = generatedTicketsCounter;
+      this.$store.state.game.stats.generatedTicketsSelled = generatedTicketsSelledCounter;
       this.valuesReady = true;
       return stats;
     },

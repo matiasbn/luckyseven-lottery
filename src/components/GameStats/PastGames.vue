@@ -3,6 +3,7 @@
     header="Past Games"
     header-tag="h2">
     <b-table
+      v-if="valuesReady"
       :items="lucky7PastGames"
       :fields="fields"
       striped
@@ -10,6 +11,10 @@
       responsive
       bordered
     />
+    <b-spinner
+      v-else
+      variant="warning"
+      label="Spinning"/>
   </b-card>
 </template>
 
@@ -38,8 +43,9 @@ export default {
       valuesReady: true,
     };
   },
-  methods: {
+  asyncComputed: {
     async lucky7PastGames() {
+      this.valuesReady = false;
       const lucky7PastGames = [];
       const contractInstance = await truffleContract(window.web3.currentProvider).deployed();
       const counter = (await contractInstance.initialLucky7TicketPosition()).toNumber();
@@ -60,6 +66,7 @@ export default {
         };
         lucky7PastGames[index] = pastTicket;
       });
+      this.valuesReady = true;
       return lucky7PastGames;
     },
   },

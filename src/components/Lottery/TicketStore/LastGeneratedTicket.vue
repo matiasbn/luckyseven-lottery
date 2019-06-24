@@ -62,7 +62,7 @@
 
     <b-card title="Lucky7Ticket?">
       <b-card-text
-        v-if="ticketIsLucky7Ticket">
+        v-if="ticketIsLucky7Ticket && currentGameTicket">
         <p>
           Yes! What are you waiting? Buy it!
         </p>
@@ -76,12 +76,12 @@
           Buy Ticket
         </b-button>
       </b-card-text>
-      <b-card-text v-else-if="ticketIsAlreadyOwned">
+      <b-card-text v-else-if="ticketIsAlreadyOwned && currentGameTicket">
         <p>
           You already own this ticket
         </p>
       </b-card-text>
-      <b-card-text v-else-if="notLucky7Ticket">
+      <b-card-text v-else-if="notLucky7Ticket && currentGameTicket">
         No, try again!.
       </b-card-text>
       <b-card-text v-else>

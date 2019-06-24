@@ -6,16 +6,23 @@
     header-text-variant="white"
   >
     <b-table
-      :items="lucky7GameInfo"
+      v-if="lucky7GameInfoReady"
       :fields="fields"
+      :items="lucky7GameInfo"
       striped
       hover
       responsive
       bordered
     />
+    <b-spinner
+      v-else
+      variant="warning"
+      label="Spinning"/>
   </b-card>
 </template>
 <script>
+/* eslint-disable max-len */
+
 import { mapState } from 'vuex';
 
 export default {
@@ -34,7 +41,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['lucky7GameInfo']),
+    ...mapState(['lucky7GameInfoReady', 'web3', 'lucky7GameInfo']),
   },
 };
 </script>
