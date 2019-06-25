@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/matiasbn/luckyseven.win/compare/v1.1.0...v2.0.0) (2019-06-25)
+
+
+### Bug Fixes
+
+* ticket store messages ([e1f3528](https://github.com/matiasbn/luckyseven.win/commit/e1f3528))
+
+
+### Features
+
+* prizes for current game table ([c53ef98](https://github.com/matiasbn/luckyseven.win/commit/c53ef98))
+* ticket stats counter ([5fc7aca](https://github.com/matiasbn/luckyseven.win/commit/5fc7aca))
+* tickets stats, game stats and past games ([f4f04e1](https://github.com/matiasbn/luckyseven.win/commit/f4f04e1))
+* user/admin dashboard ([52d65bd](https://github.com/matiasbn/luckyseven.win/commit/52d65bd))
+
+
+
 ## [1.2.0](https://github.com/matiasbn/luckyseven.win/compare/v1.1.0...v1.2.0) (2019-06-23)
 
 
