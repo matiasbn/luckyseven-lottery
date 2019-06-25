@@ -23,6 +23,13 @@
           {{ ethContractBalance }} ETH
         </b-card-text>
       </b-card>
+      <b-card
+        header="Lucky7 Contract Address"
+        header-tag="h4">
+        <b-card-text>
+          {{ contractAddress }}
+        </b-card-text>
+      </b-card>
     </b-card-group>
 
     <b-card-group deck>
@@ -76,6 +83,11 @@ export default {
       return web3.utils.fromWei(wei, 'ether');
     },
   },
+  data() {
+    return {
+      contractAddress: '0',
+    };
+  },
   computed: {
     ...mapState(['game', 'web3']),
     ...mapGetters(['network']),
@@ -85,6 +97,7 @@ export default {
   },
   async beforeMount() {
     const contract = await truffleContract(window.web3.currentProvider).deployed();
+    this.contractAddress = contract.address;
     const gameID = await contract.gameID();
     this.$store.state.game.settings.gameID = gameID;
     const gameParameters = await contract.getPastEvents('GameParameters', { fromBlock: 0 });

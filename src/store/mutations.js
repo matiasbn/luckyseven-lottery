@@ -40,23 +40,6 @@ export default{
   balanceUpdated(state, payload) {
     state.web3.contractBalance = payload;
   },
-  askForValues(state, payload) {
-    switch (payload) {
-      case 'generateTicket':
-        state.player.generatedTicket.received = false;
-        break;
-      case 'purchaseRandomTicket':
-        state.player.purchasedTicket.received = false;
-        state.player.purchasedTicket.lucky7Ticket = false;
-        break;
-      case 'purchaseGeneratedTicket':
-        state.player.generatedTicket.received = false;
-        state.player.purchasedTicket.received = false;
-        break;
-      default:
-        break;
-    }
-  },
   recoverPurchasedParameters(state, payload) {
     state.player.purchasedTicket.ticketValue = payload.ticketValue;
     state.player.purchasedTicket.number1 = payload.mu;

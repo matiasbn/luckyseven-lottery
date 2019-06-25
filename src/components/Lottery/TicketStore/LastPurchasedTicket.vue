@@ -11,7 +11,7 @@
       </b-card-text>
       <b-spinner
         v-else
-        variant="warning"
+        variant="success"
         label="Spinning"/>
     </b-card>
 
@@ -22,7 +22,7 @@
       </b-card-text>
       <b-spinner
         v-else
-        variant="warning"
+        variant="success"
         label="Spinning"/>
     </b-card>
 
@@ -33,7 +33,7 @@
       </b-card-text>
       <b-spinner
         v-else
-        variant="warning"
+        variant="success"
         label="Spinning"/>
     </b-card>
 
@@ -44,7 +44,7 @@
       </b-card-text>
       <b-spinner
         v-else
-        variant="warning"
+        variant="success"
         label="Spinning"/>
     </b-card>
 
@@ -55,7 +55,7 @@
       </b-card-text>
       <b-spinner
         v-else
-        variant="warning"
+        variant="success"
         label="Spinning"/>
     </b-card>
 
@@ -65,7 +65,7 @@
       </b-card-text>
       <b-spinner
         v-else
-        variant="warning"
+        variant="success"
         label="Spinning"/>
     </b-card>
   </div>
@@ -80,7 +80,7 @@ export default {
   computed: {
     ...mapState(['player', 'game', 'web3', 'lucky7GameInfo', 'lucky7GameInfoReady']),
     currentGameTicket() {
-      return String(this.game.settings.gameID) === String(this.player.generatedTicket.gameID);
+      return String(this.game.settings.gameID) === String(this.player.purchasedTicket.gameID);
     },
     isLucky7Ticket() {
       if (this.player.purchasedTicket.lucky7Ticket) {

@@ -3,7 +3,7 @@
     header="Ticket Store"
     header-tag="h1"
     class="ticket-store"
-    header-bg-variant="warning"
+    header-bg-variant="success"
     header-text-variant="white"
   >
     <b-card-group deck>

@@ -8,8 +8,8 @@ export default {
     contractBalance: '0',
   },
   player: {
-    currentPrize: '0',
-    prizeGameID: 0,
+    prizeAmount: '0',
+    prizeGameID: '0',
     purchasedTicket: {
       ticketValue: '0',
       number1: '0',

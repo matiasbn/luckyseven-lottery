@@ -16,14 +16,14 @@
           :disabled="game.settings.storeEnabled"
           size="lg"
           title="Price"
-          variant="warning"
+          variant="success"
           @click="generateTicket"
         >
           Generate Ticket
         </b-button>
         <b-spinner
           v-else
-          variant="warning"
+          variant="success"
           label="Spinning"/>
       </b-col>
     </b-row>
@@ -38,14 +38,14 @@
           :disabled="game.settings.storeEnabled"
           size="lg"
           title="Price"
-          variant="warning"
+          variant="success"
           @click="purchaseRandomTicket"
         >
           Give me a random ticket!
         </b-button>
         <b-spinner
           v-else
-          variant="warning"
+          variant="success"
           label="Spinning"/>
       </b-col>
     </b-row>
@@ -79,25 +79,29 @@ export default {
     async generateTicket() {
       try {
         const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
+        this.$store.state.player.generatedTicket.received = false;
         await truffleContractInstance.generateRandomTicket({
           from: this.web3.coinbase,
           value: parseInt(this.game.prices.generate, 10),
         });
-        this.$store.dispatch('askForValues', 'generateTicket');
       } catch (e) {
+        this.$store.state.player.generatedTicket.received = true;
         console.log(e);
       }
     },
     async purchaseRandomTicket() {
       try {
         const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
+        this.$store.state.player.purchasedTicket.received = false;
+        this.$store.state.player.purchasedTicket.lucky7Ticket = false;
         await truffleContractInstance.sellRandomTicket({
           from: this.web3.coinbase,
           value: parseInt(this.game.prices.purchase, 10),
         });
-        this.$store.dispatch('askForValues', 'purchaseRandomTicket');
       } catch (e) {
         console.log(e);
+        this.$store.state.player.purchasedTicket.received = true;
+        this.$store.state.player.purchasedTicket.lucky7Ticket = true;
       }
     },
   },

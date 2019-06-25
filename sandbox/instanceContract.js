@@ -23,5 +23,8 @@ lucky7Instance.sellRandomTicket({from: account, value: purchaseTicketPrice});
 //Retrieve user values 
 await lucky7Instance.userValues(account)
 
+// Get past 'Lucky7TicketStored' events
+lucky7Instance.getPastEvents('Lucky7TicketStored',{filter:{owner:account}})
+
 //Getting accounts
 var account = web3.eth.accounts[0]

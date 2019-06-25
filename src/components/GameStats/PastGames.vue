@@ -13,7 +13,7 @@
     />
     <b-spinner
       v-else
-      variant="warning"
+      variant="success"
       label="Spinning"/>
   </b-card>
 </template>

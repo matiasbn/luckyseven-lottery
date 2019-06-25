@@ -11,7 +11,7 @@
       </b-card-text>
       <b-spinner
         v-else
-        variant="warning"
+        variant="success"
         label="Spinning"/>
 
     </b-card>
@@ -23,7 +23,7 @@
       </b-card-text>
       <b-spinner
         v-else
-        variant="warning"
+        variant="success"
         label="Spinning"/>
     </b-card>
 
@@ -34,7 +34,7 @@
       </b-card-text>
       <b-spinner
         v-else
-        variant="warning"
+        variant="success"
         label="Spinning"/>
     </b-card>
 
@@ -45,7 +45,7 @@
       </b-card-text>
       <b-spinner
         v-else
-        variant="warning"
+        variant="success"
         label="Spinning"/>
     </b-card>
 
@@ -56,7 +56,7 @@
       </b-card-text>
       <b-spinner
         v-else
-        variant="warning"
+        variant="success"
         label="Spinning"/>
     </b-card>
 
@@ -70,7 +70,7 @@
           v-b-popover.hover="purchasePrice"
           :disabled="!player.generatedTicket.received"
           title="Price"
-          variant="warning"
+          variant="success"
           @click="purchaseGeneratedTicket"
         >
           Buy Ticket
@@ -140,13 +140,16 @@ export default {
     async purchaseGeneratedTicket() {
       try {
         const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
+        this.$store.state.player.generatedTicket.received = false;
+        this.$store.state.player.purchasedTicket.received = false;
         await truffleContractInstance.sellGeneratedTicket({
           from: this.web3.coinbase,
           value: parseInt(this.game.prices.purchase, 10),
         });
-        this.$store.dispatch('askForValues', 'purchaseGeneratedTicket');
       } catch (e) {
         console.log(e);
+        this.$store.state.player.generatedTicket.received = false;
+        this.$store.state.player.purchasedTicket.received = false;
       }
     },
     purchasePrice() {

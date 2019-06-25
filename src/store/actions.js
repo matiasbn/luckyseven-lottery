@@ -132,7 +132,4 @@ export default {
   parameterReceived({ commit }, payload) {
     commit('parameterReceived', payload);
   },
-  askForValues({ commit }, payload) {
-    commit('askForValues', payload);
-  },
 };

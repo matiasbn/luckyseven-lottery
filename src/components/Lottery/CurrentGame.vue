@@ -2,7 +2,7 @@
   <b-card
     header="Current game"
     header-tag="h1"
-    header-bg-variant="warning"
+    header-bg-variant="success"
     header-text-variant="white"
   >
     <b-table
@@ -16,7 +16,7 @@
     />
     <b-spinner
       v-else
-      variant="warning"
+      variant="success"
       label="Spinning"/>
   </b-card>
 </template>
