@@ -10,6 +10,10 @@ export default {
   player: {
     prizeAmount: '0',
     prizeGameID: '0',
+    session: {
+      isLoggedIn: false,
+      proveder: 'metamask',
+    },
     purchasedTicket: {
       ticketValue: '0',
       number1: '0',

@@ -8,7 +8,6 @@ import Lottery from '@/views/Lottery';
 import GameStats from '@/views/GameStats';
 import UserDashboard from '@/views/UserDashboard';
 import Login from '@/views/Login';
-import state from '@/store/state';
 
 Vue.use(VueRouter);
 

@@ -27,6 +27,7 @@
     "portal-vue": "^2.1.4",
     "truffle-contract": "^4.0.17",
     "truffle-hdwallet-provider": "^1.0.9",
+    "uport-connect": "^1.1.11",
     "vue": "^2.6.10",
     "vue-async-computed": "^3.7.0",
     "vue-router": "^3.0.1",
