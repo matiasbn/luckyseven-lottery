@@ -16,10 +16,10 @@
 /* eslint-disable no-underscore-dangle */
 
 import truffleContract from '@/web3/truffleContract';
-import AdminView from './UserDashboard/AdminView';
-import PlayerStats from './UserDashboard/PlayerStats';
-import PlayerTickets from './UserDashboard/PlayerTickets';
-import PlayerPrizes from './UserDashboard/PlayerPrizes';
+import AdminView from '@/components/UserDashboard/AdminView';
+import PlayerStats from '@/components/UserDashboard/PlayerStats';
+import PlayerTickets from '@/components/UserDashboard/PlayerTickets';
+import PlayerPrizes from '@/components/UserDashboard/PlayerPrizes';
 
 export default {
   components: {

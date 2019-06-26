@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import CurrentGameStats from './GameStats/CurrentGameStats';
-import TicketsStats from './GameStats/TicketsStats';
-import PastGames from './GameStats/PastGames';
+import CurrentGameStats from '@/components/GameStats/CurrentGameStats';
+import TicketsStats from '@/components/GameStats/TicketsStats';
+import PastGames from '@/components/GameStats/PastGames';
 
 export default {
   components: {

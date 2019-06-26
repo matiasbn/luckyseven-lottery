@@ -7,7 +7,7 @@
 <script>
 
 import pollWeb3 from '@/web3/pollWeb3';
-import Header from './components/Header';
+import Header from '@/views/Header';
 
 export default {
   name: 'App',

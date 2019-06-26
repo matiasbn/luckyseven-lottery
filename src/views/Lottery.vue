@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import CurrentGame from './Lottery/CurrentGame';
-import TicketStore from './Lottery/TicketStore';
+import CurrentGame from '@/components/Lottery/CurrentGame';
+import TicketStore from '@/components/Lottery/TicketStore';
 
 export default {
   components: {

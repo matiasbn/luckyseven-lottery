@@ -1,10 +1,10 @@
 /* eslint-disable import/prefer-default-export */
-import Landing from '../components/Landing';
-import Rules from '../components/Rules';
-import HowNumbersGenerate from '../components/HowNumbersGenerate';
-import Lottery from '../components/Lottery';
-import GameStats from '../components/GameStats';
-import UserDashboard from '../components/UserDashboard';
+import Landing from '@/views/Landing';
+import Rules from '@/views/Rules';
+import HowNumbersGenerate from '@/views/HowNumbersGenerate';
+import Lottery from '@/views/Lottery';
+import GameStats from '@/views/GameStats';
+import UserDashboard from '@/views/UserDashboard';
 
 export const routes = [
   {
