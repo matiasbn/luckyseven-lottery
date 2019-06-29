@@ -3,16 +3,16 @@
 /* eslint-disable import/prefer-default-export */
 import Vue from 'vue';
 import Vuex from 'vuex';
-import getters from './getters';
-import actions from './actions';
-import state from './state';
-import mutations from './mutations';
+import game from './game';
+import player from './player';
+import web3 from './web3';
 
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
-  getters,
-  actions,
-  mutations,
-  state,
+  modules: {
+    game,
+    player,
+    web3,
+  },
 });

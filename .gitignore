@@ -18,5 +18,5 @@ selenium-debug.log
 *.sln
 *.log
 .env
-
+ganache-cli-data/*
 bridge.log

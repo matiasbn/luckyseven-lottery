@@ -1,6 +1,5 @@
-const checkLucky7Ticket = (state, payload) => {
+const checkLucky7Ticket = (lucky7GameInfo, payload) => {
   const { ticket } = payload;
-  const lucky7GameInfo = state.lucky7GameInfo;
   let difference = 0;
   let position = 0;
   if (ticket < lucky7GameInfo[0].number) {
@@ -32,7 +31,7 @@ const checkLucky7Ticket = (state, payload) => {
     }
     return { difference, position, lucky7Ticket: false };
   }
-  if (payload.grantType === 'generatedTicket' || payload.grantType === 'recoverGenerated') {
+  if (payload.grantType === 'generatedTicket' || payload.grantType === 'recoverGenerated' || payload.grantType === 'newTicketReceived') {
     if (difference < lucky7GameInfo[position].difference
         || lucky7GameInfo[position].owner === '0x0000000000000000000000000000000000000000') {
       return { difference, position, lucky7Ticket: true };

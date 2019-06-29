@@ -11,7 +11,7 @@ const pollWeb3 = () => {
         const web3Coinbase = await web3.eth.getCoinbase();
         const web3Balance = await web3.eth.getBalance(web3Coinbase);
         if (web3Coinbase !== coinbase || web3Balance !== balance) {
-          store.dispatch('pollWeb3', {
+          store.dispatch('web3/pollWeb3', {
             coinbase: web3Coinbase,
             balance: web3Balance,
           });

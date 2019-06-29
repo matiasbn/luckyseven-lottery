@@ -93,36 +93,44 @@
 <script>
 /* eslint-disable max-len */
 import truffleContract from '@/web3/truffleContract';
-import { mapState } from 'vuex';
+import functions from '@/web3/functions';
+import { mapState, mapMutations } from 'vuex';
 import Web3 from 'web3';
 
-const web3 = new Web3();
 
 export default {
   computed: {
-    ...mapState(['game', 'player', 'lucky7GameInfo', 'web3', 'lucky7GameInfoReady']),
+    ...mapState('game', {
+      lucky7GameInfo: state => state.lucky7GameInfo,
+      lucky7GameInfoReady: state => state.lucky7GameInfoReady,
+      b: state => state.settings.b,
+      n: state => state.settings.n,
+      p: state => state.settings.p,
+      j: state => state.settings.j,
+    }),
+    ...mapState(['player', 'web3', 'game']),
     currentGameTicket() {
       return String(this.game.settings.gameID) === String(this.player.generatedTicket.gameID);
     },
     ticketIsLucky7Ticket() {
       if (this.lucky7GameInfo[this.player.generatedTicket.position - 1] !== undefined) {
         return this.player.generatedTicket.lucky7Ticket
-            && this.player.generatedTicket.ticketValue !== '0'
-            && String(this.player.generatedTicket.ticketValue) !== String(this.lucky7GameInfo[this.player.generatedTicket.position - 1].ticketValue);
+        && this.player.generatedTicket.ticketValue !== '0'
+        && String(this.player.generatedTicket.ticketValue) !== String(this.lucky7GameInfo[this.player.generatedTicket.position - 1].ticketValue);
       }
       return false;
     },
     ticketIsAlreadyOwned() {
       if (this.lucky7GameInfo[this.player.generatedTicket.position - 1] !== undefined) {
         return (this.lucky7GameInfo[this.player.generatedTicket.position - 1].owner).toUpperCase() === (this.web3.coinbase).toUpperCase()
-            && this.player.generatedTicket.ticketValue !== '0'
-            && String(this.player.generatedTicket.ticketValue) === String(this.lucky7GameInfo[this.player.generatedTicket.position - 1].ticketValue);
+        && this.player.generatedTicket.ticketValue !== '0'
+        && String(this.player.generatedTicket.ticketValue) === String(this.lucky7GameInfo[this.player.generatedTicket.position - 1].ticketValue);
       }
       return false;
     },
     notLucky7Ticket() {
       return !this.player.generatedTicket.lucky7Ticket
-            && this.player.generatedTicket.ticketValue !== '0';
+      && this.player.generatedTicket.ticketValue !== '0';
     },
   },
   watch: {
@@ -131,21 +139,18 @@ export default {
       const pastGenerateParameters = await contract.getPastEvents('GeneratedParametersReceived', { fromBlock: 0, filter: { owner: this.web3.coinbase } });
       if (pastGenerateParameters.length) {
         const { mu, i, gameID } = pastGenerateParameters[`${pastGenerateParameters.length - 1}`].returnValues;
-        const payload = { mu, i, gameID };
-        this.$store.dispatch('recoverGeneratedParameters', payload);
+        const payload = { mu, i, gameID, b: this.b, n: this.n, p: this.p, j: this.j, lucky7GameInfo: this.lucky7GameInfo };
+        this.recoverGeneratedParameters(payload);
       }
     },
   },
   methods: {
+    ...mapMutations('player', ['recoverGeneratedParameters']),
     async purchaseGeneratedTicket() {
       try {
-        const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
         this.$store.state.player.generatedTicket.received = false;
         this.$store.state.player.purchasedTicket.received = false;
-        await truffleContractInstance.sellGeneratedTicket({
-          from: this.web3.coinbase,
-          value: parseInt(this.game.prices.purchase, 10),
-        });
+        await functions.purchaseGeneratedTicket(this.$store.state);
       } catch (e) {
         console.log(e);
         this.$store.state.player.generatedTicket.received = false;
@@ -153,6 +158,7 @@ export default {
       }
     },
     purchasePrice() {
+      const web3 = new Web3();
       return `${web3.utils.fromWei(this.game.prices.purchase, 'ether')} ETH + fees`;
     },
   },

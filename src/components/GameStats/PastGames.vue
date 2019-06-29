@@ -24,7 +24,6 @@ import Web3 from 'web3';
 import orderBy from 'lodash.orderby';
 import truffleContract from '@/web3/truffleContract';
 
-const web3 = new Web3(window.web3.currentProvider);
 
 export default {
   data() {
@@ -45,8 +44,10 @@ export default {
   },
   asyncComputed: {
     async lucky7PastGames() {
+      const web3 = new Web3();
       this.valuesReady = false;
       const lucky7PastGames = [];
+      // eslint-disable-next-line max-len
       const contractInstance = await truffleContract(window.web3.currentProvider).deployed();
       const counter = (await contractInstance.initialLucky7TicketPosition()).toNumber();
       const lucky7TicketsPromises = [];

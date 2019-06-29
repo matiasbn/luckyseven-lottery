@@ -73,12 +73,17 @@
 
 <script>
 /* eslint-disable max-len */
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import truffleContract from '@/web3/truffleContract';
 
 export default {
   computed: {
-    ...mapState(['player', 'game', 'web3', 'lucky7GameInfo', 'lucky7GameInfoReady']),
+    ...mapState('game', {
+      game: state => state,
+      lucky7GameInfo: state => state.lucky7GameInfo,
+      lucky7GameInfoReady: state => state.lucky7GameInfoReady,
+    }),
+    ...mapState(['player', 'web3']),
     currentGameTicket() {
       return String(this.game.settings.gameID) === String(this.player.purchasedTicket.gameID);
     },
@@ -98,10 +103,13 @@ export default {
       const pastPurchaseParameters = await contract.getPastEvents('NewTicketReceived', { fromBlock: 0, filter: { owner: this.web3.coinbase } });
       if (pastPurchaseParameters.length) {
         const { ticketValue, mu, i, ticketID, owner, gameID } = pastPurchaseParameters[`${pastPurchaseParameters.length - 1}`].returnValues;
-        const payload = { ticketValue, mu, i, ticketID, owner, gameID };
-        this.$store.dispatch('recoverPurchasedParameters', payload);
+        const payload = { ticketValue, mu, i, ticketID, owner, gameID, lucky7GameInfo: this.lucky7GameInfo };
+        this.recoverPurchasedParameters(payload);
       }
     },
+  },
+  methods: {
+    ...mapMutations('player', ['recoverPurchasedParameters']),
   },
 };
 </script>

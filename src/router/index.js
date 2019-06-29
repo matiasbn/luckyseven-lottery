@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable import/prefer-default-export */
 import Vue from 'vue';
 import VueRouter from 'vue-router';
@@ -8,6 +9,7 @@ import Lottery from '@/views/Lottery';
 import GameStats from '@/views/GameStats';
 import UserDashboard from '@/views/UserDashboard';
 import Login from '@/views/Login';
+import player from '@/store/player/';
 
 Vue.use(VueRouter);
 
@@ -28,17 +30,23 @@ export const router = new VueRouter({
     {
       path: '/lottery',
       component: Lottery,
-      meta: { requiresAuth: true },
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: '/game_stats',
       component: GameStats,
-      meta: { requiresAuth: true },
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: '/user_dashboard',
       component: UserDashboard,
-      meta: { requiresAuth: true },
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: '/login',
@@ -46,4 +54,14 @@ export const router = new VueRouter({
     },
   ],
   mode: 'history',
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth) && !player.state.session.isLoggedIn) {
+    next({
+      path: '/login',
+    });
+  } else {
+    next();
+  }
 });

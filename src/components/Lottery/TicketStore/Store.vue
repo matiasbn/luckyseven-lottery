@@ -7,7 +7,7 @@
     <b-row>
       <b-col>
         <p>
-          Generate a ticket for a lower price than purchasing it! If the ticket
+          Generate a ticket for a lower price than purchasing it! <br> If the ticket
           generated is a Lucky7Ticket you'll have the option to buy it. <br>
         </p>
         <b-button
@@ -56,8 +56,8 @@
 /* eslint-disable max-len */
 
 import Web3 from 'web3';
-import truffleContract from '@/web3/truffleContract';
 import { mapState } from 'vuex';
+import functions from '@/web3/functions';
 
 const web3 = new Web3();
 
@@ -78,12 +78,8 @@ export default {
     },
     async generateTicket() {
       try {
-        const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
         this.$store.state.player.generatedTicket.received = false;
-        await truffleContractInstance.generateRandomTicket({
-          from: this.web3.coinbase,
-          value: parseInt(this.game.prices.generate, 10),
-        });
+        await functions.generateTicket(this.$store.state);
       } catch (e) {
         this.$store.state.player.generatedTicket.received = true;
         console.log(e);
@@ -91,13 +87,9 @@ export default {
     },
     async purchaseRandomTicket() {
       try {
-        const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
         this.$store.state.player.purchasedTicket.received = false;
         this.$store.state.player.purchasedTicket.lucky7Ticket = false;
-        await truffleContractInstance.sellRandomTicket({
-          from: this.web3.coinbase,
-          value: parseInt(this.game.prices.purchase, 10),
-        });
+        await functions.purchaseRandomTicket(this.$store.state);
       } catch (e) {
         console.log(e);
         this.$store.state.player.purchasedTicket.received = true;

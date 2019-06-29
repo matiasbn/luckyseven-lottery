@@ -41,7 +41,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(['lucky7GameInfoReady', 'web3', 'lucky7GameInfo']),
+    ...mapState('game', {
+      lucky7GameInfo: state => state.lucky7GameInfo,
+      lucky7GameInfoReady: state => state.lucky7GameInfoReady,
+    }),
   },
 };
 </script>

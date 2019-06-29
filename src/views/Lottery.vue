@@ -24,7 +24,7 @@ export default {
     TicketStore,
   },
   beforeCreate() {
-    this.$store.dispatch('getGameSettings');
+    this.$store.dispatch('game/getGameSettings');
   },
 };
 </script>

@@ -15,11 +15,11 @@ export default {
     Header,
   },
   beforeCreate() {
-    this.$store.dispatch('registerWeb3');
+    this.$store.dispatch('web3/registerWeb3');
     pollWeb3();
   },
   beforeMount() {
-    this.$store.dispatch('listenEvents', this.$store.state.web3.coinbase);
+    this.$store.dispatch('web3/listenEvents');
   },
 };
 </script>

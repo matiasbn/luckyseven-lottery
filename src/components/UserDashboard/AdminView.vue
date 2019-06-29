@@ -50,6 +50,7 @@
 /* eslint-disable max-len */
 import truffleContract from '@/web3/truffleContract';
 import { mapState } from 'vuex';
+import functions from '@/web3/functions';
 
 export default {
   data() {
@@ -82,22 +83,21 @@ export default {
   methods: {
     async setNewGame() {
       try {
-        const contractInstance = await truffleContract(window.web3.currentProvider).deployed();
         this.buttonsEnabled = false;
-        await contractInstance.setNewGame({ from: this.coinbase });
+        await functions.setNewGame(this.$store.state);
         this.buttonsEnabled = true;
       } catch (e) {
+        this.buttonsEnabled = true;
         console.log(e);
       }
     },
     async setLucky7Numbers() {
       try {
-        const contractInstance = await truffleContract(window.web3.currentProvider).deployed();
-        const values = [1293812983, 2139812893, 3237182731, 4224567890, 5224567890, 6123819273, 7939871237];
         this.buttonsEnabled = false;
-        await contractInstance.insertLucky7Numbers(values, { from: this.coinbase });
+        await functions.setLucky7Numbers(this.$store.state);
         this.buttonsEnabled = true;
       } catch (e) {
+        this.buttonsEnabled = true;
         console.log(e);
       }
     },

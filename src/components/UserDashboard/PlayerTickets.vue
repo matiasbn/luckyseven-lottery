@@ -25,7 +25,7 @@ import truffleContract from '@/web3/truffleContract';
 import { mapState } from 'vuex';
 import Web3 from 'web3';
 
-const web3 = new Web3(window.web3.currentProvider);
+const web3 = new Web3();
 
 export default {
   data() {

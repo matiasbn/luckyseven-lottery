@@ -46,6 +46,7 @@
 import Web3 from 'web3';
 import { mapState } from 'vuex';
 import truffleContract from '@/web3/truffleContract';
+import functions from '@/web3/functions';
 
 const web3 = new Web3();
 
@@ -92,9 +93,8 @@ export default {
   methods: {
     async claimPrize() {
       try {
-        const contractInstance = await truffleContract(window.web3.currentProvider).deployed();
         this.withdrawReady = false;
-        await contractInstance.withdraw({ from: this.$store.state.web3.coinbase });
+        await functions.claimPrize(this.$store.state);
         this.currentPrize = '0';
         this.currentGamePrize = false;
         this.withdrawReady = true;

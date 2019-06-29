@@ -75,11 +75,11 @@ import Web3 from 'web3';
 import { mapState, mapGetters } from 'vuex';
 import truffleContract from '@/web3/truffleContract';
 
-const web3 = new Web3(window.web3.currentProvider);
 
 export default {
   filters: {
     transformWei(wei) {
+      const web3 = new Web3(window.web3.currentProvider);
       return web3.utils.fromWei(wei, 'ether');
     },
   },
@@ -89,13 +89,22 @@ export default {
     };
   },
   computed: {
-    ...mapState(['game', 'web3']),
-    ...mapGetters(['network']),
+    ...mapState('game', {
+      lucky7GameInfo: state => state.lucky7GameInfo,
+      lucky7GameInfoReady: state => state.lucky7GameInfoReady,
+    }),
+    ...mapState(['player', 'web3', 'game']),
+    ...mapGetters('web3', [
+      'network',
+    ]),
     ethContractBalance() {
+      const web3 = new Web3();
       return web3.utils.fromWei(this.web3.contractBalance, 'ether');
     },
   },
-  async beforeMount() {
+  async mounted() {
+    console.log(this.network);
+    const web3 = new Web3(window.web3.currentProvider);
     const contract = await truffleContract(window.web3.currentProvider).deployed();
     this.contractAddress = contract.address;
     const gameID = await contract.gameID();
