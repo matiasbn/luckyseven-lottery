@@ -44,7 +44,7 @@
 /* eslint-disable max-len */
 /* eslint-disable max-len */
 import Web3 from 'web3';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import truffleContract from '@/web3/truffleContract';
 import functions from '@/web3/functions';
 
@@ -77,6 +77,7 @@ export default {
       sessionProvider: state => state.player.session.provider,
       isConnected: state => state.web3.isConnected,
     }),
+    ...mapGetters('player', ['currentProvider']),
   },
   watch: {
     async gameID() {
@@ -104,9 +105,9 @@ export default {
     },
     async refreshCurrentPrize() {
       try {
-        const contractInstance = await truffleContract(window.web3.currentProvider).deployed();
+        const contractInstance = await truffleContract(this.currentProvider).deployed();
         this.withdrawReady = false;
-        const currentPrize = await contractInstance.pendingWithdrawals(window.web3.currentProvider.selectedAddress);
+        const currentPrize = await contractInstance.pendingWithdrawals(this.account);
         const gameID = await contractInstance.gameID();
         this.currentGamePrize = (currentPrize.gameID.toNumber() + 1 === gameID.toNumber()) && (currentPrize.amount.toString() !== '0');
         this.currentPrize = this.currentGamePrize ? currentPrize.amount.toString() : '0';

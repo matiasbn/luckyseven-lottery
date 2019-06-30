@@ -6,7 +6,6 @@
 </template>
 <script>
 
-// import pollWeb3 from '@/web3/pollWeb3';
 import Header from '@/views/Header';
 
 export default {
@@ -14,13 +13,6 @@ export default {
   components: {
     Header,
   },
-  // beforeCreate() {
-  //   this.$store.dispatch('web3/registerWeb3');
-  //   pollWeb3();
-  // },
-  // beforeMount() {
-  //   this.$store.dispatch('web3/listenEvents');
-  // },
 };
 </script>
 

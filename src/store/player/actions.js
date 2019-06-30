@@ -15,7 +15,6 @@ export const metamaskLogin = ({ commit }) => new Promise(async (resolve, reject)
       contractAddress: null,
       contractBalance: null,
       networkID: null,
-      currentProvider: null,
       isConnected: null,
       sessionProvider: null,
     };
@@ -27,8 +26,7 @@ export const metamaskLogin = ({ commit }) => new Promise(async (resolve, reject)
       currentState.balance = await web3.eth.getBalance(currentState.coinbase);
       currentState.contractAddress = truffleContractInstance.address;
       currentState.contractBalance = await web3.eth.getBalance(truffleContractInstance.address);
-      currentState.currentProvider = window.ethereum;
-      currentState.isConnected = web3.eth.net.isListening();
+      currentState.isConnected = await web3.eth.net.isListening();
       currentState.sessionProvider = 'metamask';
       commit('metamaskLogin');
       commit('web3/registerWeb3Instance', currentState, { root: true });
@@ -38,10 +36,9 @@ export const metamaskLogin = ({ commit }) => new Promise(async (resolve, reject)
       const web3 = new Web3(window.web3.currentProvider);
       currentState.networkID = await web3.eth.net.getId();
       currentState.coinbase = await web3.eth.getCoinbase();
-      currentState.currentProvider = window.web3.currentProvider;
       currentState.balance = await web3.eth.getBalance(currentState.coinbase);
       currentState.contractBalance = await web3.eth.getBalance(truffleContractInstance.address);
-      currentState.isConnected = web3.eth.net.isListening();
+      currentState.isConnected = await web3.eth.net.isListening();
       commit('web3/registerWeb3Instance', currentState, { root: true });
       resolve();
     } else {
@@ -77,8 +74,6 @@ export const uportLogin = async ({ commit, state }) => {
         },
         'disclosureReq',
       );
-      // window.web3.currentProvider
-      // window.web3.currentProvider
       const data = await uport.onResponse('disclosureReq');
       console.log(data);
       const uportProvider = uport.getProvider();

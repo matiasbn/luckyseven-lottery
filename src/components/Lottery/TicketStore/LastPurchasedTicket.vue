@@ -73,7 +73,7 @@
 
 <script>
 /* eslint-disable max-len */
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapGetters } from 'vuex';
 import truffleContract from '@/web3/truffleContract';
 
 export default {
@@ -84,6 +84,7 @@ export default {
       lucky7GameInfoReady: state => state.lucky7GameInfoReady,
     }),
     ...mapState(['player', 'web3']),
+    ...mapGetters('player', ['currentProvider']),
     currentGameTicket() {
       return String(this.game.settings.gameID) === String(this.player.purchasedTicket.gameID);
     },
@@ -99,7 +100,7 @@ export default {
   },
   watch: {
     async lucky7GameInfoReady() {
-      const contract = await truffleContract(window.web3.currentProvider).deployed();
+      const contract = await truffleContract(this.currentProvider).deployed();
       const pastPurchaseParameters = await contract.getPastEvents('NewTicketReceived', { fromBlock: 0, filter: { owner: this.web3.coinbase } });
       if (pastPurchaseParameters.length) {
         const { ticketValue, mu, i, ticketID, owner, gameID } = pastPurchaseParameters[`${pastPurchaseParameters.length - 1}`].returnValues;

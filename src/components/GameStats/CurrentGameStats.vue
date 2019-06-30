@@ -79,7 +79,7 @@ import truffleContract from '@/web3/truffleContract';
 export default {
   filters: {
     transformWei(wei) {
-      const web3 = new Web3(window.web3.currentProvider);
+      const web3 = new Web3();
       return web3.utils.fromWei(wei, 'ether');
     },
   },
@@ -93,18 +93,19 @@ export default {
       lucky7GameInfo: state => state.lucky7GameInfo,
       lucky7GameInfoReady: state => state.lucky7GameInfoReady,
     }),
-    ...mapState(['player', 'web3', 'game']),
+    ...mapState(['player', 'game', 'web3']),
     ...mapGetters('web3', [
       'network',
     ]),
+    ...mapGetters('player', ['currentProvider']),
     ethContractBalance() {
       const web3 = new Web3();
       return web3.utils.fromWei(this.web3.contractBalance, 'ether');
     },
   },
   async mounted() {
-    const web3 = new Web3(window.web3.currentProvider);
-    const contract = await truffleContract(window.web3.currentProvider).deployed();
+    const web3 = new Web3(this.currentProvider);
+    const contract = await truffleContract(this.currentProvider).deployed();
     this.contractAddress = contract.address;
     const gameID = await contract.gameID();
     this.$store.state.game.settings.gameID = gameID;

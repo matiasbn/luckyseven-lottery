@@ -68,3 +68,9 @@ export const getGameSettings = (state, payload) => {
   state.settings.gameID = gameID;
 };
 
+export const updateTicketStats = (state, payload) => {
+  state.stats.randomTickets = payload.randomTicketsCounter;
+  state.stats.generatedTickets = payload.generatedTicketsCounter;
+  state.stats.generatedTicketsSelled = payload.generatedTicketsSelledCounter;
+};
+

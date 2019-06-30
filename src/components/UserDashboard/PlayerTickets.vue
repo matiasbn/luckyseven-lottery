@@ -22,7 +22,7 @@
 <script>
 
 import truffleContract from '@/web3/truffleContract';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import Web3 from 'web3';
 
 const web3 = new Web3();
@@ -48,15 +48,16 @@ export default {
   computed: {
     ...mapState({
       gameID: state => state.game.settings.gameID,
-      coinbase: state => state.web3.coinbase,
+      account: state => state.web3.account,
     }),
+    ...mapGetters('player', ['currentProvider']),
   },
   watch: {
     // eslint-disable-next-line consistent-return
     async gameID() {
       this.refreshTickets();
     },
-    async coinbase() {
+    async account() {
       this.refreshTickets();
     },
   },
@@ -70,8 +71,8 @@ export default {
       try {
         this.valuesReady = false;
         const playerTicketsArray = [];
-        const contract = await truffleContract(window.web3.currentProvider).deployed();
-        const playerTickets = await contract.getPastEvents('Lucky7TicketStored', { fromBlock: 0, filter: { owner: window.web3.currentProvider.selectedAddress } });
+        const contract = await truffleContract(this.currentProvider).deployed();
+        const playerTickets = await contract.getPastEvents('Lucky7TicketStored', { fromBlock: 0, filter: { owner: this.account } });
         playerTickets.forEach((lucky7Ticket) => {
           const ticket = lucky7Ticket.returnValues;
           const row = {

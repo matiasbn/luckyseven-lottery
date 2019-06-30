@@ -1,14 +1,16 @@
+/* eslint-disable import/prefer-default-export */
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable no-case-declarations */
 /* eslint-disable max-len */
+/* eslint-disable import/no-named-as-default */
 
-import Web3 from 'web3';
 import truffleContract from '@/web3/truffleContract';
+import currentProvider from '@/store/player/getters';
 
 
 export const listenEvents = async ({ commit, state, rootState }) => {
-  const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
+  const truffleContractInstance = await truffleContract(currentProvider(rootState.player)).deployed();
   // To avoid double events where important, it stores the transaction hashes and checks if it is repeated
   const eventsTransactionHash = {
     newTicketReceived: null,
@@ -66,28 +68,4 @@ export const listenEvents = async ({ commit, state, rootState }) => {
       }
     })
     .on('error', console.error);
-};
-export const registerWeb3 = async ({ commit }) => {
-  try {
-    if (window.ethereum) {
-      const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
-      await window.ethereum.enable();
-      const web3 = new Web3(window.web3.currentProvider);
-      const networkID = await web3.eth.net.getId();
-      const coinbase = await web3.eth.getCoinbase();
-      web3.eth.defaultAccount = coinbase;
-      const balance = await web3.eth.getBalance(coinbase);
-      const contractBalance = await web3.eth.getBalance(truffleContractInstance.address);
-      const currentState = {
-        networkID,
-        coinbase,
-        balance,
-        contractBalance,
-        isConnected: await web3.eth.net.isListening(),
-      };
-      commit('registerWeb3Instance', currentState);
-    }
-  } catch (e) {
-    console.log(e);
-  }
 };

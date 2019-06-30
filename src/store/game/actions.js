@@ -1,11 +1,14 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable no-case-declarations */
 /* eslint-disable max-len */
+/* eslint-disable import/no-named-as-default */
 
 import truffleContract from '@/web3/truffleContract';
+import currentProvider from '@/store/player/getters';
+
 
 export const getGameSettings = async ({ commit, rootState }) => {
-  const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
+  const truffleContractInstance = await truffleContract(currentProvider(rootState.player)).deployed();
   const valuesPromises = [
     truffleContractInstance.getPastEvents('GameParameters', { fromBlock: 0 }),
     truffleContractInstance.settingLucky7Numbers(),

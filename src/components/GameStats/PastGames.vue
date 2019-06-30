@@ -22,6 +22,7 @@
 
 import Web3 from 'web3';
 import orderBy from 'lodash.orderby';
+import { mapGetters } from 'vuex';
 import truffleContract from '@/web3/truffleContract';
 
 
@@ -42,13 +43,16 @@ export default {
       valuesReady: true,
     };
   },
+  computed: {
+    ...mapGetters('player', ['currentProvider']),
+  },
   asyncComputed: {
     async lucky7PastGames() {
       const web3 = new Web3();
       this.valuesReady = false;
       const lucky7PastGames = [];
       // eslint-disable-next-line max-len
-      const contractInstance = await truffleContract(window.web3.currentProvider).deployed();
+      const contractInstance = await truffleContract(this.currentProvider).deployed();
       const counter = (await contractInstance.initialLucky7TicketPosition()).toNumber();
       const lucky7TicketsPromises = [];
       for (let i = 0; i < counter; i += 1) {

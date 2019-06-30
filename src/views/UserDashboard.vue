@@ -20,6 +20,7 @@ import AdminView from '@/components/UserDashboard/AdminView';
 import PlayerStats from '@/components/UserDashboard/PlayerStats';
 import PlayerTickets from '@/components/UserDashboard/PlayerTickets';
 import PlayerPrizes from '@/components/UserDashboard/PlayerPrizes';
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -34,6 +35,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters('player', ['currentProvider']),
     setTitle() {
       return this.isAdmin ? 'Admin dashboard' : 'User dashboard';
     },
@@ -41,12 +43,12 @@ export default {
       return String(this.$store.state.web3.coinbase).toUpperCase() === String(this.contractOwner).toUpperCase();
     },
   },
-  async beforeCreate() {
-    const contractInstance = await truffleContract(window.web3.currentProvider).deployed();
+  async created() {
+    const contractInstance = await truffleContract(this.currentProvider).deployed();
     this.contractOwner = await contractInstance.owner();
   },
   async updated() {
-    const contractInstance = await truffleContract(window.web3.currentProvider).deployed();
+    const contractInstance = await truffleContract(this.currentProvider).deployed();
     this.contractOwner = await contractInstance.owner();
   },
 };

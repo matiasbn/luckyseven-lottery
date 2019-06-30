@@ -49,7 +49,7 @@
 <script>
 /* eslint-disable max-len */
 import truffleContract from '@/web3/truffleContract';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import functions from '@/web3/functions';
 
 export default {
@@ -63,6 +63,7 @@ export default {
   },
   computed: {
     ...mapState(['game']),
+    ...mapGetters('player', ['currentProvider']),
     setTitle() {
       return this.isAdmin ? 'Admin dashboard' : 'User dashboard';
     },
@@ -70,13 +71,13 @@ export default {
       return String(this.$store.state.web3.coinbase).toUpperCase() === String(this.contractOwner).toUpperCase();
     },
   },
-  async beforeCreate() {
-    const contractInstance = await truffleContract(window.web3.currentProvider).deployed();
+  async created() {
+    const contractInstance = await truffleContract(this.currentProvider).deployed();
     this.contractOwner = await contractInstance.owner();
     this.coinbase = this.$store.state.web3.coinbase;
   },
   async updated() {
-    const contractInstance = await truffleContract(window.web3.currentProvider).deployed();
+    const contractInstance = await truffleContract(this.currentProvider).deployed();
     this.contractOwner = await contractInstance.owner();
     this.coinbase = this.$store.state.web3.coinbase;
   },

@@ -94,7 +94,7 @@
 /* eslint-disable max-len */
 import truffleContract from '@/web3/truffleContract';
 import functions from '@/web3/functions';
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapGetters } from 'vuex';
 import Web3 from 'web3';
 
 
@@ -109,6 +109,7 @@ export default {
       j: state => state.settings.j,
     }),
     ...mapState(['player', 'web3', 'game']),
+    ...mapGetters('player', ['currentProvider']),
     currentGameTicket() {
       return String(this.game.settings.gameID) === String(this.player.generatedTicket.gameID);
     },
@@ -135,7 +136,7 @@ export default {
   },
   watch: {
     async lucky7GameInfoReady() {
-      const contract = await truffleContract(window.web3.currentProvider).deployed();
+      const contract = await truffleContract(this.currentProvider).deployed();
       const pastGenerateParameters = await contract.getPastEvents('GeneratedParametersReceived', { fromBlock: 0, filter: { owner: this.web3.coinbase } });
       if (pastGenerateParameters.length) {
         const { mu, i, gameID } = pastGenerateParameters[`${pastGenerateParameters.length - 1}`].returnValues;

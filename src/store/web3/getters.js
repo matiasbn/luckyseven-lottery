@@ -8,3 +8,4 @@ export const network = (state) => {
   }
   return NETWORKS[state.networkID];
 };
+

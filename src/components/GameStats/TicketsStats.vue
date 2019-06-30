@@ -19,9 +19,10 @@
 </template>
 
 <script>
+/* eslint-disable max-len */
 /* eslint-disable no-await-in-loop */
 import truffleContract from '@/web3/truffleContract';
-import { mapState } from 'vuex';
+import { mapState, mapMutations, mapGetters } from 'vuex';
 
 
 export default {
@@ -38,11 +39,12 @@ export default {
   },
   computed: {
     ...mapState(['game']),
+    ...mapGetters('player', ['currentProvider']),
   },
   asyncComputed: {
     async ticketsStats() {
       this.valuesReady = false;
-      const contract = await truffleContract(window.web3.currentProvider).deployed();
+      const contract = await truffleContract(this.currentProvider).deployed();
       const gameID = await contract.gameID();
       const stats = [];
       let randomTickets;
@@ -66,12 +68,14 @@ export default {
         };
         stats.push(result);
       }
-      this.$store.state.game.stats.randomTickets = randomTicketsCounter;
-      this.$store.state.game.stats.generatedTickets = generatedTicketsCounter;
-      this.$store.state.game.stats.generatedTicketsSelled = generatedTicketsSelledCounter;
+      const payload = { randomTicketsCounter, generatedTicketsCounter, generatedTicketsSelledCounter };
+      this.updateTicketStats(payload);
       this.valuesReady = true;
       return stats;
     },
+  },
+  methods: {
+    ...mapMutations('game', ['updateTicketStats']),
   },
 };
 </script>

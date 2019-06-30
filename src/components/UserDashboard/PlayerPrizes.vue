@@ -22,10 +22,9 @@
 <script>
 
 import truffleContract from '@/web3/truffleContract';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import Web3 from 'web3';
 
-const web3 = new Web3();
 
 export default {
   data() {
@@ -44,6 +43,7 @@ export default {
       balance: state => state.balance,
       coinbase: state => state.coinbase,
     }),
+    ...mapGetters('player', ['currentProvider']),
   },
   watch: {
     // eslint-disable-next-line consistent-return
@@ -61,11 +61,12 @@ export default {
   methods: {
     // eslint-disable-next-line consistent-return
     async refreshPrizes() {
+      const web3 = new Web3();
       try {
         this.valuesReady = false;
         const playerPrizesArray = [];
-        const contract = await truffleContract(window.web3.currentProvider).deployed();
-        const playerPrizes = await contract.getPastEvents('PrizeClaimed', { fromBlock: 0, filter: { owner: window.web3.currentProvider.selectedAddress } });
+        const contract = await truffleContract(this.currentProvider).deployed();
+        const playerPrizes = await contract.getPastEvents('PrizeClaimed', { fromBlock: 0, filter: { owner: this.currentProvider.selectedAddress } });
         playerPrizes.forEach((lucky7Prize) => {
           const prize = lucky7Prize.returnValues;
           const row = {
