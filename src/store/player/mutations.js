@@ -4,12 +4,15 @@ import muGenerator from '@/helpers/muGenerator';
 import checkLucky7Ticket from '@/helpers/checkLucky7Ticket';
 import BigNumber from 'bignumber.js';
 
+export const metamaskLogin = (state) => {
+  state.session.provider = 'metamask';
+  state.session.isLoggedIn = true;
+};
 export const uportLogin = (state, payload) => {
   state.session.credentials = payload;
   state.session.provider = 'uport';
   state.session.isLoggedIn = true;
 };
-
 export const uportLogout = (state) => {
   state.session.credentials = null;
   state.session.provider = '';

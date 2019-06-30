@@ -103,7 +103,6 @@ export default {
     },
   },
   async mounted() {
-    console.log(this.network);
     const web3 = new Web3(window.web3.currentProvider);
     const contract = await truffleContract(window.web3.currentProvider).deployed();
     this.contractAddress = contract.address;

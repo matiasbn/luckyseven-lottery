@@ -91,6 +91,3 @@ export const registerWeb3 = async ({ commit }) => {
     console.log(e);
   }
 };
-export const pollWeb3 = ({ commit }, payload) => {
-  commit('pollWeb3Instance', payload);
-};

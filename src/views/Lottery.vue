@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import Web3 from 'web3';
+import { mapState, mapMutations } from 'vuex';
 import CurrentGame from '@/components/Lottery/CurrentGame';
 import TicketStore from '@/components/Lottery/TicketStore';
 
@@ -23,8 +25,42 @@ export default {
     CurrentGame,
     TicketStore,
   },
+  computed: {
+    ...mapState({
+      account: state => state.web3.coinbase,
+      balance: state => state.web3.balance,
+      sessionProvider: state => state.player.session.provider,
+      isConnected: state => state.web3.isConnected,
+    }),
+  },
   beforeCreate() {
     this.$store.dispatch('game/getGameSettings');
+  },
+  async mounted() {
+    // To detect changes on MetaMask accounts
+    if (this.sessionProvider === 'metamask') {
+      const web3 = new Web3(window.web3.currentProvider);
+      setInterval(async () => {
+        try {
+          if (web3 && this.isConnected) {
+            const web3Coinbase = await web3.eth.getCoinbase();
+            const web3Balance = await web3.eth.getBalance(web3Coinbase);
+            if (web3Coinbase !== this.account || web3Balance !== this.balance) {
+              this.pollWeb3({
+                coinbase: web3Coinbase,
+                balance: web3Balance,
+                currentProvider: window.web3.currentProvider,
+              });
+            }
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }, 2000);
+    }
+  },
+  methods: {
+    ...mapMutations('web3', ['pollWeb3']),
   },
 };
 </script>

@@ -2,7 +2,7 @@ export default {
   prizeAmount: '0',
   prizeGameID: '0',
   session: {
-    isLoggedIn: true,
+    isLoggedIn: false,
     provider: 'metamask',
     credentials: null,
     selectedNetwork: {

@@ -48,11 +48,11 @@ import { mapState } from 'vuex';
 import truffleContract from '@/web3/truffleContract';
 import functions from '@/web3/functions';
 
-const web3 = new Web3();
 
 export default {
   filters: {
     transformBalance(balance) {
+      const web3 = new Web3();
       let stringBalance = String(parseInt(balance, 10));
       if (isNaN(balance)) {
         stringBalance = '0';
@@ -74,6 +74,8 @@ export default {
       prizeAmount: state => state.player.prizeAmount,
       prizeGameID: state => state.player.prizeGameID,
       gameID: state => state.game.settings.gameID,
+      sessionProvider: state => state.player.session.provider,
+      isConnected: state => state.web3.isConnected,
     }),
   },
   watch: {
@@ -85,9 +87,6 @@ export default {
     },
   },
   async created() {
-    this.refreshCurrentPrize();
-  },
-  async mounted() {
     this.refreshCurrentPrize();
   },
   methods: {

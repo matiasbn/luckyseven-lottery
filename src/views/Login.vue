@@ -24,11 +24,11 @@
             size="lg"
             class="my-2 my-sm-0"
             type="submit"
-            @click="login('uport')">
+            @click="uportLogin">
             <img
               src="@/assets/uport-logo.svg"
-              width="25"
-              height="25" > &nbsp;|&nbsp;
+              width="40"
+              height="40" > &nbsp;|&nbsp;
             <span v-if="loading === false">Log in with uPort</span>
             <b-spinner
               v-if="loading === true"
@@ -37,22 +37,22 @@
           </b-button>
         </b-card>
         <b-card
-          header="Metamask"
+          header="MetaMask"
           header-tag="h1">
           <b-card-text
             text-tag="h4">
-            If you choose Metamask, you can choose your preferred network from the Metamask panel
+            You can choose your preferred network from the MetaMask panel
           </b-card-text>
           <b-button
             :disabled="loading === true"
             size="lg"
             class="my-2 my-sm-0"
             type="submit"
-            @click="login('metamask')">
+            @click="metamaskLogin">
             <img
-              src="@/assets/metamask-logo.png"
-              width="25"
-              height="25" > &nbsp;|&nbsp;
+              src="@/assets/metamask-big.png"
+              width="40"
+              height="40" > &nbsp;|&nbsp;
             <span v-if="loading === false">Log in with Metamask</span>
             <b-spinner
               v-if="loading === true"
@@ -69,6 +69,29 @@
         Cancel
       </b-button>
     </b-card>
+    <!-- MetaMask Modal -->
+    <b-modal
+      ref="metamask-modal"
+      hide-footer
+      title="MetaMask not detected">
+      <div class="d-block text-center">
+        <h3>Download the MetaMask extension clicking on the next button</h3>
+      </div>
+      <b-button
+        class="mt-2"
+        variant="success"
+        block
+        @click="gotToMetaMaskWebpage">Go to MetaMask
+        <img
+          src="@/assets/metamask-big.png"
+          width="25"
+          height="25"> webpage</b-button>
+      <b-button
+        class="mt-3"
+        variant="success"
+        block
+        @click="hideModal">Close</b-button>
+    </b-modal>
   </div>
 </template>
 
@@ -95,25 +118,39 @@ export default {
     this.$store.commit('player/selectNetwork', this.selected);
   },
   methods: {
-    async login(method) {
+    async uportLogin() {
       try {
         this.loading = true;
-        if (method === 'uport') {
-          await this.$store.dispatch('player/uportLogin');
-          this.loading = false;
-          this.$router.push('/lottery');
-        } else {
-          // await this.$store.dispatch('metamaskLogin');
-          this.loading = false;
-          this.$router.push('/lottery');
-        }
+        await this.$store.dispatch('player/uportLogin');
+        this.loading = false;
+        this.$router.push('/lottery');
       } catch (e) {
         this.loading = false;
+      }
+    },
+    async metamaskLogin() {
+      try {
+        this.loading = true;
+        await this.$store.dispatch('player/metamaskLogin');
+        this.loading = false;
+        this.$router.push('/lottery');
+      } catch (e) {
         console.log(e);
+        this.showModal();
+        this.loading = false;
       }
     },
     cancel() {
       this.$router.push('/');
+    },
+    showModal() {
+      this.$refs['metamask-modal'].show();
+    },
+    hideModal() {
+      this.$refs['metamask-modal'].hide();
+    },
+    gotToMetaMaskWebpage() {
+      window.location = 'https://www.metamask.io';
     },
   },
 };
