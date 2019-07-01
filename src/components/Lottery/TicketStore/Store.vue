@@ -57,7 +57,7 @@
 
 import Web3 from 'web3';
 import { mapState } from 'vuex';
-import functions from '@/web3/functions';
+import transactions from '@/web3/transactions';
 
 const web3 = new Web3();
 
@@ -79,7 +79,7 @@ export default {
     async generateTicket() {
       try {
         this.$store.state.player.generatedTicket.received = false;
-        await functions.generateTicket(this.$store.state);
+        await transactions.generateTicket(this.$store.state);
       } catch (e) {
         this.$store.state.player.generatedTicket.received = true;
         console.log(e);
@@ -89,7 +89,7 @@ export default {
       try {
         this.$store.state.player.purchasedTicket.received = false;
         this.$store.state.player.purchasedTicket.lucky7Ticket = false;
-        await functions.purchaseRandomTicket(this.$store.state);
+        await transactions.purchaseRandomTicket(this.$store.state);
       } catch (e) {
         console.log(e);
         this.$store.state.player.purchasedTicket.received = true;

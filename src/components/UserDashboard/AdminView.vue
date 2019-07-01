@@ -50,7 +50,7 @@
 /* eslint-disable max-len */
 import truffleContract from '@/web3/truffleContract';
 import { mapState, mapGetters } from 'vuex';
-import functions from '@/web3/functions';
+import transactions from '@/web3/transactions';
 
 export default {
   data() {
@@ -85,7 +85,7 @@ export default {
     async setNewGame() {
       try {
         this.buttonsEnabled = false;
-        await functions.setNewGame(this.$store.state);
+        await transactions.setNewGame(this.$store.state);
         this.buttonsEnabled = true;
       } catch (e) {
         this.buttonsEnabled = true;
@@ -95,7 +95,7 @@ export default {
     async setLucky7Numbers() {
       try {
         this.buttonsEnabled = false;
-        await functions.setLucky7Numbers(this.$store.state);
+        await transactions.setLucky7Numbers(this.$store.state);
         this.buttonsEnabled = true;
       } catch (e) {
         this.buttonsEnabled = true;

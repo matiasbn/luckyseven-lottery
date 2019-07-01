@@ -93,7 +93,7 @@
 <script>
 /* eslint-disable max-len */
 import truffleContract from '@/web3/truffleContract';
-import functions from '@/web3/functions';
+import transactions from '@/web3/transactions';
 import { mapState, mapMutations, mapGetters } from 'vuex';
 import Web3 from 'web3';
 
@@ -151,7 +151,7 @@ export default {
       try {
         this.$store.state.player.generatedTicket.received = false;
         this.$store.state.player.purchasedTicket.received = false;
-        await functions.purchaseGeneratedTicket(this.$store.state);
+        await transactions.purchaseGeneratedTicket(this.$store.state);
       } catch (e) {
         console.log(e);
         this.$store.state.player.generatedTicket.received = false;

@@ -46,7 +46,7 @@
 import Web3 from 'web3';
 import { mapState, mapGetters } from 'vuex';
 import truffleContract from '@/web3/truffleContract';
-import functions from '@/web3/functions';
+import transactions from '@/web3/transactions';
 
 
 export default {
@@ -94,7 +94,7 @@ export default {
     async claimPrize() {
       try {
         this.withdrawReady = false;
-        await functions.claimPrize(this.$store.state);
+        await transactions.claimPrize(this.$store.state);
         this.currentPrize = '0';
         this.currentGamePrize = false;
         this.withdrawReady = true;
