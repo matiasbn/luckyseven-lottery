@@ -4,6 +4,7 @@ export default {
   session: {
     isLoggedIn: false,
     provider: 'metamask',
+    web3Provider: null,
     credentials: null,
     selectedNetwork: {
       networkID: null,

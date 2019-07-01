@@ -6,6 +6,7 @@
 import { Connect } from 'uport-connect';
 import Web3 from 'web3';
 import truffleContract from '@/web3/truffleContract';
+import Lucky7Store from '../../../build/contracts/Lucky7Store.json';
 
 export const metamaskLogin = ({ commit }) => new Promise(async (resolve, reject) => {
   try {
@@ -63,26 +64,34 @@ export const uportLogin = async ({ commit, state }) => {
     if (uport.state && uport.did) {
       commit('uportLogin', uport.state);
     } else {
-      uport.requestDisclosure(
-        {
-          requested: ['name'],
-          network: {
-            id: state.session.selectedNetwork.networkID,
-            rpcUrl: state.session.selectedNetwork.rpcUrl,
-          },
-          notifications: true,
-        },
-        'disclosureReq',
-      );
-      const data = await uport.onResponse('disclosureReq');
-      console.log(data);
-      const uportProvider = uport.getProvider();
-      commit('web3/registerProvider', uportProvider, { root: true });
-      console.log(uportProvider);
-      const w3test = new Web3(uportProvider);
-      const addressTest = w3test.eth.getCoinbase();
-      console.log(await addressTest);
-      commit('uportLogin', data.payload);
+      // uport.requestDisclosure(
+      //   {
+      //     network: {
+      //       id: state.session.selectedNetwork.networkID,
+      //       rpcUrl: state.session.selectedNetwork.rpcUrl,
+      //     },
+      //     notifications: true,
+      //   },
+      //   'disclosureReq',
+      // );
+      // const data = await uport.onResponse('disclosureReq');
+      uport.requestDisclosure({ notifications: true });
+      await uport.onResponse('disclosureReq');
+      const uportProvider = await uport.getProvider();
+      const uportWeb3 = new Web3(uportProvider);
+      const coinbase = await uportWeb3.eth.getCoinbase();
+      const web3 = new Web3(state.session.selectedNetwork.rpcUrl);
+      commit('uportLogin', web3.currentProvider);
+      const currentState = {
+        coinbase,
+        balance: await web3.eth.getBalance(coinbase),
+        networkID: await web3.eth.net.getId(),
+        contractAddress: Lucky7Store.networks['7'].address,
+        contractBalance: await web3.eth.getBalance(Lucky7Store.networks['7'].address),
+        isConnected: await web3.eth.net.isListening(),
+        sessionProvider: 'uport',
+      };
+      commit('web3/registerWeb3Instance', currentState, { root: true });
     }
   } catch (e) {
     console.log(e);
