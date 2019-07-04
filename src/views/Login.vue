@@ -101,14 +101,14 @@ export default {
     return {
       loading: false,
       showNetworks: false,
-      selected: { id: '0x7', rpcUrl: 'https://7635ebfc.ngrok.io' },
+      selected: { id: '0x7', rpcUrl: 'https://f713368f.ngrok.io' },
       options: [
         {
-          value: { id: '0x7', rpcUrl: 'https://7635ebfc.ngrok.io' },
+          value: { id: '0x7', rpcUrl: 'https://f713368f.ngrok.io' },
           text: 'Local Network',
         },
         {
-          value: { id: '0x4', rpcUrl: 'https://rinkeby.infura.io' },
+          value: { id: '0x4', rpcUrl: 'https://rinkeby.infura.io/v3/dc466345ecf2426d9bd6458046dce39f' },
           text: 'Rinkeby',
         },
       ],

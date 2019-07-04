@@ -48,7 +48,7 @@ export default {
   computed: {
     ...mapState({
       gameID: state => state.game.settings.gameID,
-      account: state => state.web3.account,
+      account: state => state.web3.coinbase,
     }),
     ...mapGetters('player', ['currentProvider']),
   },

@@ -5,3 +5,4 @@
 /test/unit/coverage/
 /sandbox/instanceContract.js
 /test/*
+/migrations/*

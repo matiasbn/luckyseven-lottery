@@ -66,7 +66,7 @@ export default {
         this.valuesReady = false;
         const playerPrizesArray = [];
         const contract = await truffleContract(this.currentProvider).deployed();
-        const playerPrizes = await contract.getPastEvents('PrizeClaimed', { fromBlock: 0, filter: { owner: this.currentProvider.selectedAddress } });
+        const playerPrizes = await contract.getPastEvents('PrizeClaimed', { fromBlock: 0, filter: { owner: this.coinbase } });
         playerPrizes.forEach((lucky7Prize) => {
           const prize = lucky7Prize.returnValues;
           const row = {

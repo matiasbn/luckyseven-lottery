@@ -9,9 +9,11 @@ export const metamaskLogin = (state) => {
   state.session.isLoggedIn = true;
 };
 export const uportLogin = (state, payload) => {
+  const { web3Provider, uportContract } = payload;
   state.session.provider = 'uport';
   state.session.isLoggedIn = true;
-  state.session.web3Provider = payload;
+  state.session.web3Provider = web3Provider;
+  state.session.uportContract = uportContract;
 };
 export const uportLogout = (state) => {
   state.session.credentials = null;

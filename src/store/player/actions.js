@@ -8,6 +8,8 @@ import Web3 from 'web3';
 import truffleContract from '@/web3/truffleContract';
 import Lucky7Store from '../../../build/contracts/Lucky7Store.json';
 
+const mnid = require('mnid');
+
 export const metamaskLogin = ({ commit }) => new Promise(async (resolve, reject) => {
   try {
     const currentState = {
@@ -51,37 +53,43 @@ export const metamaskLogin = ({ commit }) => new Promise(async (resolve, reject)
   }
 });
 
-export const uportLogin = async ({ commit, state }) => {
+export const uportLogin = async ({ commit, state, rootState }) => {
   try {
-    const uport = new Connect('LuckySeven', {
+    const uport = new Connect('LuckySevenLottery', {
       network: {
         id: state.session.selectedNetwork.networkID,
         rpcUrl: state.session.selectedNetwork.rpcUrl,
       },
+      // network: 'rinkeby',
     });
     uport.logout();
     uport.loadState();
     if (uport.state && uport.did) {
-      commit('uportLogin', uport.state);
+      const web3 = new Web3(state.session.selectedNetwork.rpcUrl);
+      const coinbase = (mnid.decode(uport.state.mnid)).address;
+      const networkID = parseInt(state.session.selectedNetwork.networkID, 16);
+      const currentState = {
+        coinbase,
+        balance: await web3.eth.getBalance(coinbase),
+        networkID: await web3.eth.net.getId(),
+        contractAddress: Lucky7Store.networks[`${networkID}`].address,
+        contractBalance: await web3.eth.getBalance(Lucky7Store.networks[`${networkID}`].address),
+        isConnected: await web3.eth.net.isListening(),
+        sessionProvider: 'uport',
+      };
+      commit('uportLogin', {
+        web3Provider: web3.currentProvider,
+        uportContract: uport.contract(Lucky7Store.abi).at(Lucky7Store.networks[`${networkID}`].address),
+        // uportContract: uport.getProvider(),
+      });
+      commit('web3/registerWeb3Instance', currentState, { root: true });
     } else {
-      // uport.requestDisclosure(
-      //   {
-      //     network: {
-      //       id: state.session.selectedNetwork.networkID,
-      //       rpcUrl: state.session.selectedNetwork.rpcUrl,
-      //     },
-      //     notifications: true,
-      //   },
-      //   'disclosureReq',
-      // );
-      // const data = await uport.onResponse('disclosureReq');
       uport.requestDisclosure({ notifications: true });
       await uport.onResponse('disclosureReq');
+      const web3 = new Web3(state.session.selectedNetwork.rpcUrl);
       const uportProvider = await uport.getProvider();
       const uportWeb3 = new Web3(uportProvider);
       const coinbase = await uportWeb3.eth.getCoinbase();
-      const web3 = new Web3(state.session.selectedNetwork.rpcUrl);
-      commit('uportLogin', web3.currentProvider);
       const currentState = {
         coinbase,
         balance: await web3.eth.getBalance(coinbase),
@@ -91,6 +99,28 @@ export const uportLogin = async ({ commit, state }) => {
         isConnected: await web3.eth.net.isListening(),
         sessionProvider: 'uport',
       };
+      commit('web3/registerWeb3Instance', currentState, { root: true });
+      const networkID = parseInt(state.session.selectedNetwork.networkID, 16);
+      commit('uportLogin', {
+        web3Provider: web3.currentProvider,
+        uportContract: uport.contract(Lucky7Store.abi).at(Lucky7Store.networks[`${networkID}`].address),
+      });
+      const contract = uport.contract(Lucky7Store.abi).at(Lucky7Store.networks[`${networkID}`].address);
+      contract.generateRandomTicket({
+        from: coinbase,
+        to: Lucky7Store.networks[`${networkID}`].address,
+        value: rootState.game.prices.generate,
+      }, 'generateTicket');
+      const transaction = await contract.onResponse('generateTicket');
+      console.log(transaction);
+      // const transaction = await uport.onResponse('generateTicket');
+      // const truffleContractInstance = await truffleContract(uportProvider).deployed();
+      // const cosa = await truffleContractInstance.generateRandomTicket({
+      //   to: Lucky7Store.networks['7'].address,
+      //   from: coinbase,
+      //   value: 1 * 1.0e18,
+      // });
+      // console.log(cosa);
       commit('web3/registerWeb3Instance', currentState, { root: true });
     }
   } catch (e) {
