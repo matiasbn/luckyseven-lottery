@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/matiasbn/luckyseven.win/compare/v2.0.0...v2.1.0) (2019-07-05)
+
+
+### Bug Fixes
+
+* uport and web3 provider stated ([bb0e445](https://github.com/matiasbn/luckyseven.win/commit/bb0e445))
+
+
+### Features
+
+* metamask information saved on state and auto web3 polling ([e96452e](https://github.com/matiasbn/luckyseven.win/commit/e96452e))
+* namespaced Vuex store ([4a06dc2](https://github.com/matiasbn/luckyseven.win/commit/4a06dc2))
+* uport connect ([bb5dcce](https://github.com/matiasbn/luckyseven.win/commit/bb5dcce))
+* web3 provider centralized on 'player getter' ([16acadf](https://github.com/matiasbn/luckyseven.win/commit/16acadf))
+
+
+
 ## [2.0.0](https://github.com/matiasbn/luckyseven.win/compare/v1.1.0...v2.0.0) (2019-06-25)
 
 
