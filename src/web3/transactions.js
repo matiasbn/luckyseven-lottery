@@ -20,7 +20,7 @@ const generateTicket = async (state) => {
       value: parseInt(state.game.prices.generate, 10),
       gas: 7000000,
     }, 'generateTicket');
-    const transaction = await uport.onResponse('generateTicket');
+    const transaction = await state.player.session.uport.onResponse('generateTicket');
     console.log(transaction);
     // const truffleContractInstance = await truffleContract(state.player.session.uportContract).deployed();
     // await truffleContractInstance.generateRandomTicket({

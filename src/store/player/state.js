@@ -10,6 +10,7 @@ export default {
       networkID: null,
       rpcUrl: '',
     },
+    uportContract: null,
     uportProvider: null,
   },
   purchasedTicket: {

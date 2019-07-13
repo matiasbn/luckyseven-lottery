@@ -26,6 +26,23 @@
             Game stats
           </b-nav-item>
           <b-nav-item to="/user_dashboard">User</b-nav-item>
+          <b-nav-item to="/">
+            <b-button
+              :disabled="loading === true"
+              size="sm"
+              class="my-2 my-sm-0"
+              type="submit">
+              <img
+                src="@/assets/uport-logo.svg"
+                width="20"
+                height="20" > &nbsp;|&nbsp;
+              <span v-if="loading === false">Logout</span>
+              <b-spinner
+                v-if="loading === true"
+                variant="success"
+                small />
+            </b-button>
+          </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -33,4 +50,11 @@
 </template>
 
 <script>
+export default{
+  data() {
+    return {
+      loading: false,
+    };
+  },
+};
 </script>
