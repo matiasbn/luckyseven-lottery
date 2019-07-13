@@ -53,7 +53,7 @@ export const metamaskLogin = ({ commit }) => new Promise(async (resolve, reject)
   }
 });
 
-export const uportLogin = async ({ commit, state, rootState }) => {
+export const uportLogin = async ({ commit, state /* rootState */ }) => {
   try {
     const uport = new Connect('LuckySevenLottery', {
       network: {
@@ -105,14 +105,18 @@ export const uportLogin = async ({ commit, state, rootState }) => {
         web3Provider: web3.currentProvider,
         uportContract: uport.contract(Lucky7Store.abi).at(Lucky7Store.networks[`${networkID}`].address),
       });
-      const contract = uport.contract(Lucky7Store.abi).at(Lucky7Store.networks[`${networkID}`].address);
-      contract.generateRandomTicket({
-        from: coinbase,
-        to: Lucky7Store.networks[`${networkID}`].address,
-        value: rootState.game.prices.generate,
-      }, 'generateTicket');
-      const transaction = await contract.onResponse('generateTicket');
-      console.log(transaction);
+      // const contract = uport.contract(Lucky7Store.abi).at(Lucky7Store.networks[`${networkID}`].address);
+      // // contract.defaults({
+      // //   gasLimit: 7000000,
+      // // });
+      // contract.generateRandomTicket({
+      //   from: coinbase,
+      //   to: Lucky7Store.networks[`${networkID}`].address,
+      //   value: rootState.game.prices.generate,
+      //   gas: 7000000,
+      // }, 'generateTicket');
+      // const transaction = await contract.onResponse('generateTicket');
+      // console.log(transaction);
       // const transaction = await uport.onResponse('generateTicket');
       // const truffleContractInstance = await truffleContract(uportProvider).deployed();
       // const cosa = await truffleContractInstance.generateRandomTicket({

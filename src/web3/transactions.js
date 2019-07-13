@@ -15,17 +15,19 @@ const generateTicket = async (state) => {
       value: parseInt(state.game.prices.generate, 10),
     });
   } else {
-    // state.player.session.uportContract.generateRandomTicket({
-    //   address: state.web3.contractAddress,
-    //   value: parseInt(state.game.prices.generate, 10),
-    // }, 'generateTicket');
-    // const transaction = await uport.onResponse('generateTicket');
-    // console.log(transaction);
-    const truffleContractInstance = await truffleContract(state.player.session.uportContract).deployed();
-    await truffleContractInstance.generateRandomTicket({
-      from: state.web3.coinbase,
+    state.player.session.uportContract.generateRandomTicket({
+      address: state.web3.contractAddress,
       value: parseInt(state.game.prices.generate, 10),
-    });
+      gas: 7000000,
+    }, 'generateTicket');
+    const transaction = await uport.onResponse('generateTicket');
+    console.log(transaction);
+    // const truffleContractInstance = await truffleContract(state.player.session.uportContract).deployed();
+    // await truffleContractInstance.generateRandomTicket({
+    //   from: state.web3.coinbase,
+    //   value: parseInt(state.game.prices.generate, 10),
+
+    // });
     // console.log('Using uPort');
   }
 };
