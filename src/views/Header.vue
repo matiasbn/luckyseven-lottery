@@ -28,10 +28,11 @@
           <b-nav-item to="/user_dashboard">User</b-nav-item>
           <b-nav-item to="/">
             <b-button
-              :disabled="loading === true"
+              v-if="isLoggedIn && provider === 'uport'"
               size="sm"
               class="my-2 my-sm-0"
-              type="submit">
+              type="submit"
+              @click="$store.dispatch('player/uportLogout',{root:true})">
               <img
                 src="@/assets/uport-logo.svg"
                 width="20"
@@ -50,11 +51,19 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default{
   data() {
     return {
       loading: false,
     };
+  },
+  computed: {
+    ...mapState({
+      isLoggedIn: state => state.player.session.isLoggedIn,
+      provider: state => state.player.session.provider,
+    }),
   },
 };
 </script>

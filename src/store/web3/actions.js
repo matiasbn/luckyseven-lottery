@@ -7,7 +7,7 @@
 
 import truffleContract from '@/web3/truffleContract';
 import currentProvider from '@/store/player/getters';
-
+import Web3 from 'web3';
 
 export const listenEvents = async ({ commit, state, rootState }) => {
   const truffleContractInstance = await truffleContract(currentProvider(rootState.player)).deployed();
@@ -17,8 +17,9 @@ export const listenEvents = async ({ commit, state, rootState }) => {
   };
   // Player events
   truffleContractInstance
-    .allEvents({ filter: { owner: state.coinbase }, fromBlock: 'latest' })
+    .allEvents({ /* filter: { owner: state.coinbase }, */ fromBlock: 'latest' })
     .on('data', (event) => {
+      console.log(event);
       switch (event.event) {
         case 'GeneratedParametersReceived':
           commit('player/generatedParametersReceived', { returnValues: event.returnValues, rootState }, { root: true });

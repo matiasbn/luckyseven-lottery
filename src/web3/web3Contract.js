@@ -6,7 +6,8 @@ const web3 = new Web3();
 const web3Contract = async (currentProvider) => {
   const abi = Lucky7Artifact.abi;
   const networkID = await web3.eth.net.getId();
-  const address = networkID.address;
+  const address = Lucky7Artifact.networks[`${networkID}`].address;
+  console.log(address);
   const web3Instance = new Web3(currentProvider);
   const contractInstance = web3Instance.eth.Contract(abi, address);
   return contractInstance;

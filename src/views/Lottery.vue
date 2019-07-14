@@ -34,8 +34,7 @@ export default {
     ...mapGetters('player', ['currentProvider']),
   },
   beforeCreate() {
-    this.$store.dispatch('game/getGameSettings');
-    this.$store.dispatch('web3/listenEvents');
+
   },
   async mounted() {
     // To detect changes on MetaMask accounts

@@ -9,17 +9,25 @@ export const metamaskLogin = (state) => {
   state.session.isLoggedIn = true;
 };
 export const uportLogin = (state, payload) => {
-  const { web3Provider, uportContract, uportProvider } = payload;
+  const { web3Provider, uportProvider, uportInstance } = payload;
+  console.log(uportProvider);
   state.session.provider = 'uport';
   state.session.isLoggedIn = true;
   state.session.web3Provider = web3Provider;
-  state.session.uportContract = uportContract;
   state.session.uportProvider = uportProvider;
+  state.session.uportInstance = uportInstance;
 };
 export const uportLogout = (state) => {
-  state.session.credentials = null;
-  state.session.provider = '';
   state.session.isLoggedIn = false;
+  state.session.provider = '';
+  state.session.web3Provider = false;
+  state.session.credentials = null;
+  state.session.selectedNetwork = {
+    networkID: null,
+    rpcUrl: '',
+  };
+  state.session.uportContract = null;
+  state.session.uportProvider = null;
 };
 
 export const selectNetwork = (state, payload) => {

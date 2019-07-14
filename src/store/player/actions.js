@@ -11,7 +11,7 @@ import Lucky7Store from '../../../build/contracts/Lucky7Store.json';
 
 const mnid = require('mnid');
 
-export const metamaskLogin = ({ commit }) => new Promise(async (resolve, reject) => {
+export const metamaskLogin = ({ commit, dispatch }) => new Promise(async (resolve, reject) => {
   try {
     const currentState = {
       coinbase: null,
@@ -34,6 +34,8 @@ export const metamaskLogin = ({ commit }) => new Promise(async (resolve, reject)
       currentState.sessionProvider = 'metamask';
       commit('metamaskLogin');
       commit('web3/registerWeb3Instance', currentState, { root: true });
+      dispatch('game/getGameSettings', null, { root: true });
+      dispatch('web3/listenEvents', null, { root: true });
       resolve();
     } else if (window.web3 !== null) {
       const truffleContractInstance = await truffleContract(window.web3.currentProvider).deployed();
@@ -44,6 +46,8 @@ export const metamaskLogin = ({ commit }) => new Promise(async (resolve, reject)
       currentState.contractBalance = await web3.eth.getBalance(truffleContractInstance.address);
       currentState.isConnected = await web3.eth.net.isListening();
       commit('web3/registerWeb3Instance', currentState, { root: true });
+      dispatch('game/getGameSettings', null, { root: true });
+      dispatch('web3/listenEvents', null, { root: true });
       resolve();
     } else {
       // MetaMask not installed
@@ -54,25 +58,22 @@ export const metamaskLogin = ({ commit }) => new Promise(async (resolve, reject)
   }
 });
 
-export const uportLogin = async ({ commit, state, rootState }) => {
+export const uportLogin = async ({ commit, state, dispatch }) => {
   try {
     const uport = new Connect('LuckySevenLottery', {
       network: {
         id: state.session.selectedNetwork.networkID,
         rpcUrl: state.session.selectedNetwork.rpcUrl,
       },
-      // network: 'rinkeby',
     });
-    uport.logout();
     uport.loadState();
     if (uport.state && uport.did) {
       const web3 = new Web3(state.session.selectedNetwork.rpcUrl);
       const networkID = parseInt(state.session.selectedNetwork.networkID, 16);
+      const coinbase = web3.utils.toChecksumAddress(uport.state.address);
       const currentState = {
-        coinbase: (mnid.decode(uport.state.mnid)).address,
-        async balance() {
-          return await web3.eth.getBalance(this.coinbase);
-        },
+        coinbase,
+        balance: await web3.eth.getBalance(coinbase),
         networkID: await web3.eth.net.getId(),
         contractAddress: Lucky7Store.networks[`${networkID}`].address,
         contractBalance: await web3.eth.getBalance(Lucky7Store.networks[`${networkID}`].address),
@@ -81,71 +82,70 @@ export const uportLogin = async ({ commit, state, rootState }) => {
       };
       commit('uportLogin', {
         web3Provider: web3.currentProvider,
-        uportContract: uport.contract(Lucky7Store.abi).at(Lucky7Store.networks[`${networkID}`].address),
-        // uportContract: uport.getProvider(),
+        uportProvider: uport.getProvider(),
       });
       commit('web3/registerWeb3Instance', currentState, { root: true });
     } else {
       uport.requestDisclosure(
         {
-          accountType: 'keypair',
-          network: {
-            id: state.session.selectedNetwork.networkID,
-            rpcUrl: state.session.selectedNetwork.rpcUrl,
-          },
+          rpc: state.session.selectedNetwork.rpcUrl,
           notifications: true,
         },
       );
       const response = await uport.onResponse('disclosureReq');
-      console.log(response);
-      const web3 = new Web3(state.session.selectedNetwork.rpcUrl);
       const uportProvider = await uport.getProvider();
-      // const uportWeb3 = new Web3(uportProvider);
-      const coinbase = await response.payload.address;
-      // console.log(coinbase);
+      const uportWeb3 = new Web3(uportProvider);
+      // const coun
+      // const coinbase = (mnid.decode(response.payload.mnid)).address;
+      const coinbase = await uportWeb3.eth.getCoinbase();
+      const web3 = new Web3(state.session.selectedNetwork.rpcUrl);
+      const networkID = parseInt(state.session.selectedNetwork.networkID, 16);
       const currentState = {
-        // coinbase,
-        // balance: await web3.eth.getBalance(coinbase),
+        coinbase,
+        balance: await web3.eth.getBalance(coinbase),
         networkID: await web3.eth.net.getId(),
-        contractAddress: Lucky7Store.networks['7'].address,
-        contractBalance: await web3.eth.getBalance(Lucky7Store.networks['7'].address),
+        contractAddress: Lucky7Store.networks[`${networkID}`].address,
+        contractBalance: await web3.eth.getBalance(Lucky7Store.networks[`${networkID}`].address),
         isConnected: await web3.eth.net.isListening(),
         sessionProvider: 'uport',
       };
-      // commit('web3/registerWeb3Instance', currentState, { root: true });
-      const networkID = parseInt(state.session.selectedNetwork.networkID, 16);
-      // commit('uportLogin', {
-      //   web3Provider: web3.currentProvider,
-      //   uportContract: uport.contract(Lucky7Store.abi).at(Lucky7Store.networks[`${networkID}`].address),
-      //   uportProvider,
-      // });
+      commit('web3/registerWeb3Instance', currentState, { root: true });
+      commit('uportLogin', {
+        web3Provider: web3.currentProvider,
+        uportProvider,
+        uportInstance: uport,
+      });
+      // const networkID = parseInt(state.session.selectedNetwork.networkID, 16);
       // const contract = uport.contract(Lucky7Store.abi).at(Lucky7Store.networks[`${networkID}`].address);
+      // console.log(web3.utils.toWei('0.02'));
       // contract.generateRandomTicket({
       //   from: coinbase,
       //   to: Lucky7Store.networks[`${networkID}`].address,
-      //   value: rootState.game.prices.generate,
+      //   value: web3.utils.toWei('0.02'),
       //   gas: 7000000,
       // }, 'generateTicket');
       // const transaction = await uport.onResponse('generateTicket');
       // console.log(transaction);
-      const truffleContractInstance = await truffleContract(uportProvider).deployed();
-      const cosa = await truffleContractInstance.generateRandomTicket({
-        from: coinbase,
-        to: Lucky7Store.networks['7'].address,
-        value: 1 * 1.0e18,
-        // value: rootState.game.prices.generate,
-      });
-      console.log(cosa);
+      // const truffleContractInstance = await truffleContract(uportProvider).deployed();
+      // const cosa = await truffleContractInstance.generateRandomTicket({
+      //   from: coinbase,
+      //   to: Lucky7Store.networks['7'].address,
+      //   value: 1 * 1.0e18,
+      //   // value: rootState.game.prices.generate,
+      // });
+      // console.log(cosa);
       // commit('web3/registerWeb3Instance', currentState, { root: true });
     }
+    dispatch('game/getGameSettings', null, { root: true });
+    dispatch('web3/listenEvents', null, { root: true });
   } catch (e) {
     console.log(e);
     throw Error(e.message);
   }
 };
 
-export const uporLogout = ({ commit }) => {
+export const uportLogout = ({ commit }) => {
   const uport = new Connect('LuckySeven');
   uport.logout();
-  commit('uportLogoout');
+  commit('uportLogout');
 };

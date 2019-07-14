@@ -1,11 +1,9 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 import { Connect } from 'uport-connect';
 import truffleContract from '@/web3/truffleContract';
 import player from '@/store/player/state';
 import Lucky7Store from '../../build/contracts/Lucky7Store.json';
 
-const uport = new Connect('LuckySeven');
 
 const generateTicket = async (state) => {
   if (state.player.session.provider === 'metamask') {
@@ -15,19 +13,32 @@ const generateTicket = async (state) => {
       value: parseInt(state.game.prices.generate, 10),
     });
   } else {
-    state.player.session.uportContract.generateRandomTicket({
-      address: state.web3.contractAddress,
-      value: parseInt(state.game.prices.generate, 10),
-      gas: 7000000,
-    }, 'generateTicket');
-    const transaction = await state.player.session.uport.onResponse('generateTicket');
-    console.log(transaction);
-    // const truffleContractInstance = await truffleContract(state.player.session.uportContract).deployed();
-    // await truffleContractInstance.generateRandomTicket({
+    // const uport = state.player.session.uportInstance;
+    // const uport = new Connect('LuckySevenLottery', {
+    //   network: {
+    //     id: state.player.session.selectedNetwork.networkID,
+    //     rpcUrl: state.player.session.selectedNetwork.rpcUrl,
+    //   },
+    // });
+    // console.log(uport);
+    // const networkID = parseInt(state.player.session.selectedNetwork.networkID, 16);
+    // const contract = uport
+    //   .contract(Lucky7Store.abi)
+    //   .at(Lucky7Store.networks[`${networkID}`].address);
+    // contract.generateRandomTicket({
     //   from: state.web3.coinbase,
     //   value: parseInt(state.game.prices.generate, 10),
-
-    // });
+    //   gas: 7000000,
+    // }, 'generateTicket');
+    // const transaction = await uport.onResponse('generateTicket');
+    // console.log(transaction);
+    const truffleContractInstance = await truffleContract(state.player.session.uportProvider).deployed();
+    console.log(truffleContractInstance);
+    const transaction = await truffleContractInstance.generateRandomTicket({
+      from: state.web3.coinbase,
+      value: parseInt(state.game.prices.generate, 10),
+    });
+    console.log(transaction);
     // console.log('Using uPort');
   }
 };
