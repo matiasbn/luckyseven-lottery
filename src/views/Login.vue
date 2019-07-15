@@ -101,10 +101,10 @@ export default {
     return {
       loading: false,
       showNetworks: false,
-      selected: { id: '0x7', rpcUrl: 'https://312770d0.ngrok.io' },
+      selected: { id: '0x7', rpcUrl: 'https://6858dcf9.ngrok.io' },
       options: [
         {
-          value: { id: '0x7', rpcUrl: 'https://312770d0.ngrok.io' },
+          value: { id: '0x7', rpcUrl: 'https://6858dcf9.ngrok.io' },
           text: 'Local Network',
         },
         {

@@ -1,25 +1,24 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable import/extensions */
-/* eslint-disable import/no-unresolved */
 /* eslint-disable no-case-declarations */
 /* eslint-disable max-len */
 /* eslint-disable import/no-named-as-default */
 
 import truffleContract from '@/web3/truffleContract';
-import currentProvider from '@/store/player/getters';
 import Web3 from 'web3';
 
 export const listenEvents = async ({ commit, state, rootState }) => {
-  const truffleContractInstance = await truffleContract(currentProvider(rootState.player)).deployed();
+  const formatedProvider = rootState.player.session.selectedNetwork.rpcUrl.replace('https://', 'ws://'); // Use websocket to listen events
+  const web3 = new Web3(formatedProvider);
+  const truffleContractInstance = await truffleContract(web3.currentProvider).deployed();
   // To avoid double events where important, it stores the transaction hashes and checks if it is repeated
   const eventsTransactionHash = {
     newTicketReceived: null,
   };
   // Player events
   truffleContractInstance
-    .allEvents({ /* filter: { owner: state.coinbase }, */ fromBlock: 'latest' })
+    .allEvents({ filter: { owner: state.coinbase }, fromBlock: 'latest' })
     .on('data', (event) => {
-      console.log(event);
       switch (event.event) {
         case 'GeneratedParametersReceived':
           commit('player/generatedParametersReceived', { returnValues: event.returnValues, rootState }, { root: true });
