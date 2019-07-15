@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/matiasbn/luckyseven.win/compare/v2.1.0...v3.0.0) (2019-07-15)
+
+
+### Features
+
+* **blockchain:** ropsten deployer ([1fcb9bf](https://github.com/matiasbn/luckyseven.win/commit/1fcb9bf))
+* uport working ([0587bca](https://github.com/matiasbn/luckyseven.win/commit/0587bca))
+
+
+
 ## [2.1.0](https://github.com/matiasbn/luckyseven.win/compare/v2.0.0...v2.1.0) (2019-07-05)
 
 
