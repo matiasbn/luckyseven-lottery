@@ -9,7 +9,7 @@ import Web3 from 'web3';
 import truffleContract from '@/web3/truffleContract';
 import Lucky7Store from '../../../build/contracts/Lucky7Store.json';
 
-const mnid = require('mnid');
+// const mnid = require('mnid');
 
 export const metamaskLogin = ({ commit, dispatch }) => new Promise(async (resolve, reject) => {
   try {
@@ -92,10 +92,9 @@ export const uportLogin = async ({ commit, state, dispatch }) => {
           notifications: true,
         },
       );
-      const response = await uport.onResponse('disclosureReq');
+      /* const response =  */await uport.onResponse('disclosureReq');
       const uportProvider = await uport.getProvider();
       const uportWeb3 = new Web3(uportProvider);
-      // const coun
       // const coinbase = (mnid.decode(response.payload.mnid)).address;
       const coinbase = await uportWeb3.eth.getCoinbase();
       const web3 = new Web3(state.session.selectedNetwork.rpcUrl);
@@ -115,26 +114,6 @@ export const uportLogin = async ({ commit, state, dispatch }) => {
         uportProvider,
         uportInstance: uport,
       });
-      // const networkID = parseInt(state.session.selectedNetwork.networkID, 16);
-      // const contract = uport.contract(Lucky7Store.abi).at(Lucky7Store.networks[`${networkID}`].address);
-      // console.log(web3.utils.toWei('0.02'));
-      // contract.generateRandomTicket({
-      //   from: coinbase,
-      //   to: Lucky7Store.networks[`${networkID}`].address,
-      //   value: web3.utils.toWei('0.02'),
-      //   gas: 7000000,
-      // }, 'generateTicket');
-      // const transaction = await uport.onResponse('generateTicket');
-      // console.log(transaction);
-      // const truffleContractInstance = await truffleContract(uportProvider).deployed();
-      // const cosa = await truffleContractInstance.generateRandomTicket({
-      //   from: coinbase,
-      //   to: Lucky7Store.networks['7'].address,
-      //   value: 1 * 1.0e18,
-      //   // value: rootState.game.prices.generate,
-      // });
-      // console.log(cosa);
-      // commit('web3/registerWeb3Instance', currentState, { root: true });
     }
     dispatch('game/getGameSettings', null, { root: true });
     dispatch('web3/listenEvents', null, { root: true });

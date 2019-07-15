@@ -10,7 +10,6 @@ export const metamaskLogin = (state) => {
 };
 export const uportLogin = (state, payload) => {
   const { web3Provider, uportProvider, uportInstance } = payload;
-  console.log(uportProvider);
   state.session.provider = 'uport';
   state.session.isLoggedIn = true;
   state.session.web3Provider = web3Provider;
