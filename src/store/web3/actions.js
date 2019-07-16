@@ -29,6 +29,10 @@ export const listenEvents = async ({ commit, state, rootState }) => {
             commit('player/newTicketReceived', { returnValues: event.returnValues, rootState }, { root: true });
           }
           break;
+        case 'PrizeClaimed':
+          const payload = { returnValues: event.returnValues, network: rootState.player.session.selectedNetwork.rpcUrl };
+          commit('web3/prizeClaimed', payload, { root: true });
+          break;
         default:
           break;
       }

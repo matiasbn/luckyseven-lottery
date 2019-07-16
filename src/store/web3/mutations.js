@@ -1,3 +1,5 @@
+import Web3 from 'web3';
+
 export const registerWeb3Instance = (state, payload) => {
   const {
     coinbase,
@@ -19,4 +21,11 @@ export const pollWeb3 = (state, payload) => {
 };
 export const balanceUpdated = (state, payload) => {
   state.contractBalance = payload;
+};
+
+export const prizeClaimed = async (state, payload) => {
+  const { network } = payload;
+  const web3 = new Web3(network);
+  const newBalance = await web3.eth.getBalance(state.coinbase);
+  state.balance = newBalance;
 };
