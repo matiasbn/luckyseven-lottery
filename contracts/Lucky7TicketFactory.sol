@@ -36,7 +36,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize {
   bool isRhombusAvailable;
 
   constructor(address _lucky7Lighthouse, bool _isRhombusAvailable) internal payable {
-    OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
+    // OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
     lucky7Lighthouse = ILighthouse(_lucky7Lighthouse);
     localLighthouse = Lighthouse(_lucky7Lighthouse);
     isRhombusAvailable = _isRhombusAvailable;
@@ -200,7 +200,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize {
     uint muParameter;
     bool dataOk;
     (muParameter, dataOk) = lucky7Lighthouse.peekData(); // Rhombus implementation
-    userValues[_ticketOwner].mu = uint2str(muParameter); // oraclize uint2str
+    userValues[_ticketOwner].mu = uint2str(Lucky7Library.generateBadRandomNumber(muParameter)); // oraclize uint2str
     userValues[_ticketOwner].muReady = true;
     if (!isRhombusAvailable) {
       // Simulate a random number. This is indeed a bad practice and should not be implemented on production.

@@ -13,14 +13,14 @@ module.exports = function (deployer, network) {
 
     var lighthouseAddress = '0x613D2159db9ca2fBB15670286900aD6c1C79cC9a';
 
-    deployer.deploy(Lucky7Store, lighthouseAddress, false, {
+    deployer.deploy(Lucky7Store, lighthouseAddress, true, { // true = rhombus available on network
       value: web3.utils.toWei('1', 'ether'),
     });
     
   } else {
 
     deployer.deploy(Lighthouse).then(function () {
-      return deployer.deploy(Lucky7Store, Lighthouse.address, true, {
+      return deployer.deploy(Lucky7Store, Lighthouse.address, false, {
         value: web3.utils.toWei('1', 'ether'),
       });
     })

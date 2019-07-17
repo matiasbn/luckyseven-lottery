@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable import/extensions */
 /* eslint-disable no-case-declarations */
@@ -7,8 +8,21 @@
 import truffleContract from '@/web3/truffleContract';
 import Web3 from 'web3';
 
+const metamaskProvider = (networkID) => {
+  switch (networkID) {
+    case '4':
+      return new Web3.providers.WebsocketProvider('wss://rinkeby.infura.io/ws/v3/dc466345ecf2426d9bd6458046dce39f');
+    case '3':
+      return new Web3.providers.WebsocketProvider('wss://ropsten.infura.io/ws/v3/dc466345ecf2426d9bd6458046dce39f');
+    default:
+      return window.web3.currentProvider;
+  }
+};
+
 export const listenEvents = async ({ commit, state, rootState }) => {
-  const formatedProvider = rootState.player.session.selectedNetwork.rpcUrl.replace('https://', 'ws://'); // Use websocket to listen events
+  const formatedProvider = rootState.player.session.provider === 'metamask'
+    ? metamaskProvider(window.web3.networkVersion)
+    : rootState.player.session.selectedNetwork.rpcUrl.replace('https://', 'ws://'); // Use websocket to listen events
   const web3 = new Web3(formatedProvider);
   const truffleContractInstance = await truffleContract(web3.currentProvider).deployed();
   // To avoid double events where important, it stores the transaction hashes and checks if it is repeated
