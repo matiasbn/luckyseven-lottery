@@ -57,7 +57,8 @@ export const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth) && !player.state.session.isLoggedIn) {
+  const { isLoggedIn } = player.state.session;
+  if (to.matched.some(record => record.meta.requiresAuth) && !isLoggedIn) {
     next({
       path: '/login',
     });
