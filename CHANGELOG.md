@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0](https://github.com/matiasbn/luckyseven.win/compare/v3.0.0...v3.1.0) (2019-07-21)
+
+
+### Bug Fixes
+
+* rhombus random number transformed ([3da859b](https://github.com/matiasbn/luckyseven.win/commit/3da859b))
+
+
+### Features
+
+* ens forward and reverse lookup ([1fdaf89](https://github.com/matiasbn/luckyseven.win/commit/1fdaf89))
+* rhombus successfully integrated for local network ([27d036e](https://github.com/matiasbn/luckyseven.win/commit/27d036e))
+
+
+
 ## [3.0.0](https://github.com/matiasbn/luckyseven.win/compare/v2.1.0...v3.0.0) (2019-07-15)
 
 
