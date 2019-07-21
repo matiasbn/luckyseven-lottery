@@ -47,7 +47,7 @@ export default {
   },
   watch: {
     // eslint-disable-next-line consistent-return
-    async balance() {
+    balance() {
       this.refreshPrizes();
     },
     async coinbase() {

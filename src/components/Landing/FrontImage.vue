@@ -3,8 +3,12 @@
     <b-jumbotron
       header="Lucky7"
       lead="Fully decentralized lottery based on Ethereum Blockchain"
-      container-fluid
-      class="headimage"/>
+      class="headimage">
+      <b-button
+        pill
+        variant="warning"
+        @click="$router.push('/rules')">Checkout the rules!</b-button>
+    </b-jumbotron>
   </div>
 </template>
 

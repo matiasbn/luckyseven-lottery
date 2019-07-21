@@ -27,7 +27,9 @@
         header="Lucky7 Contract Address"
         header-tag="h4">
         <b-card-text>
-          {{ contractAddress }}
+          <vth-blockie
+            :string="contractAddress"
+            round /> {{ contractAddress }}
         </b-card-text>
       </b-card>
     </b-card-group>

@@ -30,6 +30,7 @@ export default {
       account: state => state.web3.coinbase,
       balance: state => state.web3.balance,
       isConnected: state => state.web3.isConnected,
+      sessionProvider: state => state.player.session.provider,
     }),
     ...mapGetters('player', ['currentProvider']),
   },
