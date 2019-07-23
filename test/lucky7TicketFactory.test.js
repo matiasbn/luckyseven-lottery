@@ -7,7 +7,7 @@ contract('Lucky7TicketFactory', (accounts) => {
     // This test the _askForMuParameter function to check that the oraclize query is correctly done.
     // Calls the function and waits for the NewMuReceived event to happen
     // Once it happens, then read it info, checking that the mu parameter is not 0
-    const lucky7TicketFactory = await Lucky7TicketFactory.new({ value: web3.toWei(1, 'ether') });
+    const lucky7TicketFactory = await Lucky7TicketFactory.new({ value: web3.utils.toWei('1', 'ether') });
     await lucky7TicketFactory._askForMuParameter(user);
     const eventWatcher = promisifyLogWatch(lucky7TicketFactory.NewMuReceived({ fromBlock: 'latest' }));
 
@@ -20,7 +20,7 @@ contract('Lucky7TicketFactory', (accounts) => {
     // This test the _askForIParameter function to check that the oraclize query is correctly done.
     // Calls the function and waits for the NewIxReceived event to happen
     // Once it happens, then read it info, checking that the i parameter is not 0
-    const lucky7TicketFactory = await Lucky7TicketFactory.new({ value: web3.toWei(1, 'ether') });
+    const lucky7TicketFactory = await Lucky7TicketFactory.new({ value: web3.utils.toWei('1', 'ether') });
     await lucky7TicketFactory._askForIParameter(user);
     const eventWatcher = promisifyLogWatch(lucky7TicketFactory.NewIReceived({ fromBlock: 'latest' }));
 
@@ -36,7 +36,7 @@ contract('Lucky7TicketFactory', (accounts) => {
     // As usual, wait for NewMuReceived, NewIReceived and then NewWolframQuery
     // Once the query is setted, compare it with the query that should be generated through
     // the parameters previously received
-    const lucky7TicketFactory = await Lucky7TicketFactory.new({ value: web3.toWei(1, 'ether') });
+    const lucky7TicketFactory = await Lucky7TicketFactory.new({ value: web3.utils.toWei('1', 'ether') });
     const b = await lucky7TicketFactory.b();
     const n = await lucky7TicketFactory.n();
     const p = await lucky7TicketFactory.p();
@@ -77,7 +77,7 @@ contract('Lucky7TicketFactory', (accounts) => {
     // To check
 
 
-    const lucky7TicketFactory = await Lucky7TicketFactory.new({ value: web3.toWei(1, 'ether') });
+    const lucky7TicketFactory = await Lucky7TicketFactory.new({ value: web3.utils.toWei('1', 'ether') });
     await lucky7TicketFactory._askForMuParameter(owner);
     const eventWatcher1 = promisifyLogWatch(lucky7TicketFactory.NewMuReceived({ fromBlock: 'latest' }));
     log1 = await eventWatcher1;
@@ -110,7 +110,7 @@ contract('Lucky7TicketFactory', (accounts) => {
 
     // Let start by setting the "settingLucky7Numbers" to false, because is true
     // by default, this way the contract knows we are in the selling ticket phase
-    const lucky7TicketFactory = await Lucky7TicketFactory.new({ value: web3.toWei(1, 'ether') });
+    const lucky7TicketFactory = await Lucky7TicketFactory.new({ value: web3.utils.toWei('1', 'ether') });
     await lucky7TicketFactory.toggleLucky7Setting();
     const settingLucky7Numbers = await lucky7TicketFactory.settingLucky7Numbers();
     assert.equal(settingLucky7Numbers, false, 'Should set the settingLucky7 to false');

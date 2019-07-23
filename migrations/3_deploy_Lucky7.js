@@ -6,6 +6,7 @@ const Lucky7Library = artifacts.require('Lucky7Library');
 const Lighthouse = artifacts.require('Lighthouse');
 
 module.exports = function (deployer, network) {
+
   deployer.deploy(Lucky7Library);
   deployer.link(Lucky7Library, Lucky7Store);
 

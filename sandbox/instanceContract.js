@@ -12,3 +12,5 @@ await lucky7Instance.userValues(account)
 
 // Get past 'Lucky7TicketStored' events
 lucky7Instance.getPastEvents('Lucky7TicketStored',{filter:{owner:account}})
+
+web3.eth.subscribe('logs',{},function(error, result){if (!error)console.log(result);});

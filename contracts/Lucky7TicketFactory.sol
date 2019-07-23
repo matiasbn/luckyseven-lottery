@@ -36,7 +36,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize {
   bool isRhombusAvailable;
 
   constructor(address _lucky7Lighthouse, bool _isRhombusAvailable) internal payable {
-    // OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
+    OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
     lucky7Lighthouse = ILighthouse(_lucky7Lighthouse);
     localLighthouse = Lighthouse(_lucky7Lighthouse);
     isRhombusAvailable = _isRhombusAvailable;
@@ -186,14 +186,14 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize {
   uint public gameID = 0;
   uint public indexForLucky7Array = 0;
 
+
+  uint muNonce = 0;
+
   /** @dev _askForMuParameter is a function to ask for a new mu parameter through an oraclize query.
    * @param _ticketOwner is the address of the user which is calling this function through a generation of new parameters or by buying a new random ticket.
    * First, it emit an event to register the query. Then it do the query and save the bytes32 value generated to the muID.
    * Finally it associate this muID with the _ticketOwner through the muParameterID mapping, so the oraclize's callback function know it is a mu petition and it belongs to the _ticketOwner user.
    */
-
-  uint muNonce = 0;
-
   function _askForMuParameter(address _ticketOwner) public oraclizeGasPriceCustomized {
     // bytes32 muID = oraclize_query("WolframAlpha", "4 random number", oraclizeGasLimit);
     // muParameterID[muID] = _ticketOwner;
@@ -399,19 +399,6 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize {
       }
     }
   }
-
-  function ticketsArrayLength() public view returns(uint) {
-    return ticketsArray.length;
-  }
-  // //________ TESTING RHOMBUS _________
-  // event RhombusNumberReceived(uint number);
-
-  // function testingRhombus() public {
-  //   uint muParameter;
-  //   bool dataOk;
-  //   (muParameter, dataOk) = lucky7Lighthouse.peekData();
-  //   emit RhombusNumberReceived(muParameter);
-  // }
-
-  function () external payable {}
+  
+  // function () external payable {}
 }
