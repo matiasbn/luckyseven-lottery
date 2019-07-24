@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.3.0](https://github.com/matiasbn/luckyseven.win/compare/v3.2.0...v3.3.0) (2019-07-24)
+
+
+### Features
+
+* first lucky7Raffle test passing ([5aafabd](https://github.com/matiasbn/luckyseven.win/commit/5aafabd))
+* lucky7raffle finished ([03da062](https://github.com/matiasbn/luckyseven.win/commit/03da062))
+* lucky7store tests finished ([4ba9721](https://github.com/matiasbn/luckyseven.win/commit/4ba9721))
+* lucky7ticketfactory tests finished ([cc0f96f](https://github.com/matiasbn/luckyseven.win/commit/cc0f96f))
+
+
+
 ## [3.2.0](https://github.com/matiasbn/luckyseven.win/compare/v3.0.0...v3.2.0) (2019-07-21)
 
 
