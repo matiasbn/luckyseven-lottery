@@ -232,13 +232,15 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize {
     newTicketID[userTicketID] = _ticketOwner;
   }
 
+  event NewWolframQuery(string wolframQuery);
   /** @dev _setTicketQuery is a function which sets the query to ask for a ticket to WolframAlpha through oraclize.
    * @param _parametersOwner is the address of the user which is going to receive the ticket, e.g. a user asking for a ticket or the admin of the contract when calling for a
    * Lucky7Number. The final shape of the query is (mod((1/(10^n-mu))*10^p,10^(j+i))-mod((1/(10^n-mu))*10^p,10^(i)))/10^i, and this function uses the strConcat function of
    * the usingOraclize contract to concat the parts with the parameters of the user.
    * Every line explains how the query is getting it shape. The meaning of this query is going to be explained on the paper of the project.
    */
-  function _setTicketQuery(address _parametersOwner) internal view returns(string memory) {
+
+  function _setTicketQuery(address _parametersOwner) internal returns(string memory) {
     string memory queryWolfram;
     //This line => (mod((1/(10^n-mu))*10^
     queryWolfram = strConcat("(mod((1/(10^", n, "-", userValues[_parametersOwner].mu, "))*10^");
@@ -250,10 +252,11 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize {
     queryWolfram = strConcat(queryWolfram, userValues[_parametersOwner].mu, "))*10^", p, ",10^");
     //This line => (mod((1/(10^n-mu))*10^p,10^(j+i))-mod((1/(10^n-mu))*10^p,10^(i)))/10^i
     queryWolfram = strConcat(queryWolfram, "(", userValues[_parametersOwner].i, ")))/10^", userValues[_parametersOwner].i);
+    emit NewWolframQuery(queryWolfram);
     return queryWolfram;
   }
 
-  /** @dev _generateTicket is used for another contract. Invokes _askForMuParameter and _askForIparameter
+  /** @dev _generateTicket is used by another contract. Invokes _askForMuParameter and _askForIparameter
    */
   function _generateTicket(address _ticketOwner) public {
     _askForMuParameter(_ticketOwner);
@@ -399,6 +402,4 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize {
       }
     }
   }
-  
-  // function () external payable {}
 }

@@ -1,32 +1,61 @@
 const Lucky7TicketFactory = artifacts.require('Lucky7TicketFactory');
+const Lucky7Library = artifacts.require('Lucky7Library');
+const Lighthouse = artifacts.require('Lighthouse');
+const Web3 = require('web3');
+
 contract('Lucky7TicketFactory', (accounts) => {
+
+  // Events function
+  const lucky7Event = async (contract, event) => {
+    return new Promise((resolve, reject) => {
+      contract.once(event, {
+        fromBlock: 'latest'
+      }, (error, result) => {
+        resolve(result);
+      })
+    })
+  }
+
+  // Using websockets to listen to events
+  const web3Contract = (address) => {
+    const web3 = new Web3(new Web3.providers.WebsocketProvider('ws://localhost:8545'));
+    return new web3.eth.Contract(Lucky7TicketFactory.abi, address);
+  }
+
+  let lucky7TicketFactory;
+  let web3contract;
+
+  beforeEach(async function () {
+    const lightHouse = await Lighthouse.new();
+    const lucky7Library = await Lucky7Library.new();
+    await Lucky7TicketFactory.link('Lucky7Library', lucky7Library.address);
+    lucky7TicketFactory = await Lucky7TicketFactory.new(lightHouse.address, true, {
+      value: web3.utils.toWei('1', 'ether')
+    });
+    web3contract = web3Contract(lucky7TicketFactory.address)
+  });
+
   const owner = accounts[0];
   const user = accounts[1];
 
   it('should ask for a new mu paramater for the user', async () => {
-    // This test the _askForMuParameter function to check that the oraclize query is correctly done.
-    // Calls the function and waits for the NewMuReceived event to happen
+    // This test the _askForMuParameter function to check that the Rhombus query is correctly done.
+    // Calls the function and waits for the transaction to be mined.
     // Once it happens, then read it info, checking that the mu parameter is not 0
-    const lucky7TicketFactory = await Lucky7TicketFactory.new({ value: web3.utils.toWei('1', 'ether') });
     await lucky7TicketFactory._askForMuParameter(user);
-    const eventWatcher = promisifyLogWatch(lucky7TicketFactory.NewMuReceived({ fromBlock: 'latest' }));
-
-    log = await eventWatcher;
-    assert.equal(log.event, 'NewMuReceived', 'NewMuReceived not emitted.');
-    assert.isNotNull(log.args.muParameter, 'Mu returned was null.');
+    const log = await lucky7TicketFactory.userValues(user);
+    assert.notEmpty(log.mu, 'mu returned was null');
   });
 
   it('should ask for a new i paramater for the user', async () => {
     // This test the _askForIParameter function to check that the oraclize query is correctly done.
     // Calls the function and waits for the NewIxReceived event to happen
     // Once it happens, then read it info, checking that the i parameter is not 0
-    const lucky7TicketFactory = await Lucky7TicketFactory.new({ value: web3.utils.toWei('1', 'ether') });
+    await lucky7TicketFactory._askForMuParameter(user);
     await lucky7TicketFactory._askForIParameter(user);
-    const eventWatcher = promisifyLogWatch(lucky7TicketFactory.NewIReceived({ fromBlock: 'latest' }));
-
-    log = await eventWatcher;
-    assert.equal(log.event, 'NewIReceived', 'NewIReceived not emitted.');
-    assert.isNotNull(log.args.iParameter, 'I returned was null.');
+    const log = await lucky7Event(web3contract, 'GeneratedParametersReceived');
+    assert.equal(log.event, 'GeneratedParametersReceived', 'GeneratedParametersReceived not emitted.');
+    assert.isNotNull(log.returnValues.i, 'i returned was null');
   });
 
   it('should set the WolframAlpha query correctly', async () => {
@@ -36,35 +65,27 @@ contract('Lucky7TicketFactory', (accounts) => {
     // As usual, wait for NewMuReceived, NewIReceived and then NewWolframQuery
     // Once the query is setted, compare it with the query that should be generated through
     // the parameters previously received
-    const lucky7TicketFactory = await Lucky7TicketFactory.new({ value: web3.utils.toWei('1', 'ether') });
     const b = await lucky7TicketFactory.b();
     const n = await lucky7TicketFactory.n();
     const p = await lucky7TicketFactory.p();
     const j = await lucky7TicketFactory.j();
 
     await lucky7TicketFactory._askForMuParameter(owner);
-    const eventWatcher1 = promisifyLogWatch(lucky7TicketFactory.NewMuReceived({ fromBlock: 'latest' }));
-    log1 = await eventWatcher1;
-    // This is going to be used to generate the query on Javascript
-    const mu = log1.args.muParameter;
-
     await lucky7TicketFactory._askForIParameter(owner);
-    const eventWatcher2 = promisifyLogWatch(lucky7TicketFactory.NewIReceived({ fromBlock: 'latest' }));
-    log2 = await eventWatcher2;
     // This is going to be used to generate the query on Javascript
-    const i = log2.args.iParameter;
-
-    const eventWatcher3 = promisifyLogWatch(lucky7TicketFactory.NewWolframQuery({ fromBlock: 'latest' }));
-    log3 = await eventWatcher3;
+    const log2 = await lucky7Event(web3contract, 'NewWolframQuery');
+    const log = await lucky7TicketFactory.userValues(owner);
+    const mu = log.mu;
+    const i = log.i;
     // Here we extract the result of the query obtained through the contract
-    const queryWolframFromContract = log3.args.description;
+    const queryWolframFromContract = log2.returnValues.wolframQuery;
     // Here we define the query through the result, using the parameters previously catched
     // (mod((1/(10^n-mu))*10^p,10^(j+i))-mod((1/(10^n-mu))*10^p,10^(i)))/10^i
     let queryWolframFromParameters = '(mod((1/(10^';
     // Here we compare them
     queryWolframFromParameters = queryWolframFromParameters.concat(n, '-', mu, '))*10^', p, ',10^(', j, '+', i, '))-mod((1/(10^', n, '-', mu, '))*10^', p, ',10^(', i, ')))/10^', i);
 
-    assert.equal(queryWolframFromContract, queryWolframFromParameters, "The querys doesn't match");
+    assert.equal(queryWolframFromContract, queryWolframFromParameters, "The querys don't match");
   });
 
   it('should ask for both parameters converting the result in a Lucky7Number', async () => {
@@ -76,29 +97,22 @@ contract('Lucky7TicketFactory', (accounts) => {
     // Just console.log() log1.args.muParameter, log2.args.iParameter and log3.args.newTicket
     // To check
 
-
-    const lucky7TicketFactory = await Lucky7TicketFactory.new({ value: web3.utils.toWei('1', 'ether') });
     await lucky7TicketFactory._askForMuParameter(owner);
-    const eventWatcher1 = promisifyLogWatch(lucky7TicketFactory.NewMuReceived({ fromBlock: 'latest' }));
-    log1 = await eventWatcher1;
-    assert.equal(log1.event, 'NewMuReceived', 'NewMuReceived not emitted.');
-    assert.isNotNull(log1.args.muParameter, 'Mu returned was null.');
-
     await lucky7TicketFactory._askForIParameter(owner);
-    const eventWatcher2 = promisifyLogWatch(lucky7TicketFactory.NewIReceived({ fromBlock: 'latest' }));
-    log2 = await eventWatcher2;
-    assert.equal(log2.event, 'NewIReceived', 'NewIReceived not emitted.');
-    assert.isNotNull(log2.args.iParameter, 'I returned was null.');
+    const log = await lucky7Event(web3contract, 'GeneratedParametersReceived');
+
+    assert.equal(log.event, 'GeneratedParametersReceived', 'GeneratedParametersReceived not emitted.');
+    assert.isNotNull(log.returnValues.mu, 'mu returned was null');
+    assert.isNotNull(log.returnValues.i, 'i returned was null');
 
     // Check that the "new ticket" is emited
-    const eventWatcher3 = promisifyLogWatch(lucky7TicketFactory.NewTicketReceived({ fromBlock: 'latest' }));
-    log3 = await eventWatcher3;
-    assert.equal(log3.event, 'NewTicketReceived', 'NewTicketReceived not emitted.');
-    assert.isNotNull(log3.args.newTicket, 'Lucky7Number received returned was null.');
+    const log2 = await lucky7Event(web3contract, 'Lucky7NumberInserted');
+    assert.equal(log2.event, 'Lucky7NumberInserted', 'Lucky7NumberInserted not emitted.');
+    assert.isNotNull(log2.returnValues.value, 'Lucky7Number received returned was null');
     // Check if the new ticket is saved for the owner
     let userTicketValue = await lucky7TicketFactory.userValues(owner);
     userTicketValue = parseInt(userTicketValue[2]);
-    assert.notEqual(userTicketValue, 0, 'Ticket was not recieved');
+    assert.notEqual(userTicketValue, 0, 'Lucky7Number was not received');
   });
 
 
@@ -110,37 +124,20 @@ contract('Lucky7TicketFactory', (accounts) => {
 
     // Let start by setting the "settingLucky7Numbers" to false, because is true
     // by default, this way the contract knows we are in the selling ticket phase
-    const lucky7TicketFactory = await Lucky7TicketFactory.new({ value: web3.utils.toWei('1', 'ether') });
     await lucky7TicketFactory.toggleLucky7Setting();
     const settingLucky7Numbers = await lucky7TicketFactory.settingLucky7Numbers();
     assert.equal(settingLucky7Numbers, false, 'Should set the settingLucky7 to false');
 
 
     await lucky7TicketFactory._askForMuParameter(user);
-    const eventWatcher1 = promisifyLogWatch(lucky7TicketFactory.NewMuReceived({ fromBlock: 'latest' }));
-    log1 = await eventWatcher1;
-    assert.equal(log1.event, 'NewMuReceived', 'NewMuReceived not emitted.');
-    assert.isNotNull(log1.args.muParameter, 'Mu returned was null.');
-
     await lucky7TicketFactory._askForIParameter(user);
-    const eventWatcher2 = promisifyLogWatch(lucky7TicketFactory.NewIReceived({ fromBlock: 'latest' }));
-    log2 = await eventWatcher2;
-    assert.equal(log2.event, 'NewIReceived', 'NewIReceived not emitted.');
-    assert.isNotNull(log2.args.iParameter, 'I returned was null.');
+    const log = await lucky7Event(web3contract, 'GeneratedParametersReceived');
+    assert.equal(log.event, 'GeneratedParametersReceived', 'GeneratedParametersReceived not emitted.');
+    assert.isNotNull(log.returnValues.mu, 'mu returned was null');
+    assert.isNotNull(log.returnValues.i, 'i returned was null');
 
     let userTicketValue = await lucky7TicketFactory.userValues(user);
     userTicketValue = parseInt(userTicketValue[2]);
-    assert.equal(userTicketValue, 0, 'Ticket was recieved');
+    assert.equal(userTicketValue, 0, 'Ticket was received');
   });
 });
-
-function promisifyLogWatch(_event) {
-  return new Promise((resolve, reject) => {
-    _event.watch((error, log) => {
-      _event.stopWatching();
-      if (error !== null) reject(error);
-
-      resolve(log);
-    });
-  });
-}
