@@ -15,10 +15,10 @@ contract Lucky7Store is Lucky7Raffle {
   /** @dev Constructor to make the contract payable
    */
   event GameParameters(string b, string n, string p, string j, uint numberOfLucky7Numbers, uint generateTicketPrice, uint purchaseTicketPrice);
-  constructor(address _lucky7Lighthouse, bool isLocalBlockchain)
+  constructor(address _lucky7Lighthouse, bool _isRhombusAvailable)
   payable
   public
-  Lucky7TicketFactory(_lucky7Lighthouse, isLocalBlockchain) { // To initialize Lucky7TicketFactory constructor with Rhombus lighthouse
+  Lucky7Raffle(_lucky7Lighthouse, _isRhombusAvailable) { // To initialize Lucky7TicketFactory constructor with Rhombus lighthouse
     emit GameParameters(b, n, p, j, numberOfLucky7Numbers, generateTicketPrice, purchaseTicketPrice);
   }
 

@@ -14,7 +14,10 @@ import "./Lucky7TicketFactory.sol";
 
 contract Lucky7Raffle is Lucky7TicketFactory {
 
-  constructor() internal payable {
+  constructor(address _lucky7Lighthouse, bool _isRhombusAvailable) 
+  public 
+  payable 
+  Lucky7TicketFactory(_lucky7Lighthouse, _isRhombusAvailable) { // To initialize Lucky7TicketFactory constructor with Rhombus lighthouse
 
   }
 
@@ -270,8 +273,7 @@ contract Lucky7Raffle is Lucky7TicketFactory {
   function setIndexForLucky7Array(uint _newValue) public onlyOwner {
     indexForLucky7Array = _newValue;
   }
-
-
+  
   /** @dev Fallback function to make this contract payable.
    */
   function () external payable {

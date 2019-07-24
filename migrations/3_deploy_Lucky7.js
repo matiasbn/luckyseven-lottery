@@ -2,11 +2,11 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable func-names */
 const Lucky7Store = artifacts.require('Lucky7Store');
+const Lucky7Raffle = artifacts.require('Lucky7Raffle');
 const Lucky7Library = artifacts.require('Lucky7Library');
 const Lighthouse = artifacts.require('Lighthouse');
 
 module.exports = function (deployer, network) {
-
   deployer.deploy(Lucky7Library);
   deployer.link(Lucky7Library, Lucky7Store);
 

@@ -35,7 +35,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize {
   Lighthouse public localLighthouse;
   bool isRhombusAvailable;
 
-  constructor(address _lucky7Lighthouse, bool _isRhombusAvailable) internal payable {
+  constructor(address _lucky7Lighthouse, bool _isRhombusAvailable) public payable {
     OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
     lucky7Lighthouse = ILighthouse(_lucky7Lighthouse);
     localLighthouse = Lighthouse(_lucky7Lighthouse);
