@@ -289,11 +289,7 @@ const web3 = new Web3();
 export default {
   filters: {
     transformBalance(balance) {
-      let stringBalance = String(parseInt(balance, 10));
-      if (isNaN(balance)) {
-        stringBalance = '0';
-      }
-      return parseFloat(web3.utils.fromWei(stringBalance, 'ether'), 10).toFixed(4);
+      return parseFloat(web3.utils.fromWei(balance, 'ether'), 10).toFixed(4);
     },
   },
   data() {
