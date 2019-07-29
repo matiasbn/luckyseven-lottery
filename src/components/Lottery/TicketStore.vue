@@ -1,23 +1,19 @@
 <template>
-  <b-card
-    header="Ticket Store"
-    header-tag="h1"
-    class="ticket-store"
-    header-bg-variant="success"
-    header-text-variant="white"
-  >
-    <b-card-group deck>
-      <b-col>
+  <b-container
+    fluid
+    class="ticket-store">
+    <b-row>
+      <b-col cols="4">
         <Store/>
       </b-col>
-      <b-col>
+      <b-col cols="4">
         <LastGeneratedTicket/>
       </b-col>
-      <b-col>
+      <b-col cols="4">
         <LastPurchasedTicket/>
       </b-col>
-    </b-card-group>
-  </b-card>
+    </b-row>
+  </b-container>
 </template>
 <script>
 import Store from './TicketStore/Store';
@@ -44,8 +40,5 @@ export default {
   }
   .card-text{
     margin:0;
-  }
-  .col{
-    border:1px yellow;
   }
 </style>

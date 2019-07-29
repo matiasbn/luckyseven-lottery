@@ -1,64 +1,9 @@
 <template>
-  <div>
-    <b-card
-      header="Last Purchased ticket"
-      header-tag="h2"
-      title="Ticket value"
-    >
-      <b-card-text
-        v-if="player.purchasedTicket.received">
-        {{ currentGameTicket ? player.purchasedTicket.ticketValue : 0 }}
-      </b-card-text>
-      <b-spinner
-        v-else
-        variant="success"
-        label="Spinning"/>
-    </b-card>
-
-    <b-card title="First number">
-      <b-card-text
-        v-if="player.purchasedTicket.received">
-        {{ currentGameTicket ? player.purchasedTicket.number1 : 0 }}
-      </b-card-text>
-      <b-spinner
-        v-else
-        variant="success"
-        label="Spinning"/>
-    </b-card>
-
-    <b-card title="Second number">
-      <b-card-text
-        v-if="player.purchasedTicket.received">
-        {{ currentGameTicket ? player.purchasedTicket.number2 : 0 }}
-      </b-card-text>
-      <b-spinner
-        v-else
-        variant="success"
-        label="Spinning"/>
-    </b-card>
-
-    <b-card title="Difference">
-      <b-card-text
-        v-if="player.purchasedTicket.received">
-        {{ currentGameTicket ? player.purchasedTicket.difference : 0 }}
-      </b-card-text>
-      <b-spinner
-        v-else
-        variant="success"
-        label="Spinning"/>
-    </b-card>
-
-    <b-card title="Position">
-      <b-card-text
-        v-if="player.purchasedTicket.received">
-        {{ currentGameTicket ? player.purchasedTicket.position : 0 }}
-      </b-card-text>
-      <b-spinner
-        v-else
-        variant="success"
-        label="Spinning"/>
-    </b-card>
-
+  <b-card
+    header="Last Purchased ticket"
+    header-tag="h2"
+    no-body
+  >
     <b-card title="Lucky7Ticket?">
       <b-card-text v-if="player.purchasedTicket.received">
         {{ isLucky7Ticket }}
@@ -68,7 +13,93 @@
         variant="success"
         label="Spinning"/>
     </b-card>
-  </div>
+    <b-list-group fluid>
+
+      <b-list-group-item>
+        <h6>
+          Position:
+          <b-badge
+            v-if="player.purchasedTicket.received"
+            style="font-size:15px"
+            variant="success"
+            pill
+          >{{ currentGameTicket ? player.purchasedTicket.position : 0 }}
+          </b-badge>
+          <b-spinner
+            v-else
+            variant="success"
+            label="Spinning"/>
+        </h6>
+      </b-list-group-item>
+
+      <b-list-group-item>
+        <h6>
+          Difference:
+          <b-badge
+            v-if="player.purchasedTicket.received"
+            style="font-size:15px"
+            variant="success"
+            pill
+          >{{ currentGameTicket ? player.purchasedTicket.difference : 0 }}
+          </b-badge>
+          <b-spinner
+            v-else
+            variant="success"
+            label="Spinning"/>
+        </h6>
+      </b-list-group-item>
+      <b-list-group-item>
+        <h6>
+          Ticket value:
+          <b-badge
+            v-if="player.purchasedTicket.received"
+            style="font-size:15px"
+            variant="success"
+            pill
+          >{{ currentGameTicket ? player.purchasedTicket.ticketValue : 0 }}
+          </b-badge>
+          <b-spinner
+            v-else
+            variant="success"
+            label="Spinning"/>
+        </h6>
+      </b-list-group-item>
+
+      <b-list-group-item>
+        <h6>
+          First number:
+          <b-badge
+            v-if="player.purchasedTicket.received"
+            style="font-size:15px"
+            variant="success"
+            pill
+          >{{ currentGameTicket ? player.purchasedTicket.number1 : 0 }}
+          </b-badge>
+          <b-spinner
+            v-else
+            variant="success"
+            label="Spinning"/>
+        </h6>
+      </b-list-group-item>
+
+      <b-list-group-item>
+        <h6>
+          Second Number:
+          <b-badge
+            v-if="player.purchasedTicket.received"
+            style="font-size:15px"
+            variant="success"
+            pill
+          >{{ currentGameTicket ? player.purchasedTicket.number2 : 0 }}
+          </b-badge>
+          <b-spinner
+            v-else
+            variant="success"
+            label="Spinning"/>
+        </h6>
+      </b-list-group-item>
+    </b-list-group>
+  </b-card>
 </template>
 
 <script>

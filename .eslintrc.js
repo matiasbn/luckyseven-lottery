@@ -51,6 +51,7 @@ module.exports = {
           'e' // for e.returnvalue
         ],
       }],
+      'max-len':'off',
       // allow optionalDependencies
       'import/no-extraneous-dependencies': ['error', {
         optionalDependencies: ['test/unit/index.js']

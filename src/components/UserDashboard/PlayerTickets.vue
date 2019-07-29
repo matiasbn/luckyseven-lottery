@@ -1,23 +1,26 @@
 <template>
-  <b-card-group deck>
+  <b-container fluid>
     <b-card
+      v-if="valuesReady"
       header="Your Lucky7Tickets"
-      header-tag="h2">
+      header-tag="h2"
+      no-body>
       <b-table
-        v-if="valuesReady"
         :items="playerTickets"
         :fields="fields"
         striped
+        bordered
         hover
         responsive
-        bordered
       />
+    </b-card>
+    <b-card
+      v-else >
       <b-spinner
-        v-else
         variant="success"
         label="Spinning"/>
     </b-card>
-  </b-card-group>
+  </b-container>
 </template>
 <script>
 

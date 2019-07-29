@@ -4,8 +4,11 @@
       toggleable="lg"
       type="dark"
       variant="success"
+      class="nav-bar-style"
       fixed="top">
-      <b-navbar-brand to="/">Lucky7</b-navbar-brand>
+      <b-navbar-brand
+        class="main-button"
+        to="/">Lucky7</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"/>
 
@@ -13,8 +16,8 @@
         id="nav-collapse"
         is-nav>
         <b-navbar-nav>
-          <b-nav-item to="/rules">Rules</b-nav-item>
-          <b-nav-item to="/prng">How numbers are generated</b-nav-item>
+          <b-nav-item to="/howworks">How Lucky7 works</b-nav-item>
+          <b-nav-item to="/prng">How the numbers are generated</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav
@@ -30,7 +33,7 @@
             <b-button
               v-if="isLoggedIn && provider === 'uport'"
               size="sm"
-              class="my-2 my-sm-0"
+              class="my-2 my-sm-0 uport-button"
               type="submit"
               @click="$store.dispatch('player/uportLogout',{root:true})">
               <img
@@ -67,3 +70,19 @@ export default{
   },
 };
 </script>
+<style scoped>
+  @import url('https://fonts.googleapis.com/css?family=Cinzel|Monoton&display=swap');
+  .main-button{
+    font-family: 'Monoton', cursive !important;
+  }
+  .uport-button{
+    background-color: rgb(119,83,221) !important;
+    border-color: rgb(119,83,221) !important;
+  }
+  .nav-bar-style{
+    font-family: 'Cinzel', serif !important;
+  }
+  .navbar{
+    opacity: 50%;
+  }
+</style>

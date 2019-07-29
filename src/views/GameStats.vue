@@ -1,9 +1,10 @@
 <template>
-  <div>
+  <b-container fluid>
     <CurrentGameStats/>
     <TicketsStats/>
+    <br>
     <PastGames/>
-  </div>
+  </b-container>
 </template>
 
 <script>

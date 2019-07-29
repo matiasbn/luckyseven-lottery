@@ -1,17 +1,18 @@
 <template>
-  <div
-    class="main-container">
-    <b-row>
+  <b-container
+    fluid
+    class="rules-main">
+    <b-row class="lottery-element">
       <b-col>
         <TicketStore />
       </b-col>
     </b-row>
-    <b-row>
-      <b-col>
+    <b-row class="lottery-element">
+      <b-col >
         <CurrentGame />
       </b-col>
     </b-row>
-  </div>
+  </b-container>
 </template>
 
 <script>
@@ -64,9 +65,3 @@ export default {
   },
 };
 </script>
-
-<style>
-  .row {
-    margin:20px;
-  }
-</style>

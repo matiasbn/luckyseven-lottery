@@ -1,21 +1,26 @@
 <template>
-  <b-card
-    header="Past Games"
-    header-tag="h2">
-    <b-table
+  <b-container fluid>
+    <b-card
       v-if="valuesReady"
-      :items="lucky7PastGames"
-      :fields="fields"
-      striped
-      hover
-      responsive
-      bordered
-    />
-    <b-spinner
-      v-else
-      variant="success"
-      label="Spinning"/>
-  </b-card>
+      header="Past Games"
+      header-tag="h2"
+      no-body>
+      <b-table
+        :items="lucky7PastGames"
+        :fields="fields"
+        striped
+        hover
+        responsive
+        bordered
+      />
+    </b-card>
+    <b-card
+      v-else >
+      <b-spinner
+        variant="success"
+        label="Spinning"/>
+    </b-card>
+  </b-container>
 </template>
 
 <script>

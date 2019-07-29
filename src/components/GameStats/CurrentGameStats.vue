@@ -1,7 +1,5 @@
 <template>
-  <b-card
-    header="Game Stats"
-    header-tag="h2">
+  <b-container fluid>
     <b-card-group deck>
       <b-card
         header="Current Network"
@@ -69,7 +67,7 @@
         </b-card-text>
       </b-card>
     </b-card-group>
-  </b-card>
+  </b-container>
 </template>
 
 <script>

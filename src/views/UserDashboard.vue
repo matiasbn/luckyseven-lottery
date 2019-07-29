@@ -1,14 +1,12 @@
 <template>
-  <div>
-    <b-card
-      :header="setTitle"
-      header-tag="h2">
-      <AdminView/>
-      <PlayerStats/>
-      <PlayerTickets/>
-      <PlayerPrizes/>
-    </b-card>
-  </div>
+  <b-container fluid>
+    <br>
+    <AdminView/>
+    <PlayerStats/>
+    <PlayerTickets/>
+    <br>
+    <PlayerPrizes/>
+  </b-container>
 </template>
 
 <script>

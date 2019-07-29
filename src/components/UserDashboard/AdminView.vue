@@ -4,6 +4,7 @@
     <b-card
       v-if="isAdmin"
       :footer="adminFooter"
+      footer-bg-variant="success"
       header= "Set Lucky7Numbers"
       header-tag="h2">
       <b-card-text>
@@ -25,6 +26,7 @@
     <b-card
       v-if="isAdmin"
       :footer="adminFooter"
+      footer-bg-variant="success"
       header= "Start new game"
       header-tag="h2">
       <b-card-text>

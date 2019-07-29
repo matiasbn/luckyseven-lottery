@@ -2,8 +2,8 @@
 /* eslint-disable import/prefer-default-export */
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Landing from '@/views/Landing';
-import Rules from '@/views/Rules';
+import LandingPage from '@/views/LandingPage';
+import HowWorks from '@/views/HowWorks';
 import HowNumbersGenerate from '@/views/HowNumbersGenerate';
 import Lottery from '@/views/Lottery';
 import GameStats from '@/views/GameStats';
@@ -17,11 +17,11 @@ export const router = new VueRouter({
   routes: [
     {
       path: '/',
-      component: Landing,
+      component: LandingPage,
     },
     {
-      path: '/rules',
-      component: Rules,
+      path: '/howworks',
+      component: HowWorks,
     },
     {
       path: '/prng',
@@ -58,6 +58,7 @@ export const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const { isLoggedIn } = player.state.session;
+  // const isLoggedIn = true;
   if (to.matched.some(record => record.meta.requiresAuth) && !isLoggedIn) {
     next({
       path: '/login',
