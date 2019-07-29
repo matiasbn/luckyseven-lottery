@@ -203,4 +203,22 @@ export default {
     background-color: rgb(119,83,221);
     border-color: rgb(119,83,221);
   }
+  .intro-text{
+      font-family: 'Cinzel', serif !important;
+  }
+  .intro{
+        text-align: center;
+        background-color: rgb(24,24,29);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        color: rgba(255, 255, 0, 0.411);
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-content: center;
+        border: 0px !important;
+        background-origin: padding-box;
+    }
 </style>

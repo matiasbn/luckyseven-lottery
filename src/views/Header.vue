@@ -18,6 +18,7 @@
         <b-navbar-nav>
           <b-nav-item to="/howworks">How Lucky7 works</b-nav-item>
           <b-nav-item to="/prng">How the numbers are generated</b-nav-item>
+          <b-nav-item to="/validator">Ticket Validator</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav

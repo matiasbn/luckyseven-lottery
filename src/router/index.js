@@ -8,6 +8,7 @@ import HowNumbersGenerate from '@/views/HowNumbersGenerate';
 import Lottery from '@/views/Lottery';
 import GameStats from '@/views/GameStats';
 import UserDashboard from '@/views/UserDashboard';
+import TicketValidator from '@/views/TicketValidator';
 import Login from '@/views/Login';
 import player from '@/store/player/';
 
@@ -26,6 +27,10 @@ export const router = new VueRouter({
     {
       path: '/prng',
       component: HowNumbersGenerate,
+    },
+    {
+      path: '/validator',
+      component: TicketValidator,
     },
     {
       path: '/lottery',

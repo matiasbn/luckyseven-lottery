@@ -12,6 +12,7 @@
         striped
         hover
         bordered
+        responsive
       />
     </b-card>
     <b-card

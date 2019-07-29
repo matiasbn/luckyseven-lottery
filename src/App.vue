@@ -79,10 +79,31 @@ export default {
   .table{
     margin-bottom: 0px !important;
   }
-  h4.game-rules-separator{
-    font-size: 3rem !important;
-    color:rgba(255, 255, 0, 0.473);
-    font-family: 'Cinzel', serif !important;
-    text-align: center;
+  .game-rules-separator{
+        font-size: 3rem !important;
+        font-family: 'Cinzel', serif !important;
   }
+  .display-3{
+        font-size: 6rem !important;
+        font-family: 'Monoton', cursive !important;
+  }
+  .intro-text{
+      font-family: 'Cinzel', serif !important;
+        color: rgba(255, 255, 0, 0.411);
+  }
+  .intro{
+        text-align: center;
+        background-color: rgb(24,24,29);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        color: rgba(255, 255, 0, 0.411);
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-content: center;
+        border: 0px !important;
+        background-origin: padding-box;
+    }
 </style>
