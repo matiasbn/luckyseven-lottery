@@ -60,7 +60,7 @@ export default {
   th{
     background-color: black;
     color: rgba(255, 255, 0, 0.473);
-    font-size: 12px;
+    font-size: 15px;
     font-family: 'Cinzel', serif !important;
     font-weight: bold;
     border-color:rgba(255, 255, 0, 0.473) !important;
@@ -69,7 +69,7 @@ export default {
     background-color: black;
     color: rgba(255, 255, 0, 0.473);
     font-family: 'Cinzel', serif !important;
-    font-size: 12px;
+    font-size: 15px;
     font-weight: bold;
     border-color:rgba(255, 255, 0, 0.473) !important;
   }
