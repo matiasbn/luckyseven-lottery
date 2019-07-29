@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/matiasbn/luckyseven.win/compare/v3.3.0...v4.0.0) (2019-07-29)
+
+
+### Bug Fixes
+
+* table font size increased ([f984fc4](https://github.com/matiasbn/luckyseven.win/commit/f984fc4))
+* ticket prices and oraclize gas price lower ([d8ece52](https://github.com/matiasbn/luckyseven.win/commit/d8ece52))
+* transform balance ([3ddb331](https://github.com/matiasbn/luckyseven.win/commit/3ddb331))
+
+
+### Features
+
+* style finished ([14acda6](https://github.com/matiasbn/luckyseven.win/commit/14acda6))
+
+
+
 ## [3.3.0](https://github.com/matiasbn/luckyseven.win/compare/v3.2.0...v3.3.0) (2019-07-24)
 
 
