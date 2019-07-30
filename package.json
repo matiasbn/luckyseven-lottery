@@ -1,6 +1,6 @@
 {
   "name": "luckyseven",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "Luckyseven, descentralized lottery based on Ethereum Blockchain",
   "author": "Matias <matias.barriosn@gmail.com>",
   "private": true,

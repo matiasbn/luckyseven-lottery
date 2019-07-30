@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.1.0](https://github.com/matiasbn/luckyseven.win/compare/v4.0.0...v4.1.0) (2019-07-30)
+
+
+### Features
+
+* project necessary documentation ([0eb3d1e](https://github.com/matiasbn/luckyseven.win/commit/0eb3d1e))
+* readme updated ([6ab052d](https://github.com/matiasbn/luckyseven.win/commit/6ab052d))
+* style revisited ([721477b](https://github.com/matiasbn/luckyseven.win/commit/721477b))
+* ticket validator ([b20cd90](https://github.com/matiasbn/luckyseven.win/commit/b20cd90))
+
+
+
 ## [4.0.0](https://github.com/matiasbn/luckyseven.win/compare/v3.3.0...v4.0.0) (2019-07-29)
 
 
