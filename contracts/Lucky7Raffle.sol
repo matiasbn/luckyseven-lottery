@@ -14,9 +14,9 @@ import "./Lucky7TicketFactory.sol";
 
 contract Lucky7Raffle is Lucky7TicketFactory {
 
-  constructor(address _lucky7Lighthouse, bool _isRhombusAvailable) 
-  public 
-  payable 
+  constructor(address _lucky7Lighthouse, bool _isRhombusAvailable)
+  public
+  payable
   Lucky7TicketFactory(_lucky7Lighthouse, _isRhombusAvailable) { // To initialize Lucky7TicketFactory constructor with Rhombus lighthouse
 
   }
@@ -33,6 +33,14 @@ contract Lucky7Raffle is Lucky7TicketFactory {
    */
   modifier gameNotInCourse() {
     require(settingLucky7Numbers == true);
+    _;
+  }
+
+  modifier prizesDeliveryEnabled() {
+    bool potReached;
+    bool timeReached;
+    (, potReached, timeReached) = validateDelivery();
+    require(potReached == true && timeReached == true);
     _;
   }
   /** @param initialLucky7TicketPosition is a uint used for the _orderLucky7Tickets function of this contract. 
@@ -74,14 +82,19 @@ contract Lucky7Raffle is Lucky7TicketFactory {
    */
   function setNewGame()
   public
-  onlyOwner {
+  prizesDeliveryEnabled {
     require(ticketsArray.length != 0);
     toggleLucky7Setting();
     _orderLucky7Tickets();
     _deliverPrizes();
     _cleanMappings();
     gameID++;
+    ticketsGenerated = 0;
+    ticketsPurchased = 0;
+    lastDelivery = now;
     initialLucky7TicketPosition = gameID * numberOfLucky7Numbers;
+    pendingWithdrawals[msg.sender].amount = newGameSettedPrize;
+    pendingWithdrawals[msg.sender].gameID = gameID;
     emit NewGameStarted(gameID);
   }
 
@@ -93,15 +106,19 @@ contract Lucky7Raffle is Lucky7TicketFactory {
    * Then it sets the indexForLucky7Array to 0 so the next time a new game is setted, this function starts storing the Lucky7Numbers from the position 0, to finally shut off
    * the settingLucky7Numbers circuit breaker to allow users to start buying tickets.
    */
-  function _generateLucky7Number() public onlyOwner gameNotInCourse {
+  function _generateLucky7Number() public gameNotInCourse {
     if (indexForLucky7Array == numberOfLucky7Numbers) {
       _orderLucky7Numbers();
       indexForLucky7Array = 0;
       toggleLucky7Setting();
+      pendingWithdrawals[msg.sender].amount = newLucky7NumberPrize;
+      pendingWithdrawals[msg.sender].gameID = gameID;
     } else {
       userValues[address(this)].muReady = false;
       userValues[address(this)].iReady = false;
       _generateTicket(address(this));
+      pendingWithdrawals[msg.sender].amount = newLucky7NumberPrize;
+      pendingWithdrawals[msg.sender].gameID = gameID;
     }
   }
 
@@ -273,7 +290,7 @@ contract Lucky7Raffle is Lucky7TicketFactory {
   function setIndexForLucky7Array(uint _newValue) public onlyOwner {
     indexForLucky7Array = _newValue;
   }
-  
+
   /** @dev Fallback function to make this contract payable.
    */
   function () external payable {

@@ -128,6 +128,10 @@ export default {
   .lucky7-ticket{
     border: 0px !important;
   }
+  .metamask-button{
+    background-color: rgb(167, 68, 2);
+    border-color: rgb(167, 68, 2);
+  }
   .modal-content{
     background-color: black;
     color: rgba(253, 253, 132, 0.411);

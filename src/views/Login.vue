@@ -39,11 +39,12 @@
         <b-card-text
           text-tag="h4">
           You can choose your preferred network from the MetaMask panel
-        </b-card-text>
+        </b-card-text> <br>
+
         <b-button
           :disabled="loading === true"
           size="lg"
-          class="my-2 my-sm-0"
+          class="my-2 my-sm-0 metamask-button"
           type="submit"
           @click="metamaskLogin">
           <img

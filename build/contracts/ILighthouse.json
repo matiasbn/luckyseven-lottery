@@ -1,0 +1,941 @@
+{
+  "contractName": "ILighthouse",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "peekData",
+      "outputs": [
+        {
+          "name": "v",
+          "type": "uint128"
+        },
+        {
+          "name": "b",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "peekUpdated",
+      "outputs": [
+        {
+          "name": "v",
+          "type": "uint32"
+        },
+        {
+          "name": "b",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "peekLastNonce",
+      "outputs": [
+        {
+          "name": "v",
+          "type": "uint32"
+        },
+        {
+          "name": "b",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "peek",
+      "outputs": [
+        {
+          "name": "v",
+          "type": "bytes32"
+        },
+        {
+          "name": "ok",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "read",
+      "outputs": [
+        {
+          "name": "x",
+          "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.8+commit.23d335f2\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[],\"name\":\"peekData\",\"outputs\":[{\"name\":\"v\",\"type\":\"uint128\"},{\"name\":\"b\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"read\",\"outputs\":[{\"name\":\"x\",\"type\":\"bytes32\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"peek\",\"outputs\":[{\"name\":\"v\",\"type\":\"bytes32\"},{\"name\":\"ok\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"peekUpdated\",\"outputs\":[{\"name\":\"v\",\"type\":\"uint32\"},{\"name\":\"b\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"peekLastNonce\",\"outputs\":[{\"name\":\"v\",\"type\":\"uint32\"},{\"name\":\"b\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/matiasbarrios/Desktop/luckyseven/contracts/Rhombus/ILighthouse.sol\":\"ILighthouse\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/matiasbarrios/Desktop/luckyseven/contracts/Rhombus/ILighthouse.sol\":{\"keccak256\":\"0x9704db1614fd413533d8126adf07bc03b0d3140a028d612b5e67ffe8560a1b2f\",\"urls\":[\"bzzr://6698a32adb32738955d161cf42b9e9be8a13a83bd9542fa93b969f5aa408e9dc\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity ^0.5.0;\n\n// for operation of this contract see the readme file.\n\n// Interpreting an address as an ILighthouse interface tells contracts that the following functions\n// can be called at said address. Gives an error if there is no lighthouse to actually call at the address.\ninterface ILighthouse {\n\n    function peekData() external view returns (uint128 v,bool b);\n\n    function peekUpdated()  external view returns (uint32 v,bool b);\n\n    function peekLastNonce() external view returns (uint32 v,bool b);\n\n    function peek() external view returns (bytes32 v ,bool ok);\n\n    function read() external view returns (bytes32 x);\n\n\n}",
+  "sourcePath": "/Users/matiasbarrios/Desktop/luckyseven/contracts/Rhombus/ILighthouse.sol",
+  "ast": {
+    "absolutePath": "/Users/matiasbarrios/Desktop/luckyseven/contracts/Rhombus/ILighthouse.sol",
+    "exportedSymbols": {
+      "ILighthouse": [
+        8479
+      ]
+    },
+    "id": 8480,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 8445,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:7"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 8479,
+        "linearizedBaseContracts": [
+          8479
+        ],
+        "name": "ILighthouse",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": null,
+            "id": 8452,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "peekData",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8446,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "335:2:7"
+            },
+            "returnParameters": {
+              "id": 8451,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8448,
+                  "name": "v",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8452,
+                  "src": "361:9:7",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint128",
+                    "typeString": "uint128"
+                  },
+                  "typeName": {
+                    "id": 8447,
+                    "name": "uint128",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "361:7:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint128",
+                      "typeString": "uint128"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8450,
+                  "name": "b",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8452,
+                  "src": "371:6:7",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 8449,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "371:4:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "360:18:7"
+            },
+            "scope": 8479,
+            "src": "318:61:7",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 8459,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "peekUpdated",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8453,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "405:2:7"
+            },
+            "returnParameters": {
+              "id": 8458,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8455,
+                  "name": "v",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8459,
+                  "src": "432:8:7",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  },
+                  "typeName": {
+                    "id": 8454,
+                    "name": "uint32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "432:6:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8457,
+                  "name": "b",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8459,
+                  "src": "441:6:7",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 8456,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "441:4:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "431:17:7"
+            },
+            "scope": 8479,
+            "src": "385:64:7",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 8466,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "peekLastNonce",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8460,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "477:2:7"
+            },
+            "returnParameters": {
+              "id": 8465,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8462,
+                  "name": "v",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8466,
+                  "src": "503:8:7",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  },
+                  "typeName": {
+                    "id": 8461,
+                    "name": "uint32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "503:6:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8464,
+                  "name": "b",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8466,
+                  "src": "512:6:7",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 8463,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "512:4:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "502:17:7"
+            },
+            "scope": 8479,
+            "src": "455:65:7",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 8473,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "peek",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8467,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "539:2:7"
+            },
+            "returnParameters": {
+              "id": 8472,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8469,
+                  "name": "v",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8473,
+                  "src": "565:9:7",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 8468,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "565:7:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8471,
+                  "name": "ok",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8473,
+                  "src": "576:7:7",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 8470,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "576:4:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "564:20:7"
+            },
+            "scope": 8479,
+            "src": "526:59:7",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 8478,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "read",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8474,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "604:2:7"
+            },
+            "returnParameters": {
+              "id": 8477,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8476,
+                  "name": "x",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8478,
+                  "src": "630:9:7",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 8475,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "630:7:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "629:11:7"
+            },
+            "scope": 8479,
+            "src": "591:50:7",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 8480,
+        "src": "289:356:7"
+      }
+    ],
+    "src": "0:645:7"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/matiasbarrios/Desktop/luckyseven/contracts/Rhombus/ILighthouse.sol",
+    "exportedSymbols": {
+      "ILighthouse": [
+        8479
+      ]
+    },
+    "id": 8480,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 8445,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:7"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 8479,
+        "linearizedBaseContracts": [
+          8479
+        ],
+        "name": "ILighthouse",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": null,
+            "id": 8452,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "peekData",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8446,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "335:2:7"
+            },
+            "returnParameters": {
+              "id": 8451,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8448,
+                  "name": "v",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8452,
+                  "src": "361:9:7",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint128",
+                    "typeString": "uint128"
+                  },
+                  "typeName": {
+                    "id": 8447,
+                    "name": "uint128",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "361:7:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint128",
+                      "typeString": "uint128"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8450,
+                  "name": "b",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8452,
+                  "src": "371:6:7",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 8449,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "371:4:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "360:18:7"
+            },
+            "scope": 8479,
+            "src": "318:61:7",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 8459,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "peekUpdated",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8453,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "405:2:7"
+            },
+            "returnParameters": {
+              "id": 8458,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8455,
+                  "name": "v",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8459,
+                  "src": "432:8:7",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  },
+                  "typeName": {
+                    "id": 8454,
+                    "name": "uint32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "432:6:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8457,
+                  "name": "b",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8459,
+                  "src": "441:6:7",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 8456,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "441:4:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "431:17:7"
+            },
+            "scope": 8479,
+            "src": "385:64:7",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 8466,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "peekLastNonce",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8460,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "477:2:7"
+            },
+            "returnParameters": {
+              "id": 8465,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8462,
+                  "name": "v",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8466,
+                  "src": "503:8:7",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  },
+                  "typeName": {
+                    "id": 8461,
+                    "name": "uint32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "503:6:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8464,
+                  "name": "b",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8466,
+                  "src": "512:6:7",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 8463,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "512:4:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "502:17:7"
+            },
+            "scope": 8479,
+            "src": "455:65:7",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 8473,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "peek",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8467,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "539:2:7"
+            },
+            "returnParameters": {
+              "id": 8472,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8469,
+                  "name": "v",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8473,
+                  "src": "565:9:7",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 8468,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "565:7:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8471,
+                  "name": "ok",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8473,
+                  "src": "576:7:7",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 8470,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "576:4:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "564:20:7"
+            },
+            "scope": 8479,
+            "src": "526:59:7",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 8478,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "read",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8474,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "604:2:7"
+            },
+            "returnParameters": {
+              "id": 8477,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8476,
+                  "name": "x",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8478,
+                  "src": "630:9:7",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 8475,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "630:7:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "629:11:7"
+            },
+            "scope": 8479,
+            "src": "591:50:7",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 8480,
+        "src": "289:356:7"
+      }
+    ],
+    "src": "0:645:7"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.8+commit.23d335f2.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.0.11",
+  "updatedAt": "2019-07-27T18:15:15.309Z",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}

@@ -29,6 +29,11 @@ export const uportLogout = (state) => {
   state.session.uportProvider = null;
 };
 
+export const metamaskLogout = (state) => {
+  state.session.isLoggedIn = false;
+  state.session.provider = '';
+};
+
 export const selectNetwork = (state, payload) => {
   state.session.selectedNetwork.networkID = payload.id;
   state.session.selectedNetwork.rpcUrl = payload.rpcUrl;

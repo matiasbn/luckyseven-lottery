@@ -128,3 +128,7 @@ export const uportLogout = ({ commit }) => {
   uport.logout();
   commit('uportLogout');
 };
+
+export const metamaskLogout = ({ commit }) => {
+  commit('metamasLogout');
+};

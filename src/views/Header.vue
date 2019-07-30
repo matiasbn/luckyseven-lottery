@@ -47,6 +47,22 @@
                 variant="success"
                 small />
             </b-button>
+            <b-button
+              v-else-if="isLoggedIn && provider === 'metamask'"
+              size="sm"
+              class="my-2 my-sm-0 metamask-button"
+              type="submit"
+              @click="$store.dispatch('player/uportLogout',{root:true})">
+              <img
+                src="@/assets/metamask-logo.png"
+                width="20"
+                height="20" > &nbsp;|&nbsp;
+              <span v-if="loading === false">Logout</span>
+              <b-spinner
+                v-if="loading === true"
+                variant="success"
+                small />
+            </b-button>
           </b-nav-item>
         </b-navbar-nav>
       </b-collapse>

@@ -81,6 +81,7 @@ contract Lucky7Store is Lucky7Raffle {
   userBoughtTicket(msg.sender)
   setParametersToReady(msg.sender)
   sellingIsActive {
+    ticketsPurchased++;
     emit RandomTicketSelled(gameID);
     _generateTicket(msg.sender);
   }
@@ -95,6 +96,7 @@ contract Lucky7Store is Lucky7Raffle {
   userBoughtParameters(msg.sender)
   setParametersToReady(msg.sender)
   sellingIsActive {
+    ticketsGenerated++;
     emit GeneratedTicket(gameID);
     _generateTicket(msg.sender);
   }
@@ -110,6 +112,7 @@ contract Lucky7Store is Lucky7Raffle {
   userBoughtTicket(msg.sender)
   sellingIsActive
   notEmptyParameters(msg.sender) {
+    ticketsPurchased++;
     emit GeneratedTicketSelled(gameID);
     _askForTicket(msg.sender);
   }
