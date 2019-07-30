@@ -1,11 +1,11 @@
 <template>
   <div>
-    <b-container fluid>
-      <b-jumbotron
-        header="Lucky7"
-        lead = "A fully decentralized lottery"
-        lead-tag="h1"
-        class="intro intro-image"/>
+    <b-jumbotron
+      header="Lucky7"
+      lead = "A fully decentralized lottery"
+      lead-tag="h1"
+      class="intro-image"/>
+    <b-container>
       <br>
       <h4 class="intro game-rules-separator">About Lucky7</h4>
       <h5 class ="intro intro-text">
@@ -77,69 +77,6 @@
 </template>
 
 <style scoped>
-  @import url('https://fonts.googleapis.com/css?family=Cinzel|Monoton&display=swap');
-  .container-fluid{
-    padding:0;
-  }
-  .intro{
-      text-align: center;
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center;
-      color: rgba(255, 255, 0, 0.411);
-      height: auto;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-content: center;
-      border: 0px !important;
-      background-origin: padding-box;
-  }
-  .intro-image{
-    color: white;
-    background-image: url("../assets/header.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    height: 800px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-content: center;
-    margin-bottom: 0%;
-  }
-  .display-3{
-      font-size: 8rem !important;
-      font-family: 'Monoton', cursive !important;
-  }
-  .lead{
-      font-size: 1.5rem;
-      font-family: 'Cinzel', serif;
-      margin-bottom: 3.5rem;
-  }
-  .cards-1{
-    color:rgb(0,175,59);
-  }
-  .card-title{
-    font-family: 'Cinzel', serif !important;
-  }
-  .card-body{
-    background-color:black;
-    color:rgba(255, 255, 0, 0.411);
-  }
-  .card{
-    border-color:rgba(255, 255, 0, 0.411);
-    border: 0;
-  }
-  .intro-text{
-    font-family: 'Cinzel', serif !important;
-  }
-  .card-text{
-    font-family: 'Cinzel', serif !important;
-  }
-  .game-rules-separator{
-    font-size: 5rem !important;
-    font-family: 'Monoton', serif !important;
-  }
+
 </style>
 

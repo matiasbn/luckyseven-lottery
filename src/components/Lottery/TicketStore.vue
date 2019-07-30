@@ -3,13 +3,13 @@
     fluid
     class="ticket-store">
     <b-row>
-      <b-col cols="4">
+      <b-col>
         <Store/>
       </b-col>
-      <b-col cols="4">
+      <b-col>
         <LastGeneratedTicket/>
       </b-col>
-      <b-col cols="4">
+      <b-col>
         <LastPurchasedTicket/>
       </b-col>
     </b-row>

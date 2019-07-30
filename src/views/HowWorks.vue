@@ -1,25 +1,21 @@
 <template>
   <b-container
-    fluid
     class="intro">
-    <b-jumbotron
-      header="How Lucky7 works"
-      class="intro">
-      <h4 class="game-rules-separator">General review</h4>
-      <h3 class ="intro-text">
-        The game consist on buying a ticket which is the closest amongst
-        all tickets to 1 of 7 numbers called Lucky7Numbers. <br>
-        The closest you are to a Lucky7Number, the bigger the price
-        you are going to win, but only if you are the closest one to
-        that particular Lucky7Number. <br>
-        Once certain pot and certain date are reached,
-        the prizes can be delivered by any player, which will get a
-        prize for this action. <br>
-        Then, is necessary to set the new game.
-        This action is performed by any player, and they will get a prize for
-        this action too. <br>
-      </h3> <br>
-    </b-jumbotron>
+    <h1 class="page-title">How Lucky7 works</h1>
+    <h4 class="game-rules-separator">General review</h4>
+    <h3 class ="intro-text">
+      The game consist on buying a ticket which is the closest amongst
+      all tickets to 1 of 7 numbers called Lucky7Numbers. <br>
+      The closest you are to a Lucky7Number, the bigger the price
+      you are going to win, but only if you are the closest one to
+      that particular Lucky7Number. <br>
+      Once certain pot and certain date are reached,
+      the prizes can be delivered by any player, which will get a
+      prize for this action. <br>
+      Then, is necessary to set the new game.
+      This action is performed by any player, and they will get a prize for
+      this action too. <br>
+    </h3> <br>
     <div
       class="intro">
       <div>
@@ -56,27 +52,6 @@
           have a winner ticket, called Lucky7Ticket. To do so, you have to go to the
           Lottery section.
         </h3>
-        <b-card-group deck>
-          <b-card
-            :img-src="require('../assets/rules-generate-ticket.png')"
-            img-alt="Card image"
-            img-left>
-            <b-card-text>
-              You can generate a ticket for a lower price than purchasing it.
-              You can generate all the tickets you want, and once it is a Lucky7Ticket
-              you would be able to buy it.
-            </b-card-text>
-          </b-card>
-          <br>
-          <b-card
-            :img-src="require('../assets/rules-purchase-ticket.png')"
-            img-alt="Card image"
-            img-right>
-            <b-card-text>
-              Or you can directly buy a random ticket if you feel lucky.
-            </b-card-text>
-          </b-card>
-        </b-card-group>
       </div>
 
       <div class="mt-4">
@@ -84,9 +59,13 @@
           :img-src="require('../assets/rules-wait-results.png')"
           img-alt="Card image"
           img-left
-          img-height="200px"
+          img-height="auto"
           class="mb-3">
           <b-card-text>
+            You can generate a ticket for a lower price than purchasing it.
+            You can generate all the tickets you want, and once it is a Lucky7Ticket
+            you would be able to buy it. <br>
+            Or you can directly buy a random ticket if you feel lucky. <br>
             Either you generate or you purchase a ticket, you
             have to wait for the necessary transactions to be executed. <br>
             This is, generation of first and second random numbers from Rhombus and
@@ -140,53 +119,5 @@ export default {
 </script>
 
 <style scoped>
-  @import url('https://fonts.googleapis.com/css?family=Cinzel|Monoton&display=swap');
-    .intro{
-        text-align: center;
-        background-color: rgb(24,24,29);
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center;
-        color: rgba(255, 255, 0, 0.411);
-        height: auto;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-content: center;
-        border: 0px !important;
-        background-origin: padding-box;
-    }
-    .display-3{
-        font-size: 7rem !important;
-        font-family: 'Monoton', cursive !important;
-    }
 
-    .game-rules-separator{
-        font-size: 3rem !important;
-        font-family: 'Cinzel', serif !important;
-    }
-    .cards-1{
-      color:rgb(0,175,59);
-    }
-    .card-title{
-      font-family: 'Cinzel', serif !important;
-    }
-    .card-body{
-      background-color:black;
-      color:rgba(255, 255, 0, 0.411);
-    }
-    .card{
-      border-color:rgba(255, 255, 0, 0.411);
-      border: 0;
-    }
-    .intro-text{
-      font-family: 'Cinzel', serif !important;
-    }
-    .card-text{
-      font-family: 'Cinzel', serif !important;
-    }
-    .jumbotron{
-      margin-bottom: 0;
-      border-radius: 0;
-    }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid>
+  <div>
     <b-card
       v-if="lucky7GameInfoReady"
       header="Current game"
@@ -24,7 +24,7 @@
         size="lg"
         class="spinner"/>
     </b-card>
-  </b-container>
+  </div>
 </template>
 <script>
 /* eslint-disable max-len */

@@ -4,7 +4,9 @@
     header-tag="h2"
     no-body
   >
-    <b-card title="Lucky7Ticket?">
+    <b-card
+      title="Lucky7Ticket?"
+      class="lucky7-ticket">
       <b-card-text
         v-if="ticketIsLucky7Ticket && currentGameTicket">
         <p>

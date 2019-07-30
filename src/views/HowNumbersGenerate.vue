@@ -1,21 +1,17 @@
 <template>
   <b-container
-    fluid
     class="intro">
-    <b-jumbotron
-      header="How numbers are generated"
-      class="intro">
-      <h4 class="game-rules-separator">About &mu; generator</h4>
-      <h3 class ="intro-text">
-        As told, Lucky7 uses a pseudo-random number generator (PRNG) called &mu; (mu)
-        generator. <br>
-        It uses two random numbers and 'hashes' them, so the numbers generation on Lucky7 can't
-        be biased, and disincentives the numbers to be tampered, because only 1 number
-        from entropy source is not enough to know the output of the PRNG.<br>
-        &mu; generator is used both to generate Lucky7Numbers and Lukcy7Tickets, and
-        the number generation flow is like this:
-      </h3> <br>
-    </b-jumbotron>
+    <h1 class="page-title">How Lucky7 works</h1>
+    <h4 class="game-rules-separator">About &mu; generator</h4>
+    <h3 class ="intro-text">
+      As told, Lucky7 uses a pseudo-random number generator (PRNG) called &mu; (mu)
+      generator. <br>
+      It uses two random numbers and 'hashes' them, so the numbers generation on Lucky7 can't
+      be biased, and disincentives the numbers to be tampered, because only 1 number
+      from entropy source is not enough to know the output of the PRNG.<br>
+      &mu; generator is used both to generate Lucky7Numbers and Lukcy7Tickets, and
+      the number generation flow is like this:
+    </h3> <br>
     <h4 class="game-rules-separator">Numbers generation flow</h4>
     <h3 class ="intro-text">
       There are two number generation flows, generating and purchasing a
@@ -143,7 +139,7 @@
             :img-src="require('../assets/prng-formula-solidity.png')"
             img-alt="Card image"
             img-right
-            img-height="200px"
+            img-width="700px"
             class="mb-3">
             <b-card-text>
               Particularly, the R function of previous equation is the one written to call
@@ -176,59 +172,4 @@ export default {
 </script>
 
 <style>
-  @import url('https://fonts.googleapis.com/css?family=Cinzel|Monoton&display=swap');
-    .intro{
-        text-align: center;
-        background-color: rgb(24,24,29);
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center;
-        color: rgba(255, 255, 0, 0.411);
-        height: auto;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-content: center;
-        border: 0px !important;
-        background-origin: padding-box;
-    }
-    .display-3{
-        font-size: 6rem !important;
-        font-family: 'Monoton', cursive !important;
-    }
-    .game-rules-separator{
-        font-size: 3rem !important;
-        font-family: 'Cinzel', serif !important;
-    }
-    .cards-1{
-      color:rgb(0,175,59);
-    }
-    .card-title{
-      font-family: 'Cinzel', serif !important;
-    }
-    .card-header{
-      font-family: 'Cinzel', serif !important;
-    }
-    .card-footer{
-      font-family: 'Cinzel', serif !important;
-      color: rgba(255, 255, 0, 0.7);
-    }
-    .card-body{
-      background-color:black;
-      color:rgba(255, 255, 0, 0.411);
-    }
-    .card{
-      border-color:rgba(255, 255, 0, 0.411);
-      border: 0;
-    }
-    .intro-text{
-      font-family: 'Cinzel', serif !important;
-    }
-    .card-text{
-      font-family: 'Cinzel', serif !important;
-    }
-    .jumbotron{
-      margin-bottom: 0;
-      border-radius: 0;
-    }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <b-container>
+  <b-container class="intro">
     <h4 class="game-rules-separator">Choose your preferred login method</h4>
     <b-card-group deck>
       <b-card
@@ -59,12 +59,17 @@
       </b-card>
     </b-card-group>
     <br><br>
-    <b-button
-      variant="success"
-      size="lg"
-      @click="cancel">
-      Cancel
-    </b-button>
+    <b-row>
+      <b-col>
+        <b-button
+          variant="success"
+          size="lg"
+          class="login-cancel-button"
+          @click="cancel">
+          Cancel
+        </b-button>
+      </b-col>
+    </b-row>
     <!-- MetaMask Modal -->
     <b-modal
       ref="metamask-modal"
@@ -154,71 +159,5 @@ export default {
 
 <style scoped>
 
-@import url('https://fonts.googleapis.com/css?family=Cinzel|Monoton&display=swap');
-  body{
-    background-color: rgb(24,24,29);
-    /* background-color: black; */
-  }
-  .card{
-    font-family: 'Cinzel', serif !important;
-    border-color:rgba(253, 253, 132, 0.411);
-  }
-  .card-header{
-    background-color: black;
-    color: rgba(253, 253, 132, 0.411);
-    font-family: 'Cinzel', serif !important;
-    border-color:rgba(253, 253, 132, 0.411);
-  }
-  .card-body{
-    background-color: black;
-    color: rgba(253, 253, 132, 0.411);
-    font-family: 'Cinzel', serif !important;
-    border-color:rgba(253, 253, 132, 0.411);
-  }
-  .modal-content{
-    background-color: black;
-    color: rgba(253, 253, 132, 0.411);
-    font-size: 12px;
-    font-family: 'Cinzel', serif !important;
-    border-color:rgba(253, 253, 132, 0.411);
-  }
-  .display-3{
-      font-size: 10rem !important;
-      font-family: 'Monoton', cursive !important;
-  }
 
-  .game-rules-separator{
-      font-size: 4rem !important;
-      font-family: 'Cinzel', serif !important;
-  }
-
-  .card-text{
-    font-family: 'Cinzel', serif !important;
-  }
-  .jumbotron{
-    margin-bottom: 0;
-    border-radius: 0;
-  }
-  .uport-botton{
-    background-color: rgb(119,83,221);
-    border-color: rgb(119,83,221);
-  }
-  .intro-text{
-      font-family: 'Cinzel', serif !important;
-  }
-  .intro{
-        text-align: center;
-        background-color: rgb(24,24,29);
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center;
-        color: rgba(255, 255, 0, 0.411);
-        height: auto;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-content: center;
-        border: 0px !important;
-        background-origin: padding-box;
-    }
 </style>
