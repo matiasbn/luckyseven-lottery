@@ -12,14 +12,12 @@ module.exports = {
             provider: function() {
               return new HDWalletProvider(process.env.MNEMONIC, process.env.RINKEBY_INFURA_PROVIDER)
             },
-            gas: 6900000,
             network_id: "4",
         },
         ropsten: {
             provider: function() {
               return new HDWalletProvider(process.env.MNEMONIC, process.env.ROPSTEN_INFURA_PROVIDER)
             },
-            gas: 6900000,
             network_id: "3",
         }
     },

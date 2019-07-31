@@ -1319,11 +1319,11 @@
           }
         ],
         "contractDependencies": [
-          8669,
-          9361,
-          2316,
           122,
-          1093
+          1093,
+          2316,
+          8669,
+          9361
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -5120,11 +5120,11 @@
           }
         ],
         "contractDependencies": [
-          8669,
-          9361,
-          2316,
           122,
-          1093
+          1093,
+          2316,
+          8669,
+          9361
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -9234,14 +9234,14 @@
         }
       },
       "links": {
-        "Lucky7Library": "0xF06b94bbD6C176BCDa88c5c605f37ce05906dd89"
+        "Lucky7Library": "0x83296Dd542Bb544940A8fa4b4Ca43c42213D6F6e"
       },
-      "address": "0xD964a9db6644b457c8602Ef864d6C383928E5FCc",
-      "transactionHash": "0x15b933a2e0d9515e4c6432286dda1ba1aeebbc17014564e1a912012dbdac7ba9"
+      "address": "0x0CcA14BA1B2861d2d4071473e4D9A270734E3FEe",
+      "transactionHash": "0xe30c5a85195bd4312f3ece1d36b9db256feebb18910fb3d79a36de71fb0a442b"
     }
   },
   "schemaVersion": "3.0.11",
-  "updatedAt": "2019-07-31T20:11:17.913Z",
+  "updatedAt": "2019-07-31T20:26:18.642Z",
   "devdoc": {
     "methods": {
       "__callback(bytes32,string)": {

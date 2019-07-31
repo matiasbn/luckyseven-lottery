@@ -1,6 +1,6 @@
 ## Security tools/Common attacks
 ### Withdrawal from contract
-As told, choosing a Withdrawal from contract pattern let me avoid the DoS with (Unexpected) revert attack. If i weren't aware of it, everytime i setted a new game by using the setNewGame of the Lucky7Ballot contract, and if my contract were victim of this attack, probably the game would be stuck, because when the deliverPrizes function of the Lucky7Ballot were called, the transaction would be reverted and the prizes wouldn't be delivered. 
+As told, choosing a Withdrawal from contract pattern let me avoid the DoS with (Unexpected) revert attack. If i weren't aware of it, everytime i setted a new game by using the setNewGame of the Lucky7Raflle contract, and if my contract were victim of this attack, probably the game would be stuck, because when the deliverPrizes function of the Lucky7Raflle were called, the transaction would be reverted and the prizes wouldn't be delivered. 
 
 ### Integer Underflow or Overflow
 

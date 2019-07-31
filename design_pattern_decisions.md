@@ -18,11 +18,34 @@ modifier gameNotInCourse(){
         _;
     }
 ```
-This modifier is in the Lucky7Ballot contract and is related to the generateLuckyNumber which generates the Lucky7Numbers. The settingLucky7Numbers value is changed once the setNewGame of the Lucky7Ballot contract is called, i.e. when a new game is setted and is necessary to set the new Lucky7Numbers.
+
+3. To stop users to set new games until both time and pot setted are reached:
+```
+modifier prizesDeliveryEnabled() {
+    bool potReached;
+    bool timeReached;
+    (, potReached, timeReached) = validateDelivery();
+    if(isLocalBlockchain == true){
+      require((potReached == true && timeReached == true) || isOwner());
+    }
+    else{
+      require(potReached == true && timeReached == true);
+    }
+    _;
+  }
+```
+
+4. To stop users on generating new Lucky7Numbers if we are waiting for one:
+```
+  bool waitingForLucky7Number = false;
+```
+
+
+This modifier is in the Lucky7Raflle contract and is related to the generateLuckyNumber which generates the Lucky7Numbers. The settingLucky7Numbers value is changed once the setNewGame of the Lucky7Raflle contract is called, i.e. when a new game is setted and is necessary to set the new Lucky7Numbers.
 
 ## Contract modularity and inheritances
 The inheritances are as follow:
-Lucky7Admin -> Lucky7TicketFactory -> Lucky7Ballot -> Lucky7Store
+Lucky7Admin -> Lucky7TicketFactory -> Lucky7Raflle -> Lucky7Store
 
 In the earlier stages of this project the contracts were pretty simple, but as the requirements were appearing, the code was getting more and more complex.
 That's why i decided to divide the business logic in 4 modules:
@@ -36,7 +59,7 @@ of the balance of the contract os going when a new game is setted.
 
 This contract contains all the functions that generate random numbers, i.e. generates parameters, Tickets and Lucky7Numbers. This is the very essence of the game, the random numbers generated
 
-3. Taking decisions to make the game work: Lucky7Ballot
+3. Taking decisions to make the game work: Lucky7Raflle
 
 This contract containts the function to know how and when to generate the Lucky7Numbers, when to Store the Lucky7Tickets in the lucky7TicketsArray of the Lucky7TicketFactory contract, how to order the Lucky7Numbers and Lucky7Tickets in ascending order, how to deliver the prizes, what parameters increment and what arrays to clean when a the setNewGame function is called.
 
@@ -46,7 +69,7 @@ This contract contains the functions necessary to determine when to sell and gen
 
 
 ## [Withdrawal from contracts](https://solidity.readthedocs.io/en/v0.4.24/common-patterns.html#withdrawal-from-contracts) and not sending ETH to 0
-When the setNewGame function of the Lucky7Ballot is called, it then calls the deliverPrizes function, which deliver the prizes for the best Lucky7Tickets. It proceed to check that the owner of those Lucky7Tickets is not an address 0, and then store the prizes on the pendingWithdrawals mapping. This way we avoid a DoS with (Unexpected) revert attack; the winners have to claim for them prizes instead of being automatically delivered.
+When the setNewGame function of the Lucky7Raflle is called, it then calls the deliverPrizes function, which deliver the prizes for the best Lucky7Tickets. It proceed to check that the owner of those Lucky7Tickets is not an address 0, and then store the prizes on the pendingWithdrawals mapping. This way we avoid a DoS with (Unexpected) revert attack; the winners have to claim for them prizes instead of being automatically delivered.
 
 ## Feature Contracts
 Ownable: OpenZeppelin contract. There's a lot of functions which are necesarily stricted to the admins. It's used for the onlyOwner modifier.
@@ -66,3 +89,8 @@ Lucky7Tickets and Tickets are stored permanently on the Blockchain to verify, in
 ## Oraclize gas limit and gas price
 
 OraclizeCustomGasPrice and OraclizeGasLimit where calculated in such way that the tickets weren't so expensive and the oraclize querys were to slow. This process was done on Rinkeby testnet through remix.
+
+## Pot reached not using contract balance
+
+For crowd-wise logic, is necessary to reach certain pot to deliver prizes. As is known that there's no way to make an EOA or an address to reject ether transfers, then there was necessary to design another method. To do so, in Lucky7Admin there's a function called validateDeliver() which calculates the pot according to ticket prices and provable prices, getting the subtraction of both
+and multiplying them as a way to get the current pot. This way, 'forced ether sending' is discouraged because it does not have any effect on game cycle.

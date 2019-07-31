@@ -53,9 +53,10 @@ contract('Lucky7TicketFactory', (accounts) => {
     // Once it happens, then read it info, checking that the i parameter is not 0
     await lucky7TicketFactory._askForMuParameter(user);
     await lucky7TicketFactory._askForIParameter(user);
-    const log = await lucky7Event(web3contract, 'GeneratedParametersReceived');
-    assert.equal(log.event, 'GeneratedParametersReceived', 'GeneratedParametersReceived not emitted.');
-    assert.isNotNull(log.returnValues.i, 'i returned was null');
+    const log = await lucky7Event(web3contract, 'Lucky7NumberInserted');
+    assert.equal(log.event, 'Lucky7NumberInserted', 'Lucky7NumberInserted not emitted.');
+    const iGenerated = await lucky7TicketFactory.lucky7NumbersArray(0)
+    assert.isNotNull(iGenerated.i, 'i returned was null');
   });
 
   it('should set the WolframAlpha query correctly', async () => {
@@ -99,11 +100,6 @@ contract('Lucky7TicketFactory', (accounts) => {
 
     await lucky7TicketFactory._askForMuParameter(owner);
     await lucky7TicketFactory._askForIParameter(owner);
-    const log = await lucky7Event(web3contract, 'GeneratedParametersReceived');
-
-    assert.equal(log.event, 'GeneratedParametersReceived', 'GeneratedParametersReceived not emitted.');
-    assert.isNotNull(log.returnValues.mu, 'mu returned was null');
-    assert.isNotNull(log.returnValues.i, 'i returned was null');
 
     // Check that the "new ticket" is emited
     const log2 = await lucky7Event(web3contract, 'Lucky7NumberInserted');

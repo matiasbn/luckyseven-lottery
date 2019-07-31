@@ -1186,10 +1186,10 @@
           }
         ],
         "contractDependencies": [
-          8669,
-          9361,
+          122,
           2316,
-          122
+          8669,
+          9361
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -12742,10 +12742,10 @@
           }
         ],
         "contractDependencies": [
-          8669,
-          9361,
+          122,
           2316,
-          122
+          8669,
+          9361
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -24250,7 +24250,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.11",
-  "updatedAt": "2019-07-31T20:10:46.226Z",
+  "updatedAt": "2019-07-31T20:25:50.696Z",
   "devdoc": {
     "methods": {
       "__callback(bytes32,string)": {
