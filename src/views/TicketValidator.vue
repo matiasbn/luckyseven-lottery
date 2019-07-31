@@ -126,6 +126,14 @@
           </h3>
         </b-col>
       </b-row>
+      <b-row>
+        <b-col>
+          <h3 class="paper-text">
+            You can read the story about how i discovered it on
+            <a :href="mediumLink">this article</a> i wrote on Medium celebrating 2 years since i discovered it.
+          </h3>
+        </b-col>
+      </b-row>
     </b-col>
   </b-container>
 </template>
@@ -148,6 +156,7 @@ export default {
       firstNumberSaved: null,
       secondNumberSaved: null,
       paperLink: 'https://ipfs.globalupload.io/Qmek8hc3pFkRtGkaSwh5EbnApqHdpcoPqVFScbzQUMnePs',
+      mediumLink: 'https://medium.com/@matias.barriosn/how-i-realized-as-an-adult-that-ive-been-studying-number-theory-since-i-was-a-kid-a8b49ea57a87',
     };
   },
   computed: {
