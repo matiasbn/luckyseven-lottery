@@ -3748,12 +3748,12 @@
         }
       },
       "links": {},
-      "address": "0x6Ec938ae27962fFF6bb76da62528462369c45bF4",
-      "transactionHash": "0x29e7a5592469e5d81daa2339304ed2a9f5ab494c596db64b9c16e456baf9bb08"
+      "address": "0xD514C695239878511E3df01fcb3A03B48b260AA0",
+      "transactionHash": "0xc0cadecb0f45c27bb90bdcc90094599243fce2adb06678a1d1983acc7ffa47b6"
     }
   },
   "schemaVersion": "3.0.11",
-  "updatedAt": "2019-07-30T13:25:23.968Z",
+  "updatedAt": "2019-07-31T20:11:02.323Z",
   "devdoc": {
     "methods": {
       "ABI(bytes32,uint256)": {

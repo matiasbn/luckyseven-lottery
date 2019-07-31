@@ -9,10 +9,10 @@ contract Lucky7RaffleHelper is Lucky7Raffle {
    * maliciously.
    */
 
-  constructor(address _lucky7Lighthouse, bool _isRhombusAvailable)
+  constructor(address _lucky7Lighthouse, bool _isRhombusAvailable, bool _isLocalBlockchain)
   public
   payable
-  Lucky7Raffle(_lucky7Lighthouse, _isRhombusAvailable) {
+  Lucky7Raffle(_lucky7Lighthouse, _isRhombusAvailable, _isLocalBlockchain) {
 
   }
 

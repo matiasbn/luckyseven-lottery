@@ -2,6 +2,8 @@
   <b-container fluid>
     <br>
     <AdminView/>
+    <br>
+    <UserView/>
     <PlayerStats/>
     <PlayerTickets/>
     <br>
@@ -14,6 +16,7 @@
 /* eslint-disable no-underscore-dangle */
 
 import truffleContract from '@/web3/truffleContract';
+import UserView from '@/components/UserDashboard/UserView';
 import AdminView from '@/components/UserDashboard/AdminView';
 import PlayerStats from '@/components/UserDashboard/PlayerStats';
 import PlayerTickets from '@/components/UserDashboard/PlayerTickets';
@@ -26,6 +29,7 @@ export default {
     PlayerStats,
     PlayerTickets,
     PlayerPrizes,
+    UserView,
   },
   data() {
     return {

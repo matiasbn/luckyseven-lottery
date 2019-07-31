@@ -28,7 +28,7 @@ contract('Lucky7Raffle', (accounts) => {
     const lightHouse = await Lighthouse.new();
     const lucky7Library = await Lucky7Library.new();
     await Lucky7RaffleHelper.link('Lucky7Library', lucky7Library.address);
-    lucky7Raffle = await Lucky7RaffleHelper.new(lightHouse.address, true, {
+    lucky7Raffle = await Lucky7RaffleHelper.new(lightHouse.address, true, true, {
       value: web3.utils.toWei('1', 'ether')
     });
     web3contract = web3Contract(lucky7Raffle.address)

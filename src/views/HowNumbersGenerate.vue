@@ -1,7 +1,7 @@
 <template>
   <b-container
     class="intro">
-    <h1 class="page-title">How Lucky7 works</h1>
+    <h1 class="page-title">How the numbers are generated</h1>
     <h4 class="game-rules-separator">About &mu; generator</h4>
     <h3 class ="intro-text">
       As told, Lucky7 uses a pseudo-random number generator (PRNG) called &mu; (mu)

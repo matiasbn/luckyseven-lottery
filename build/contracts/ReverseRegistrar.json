@@ -6339,12 +6339,12 @@
     "7": {
       "events": {},
       "links": {},
-      "address": "0x55afCfd07810dBbACF1b81341F1896800ec77580",
-      "transactionHash": "0x09d2c5eb782b789e41e40f311d8d99ee2cb0af77786fa63a50d982f57ada4e0d"
+      "address": "0xAcF09Eb368Fd496397ED996C062FDF3C7B3b1Cd7",
+      "transactionHash": "0xdf414b61330aafa8c12046db46e1aa8d3a0d73edf39798b14aa7b8da1bd4ab8c"
     }
   },
   "schemaVersion": "3.0.11",
-  "updatedAt": "2019-07-30T13:25:23.955Z",
+  "updatedAt": "2019-07-31T20:11:02.290Z",
   "devdoc": {
     "methods": {
       "claim(address)": {

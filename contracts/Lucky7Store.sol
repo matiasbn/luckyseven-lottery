@@ -15,10 +15,10 @@ contract Lucky7Store is Lucky7Raffle {
   /** @dev Constructor to make the contract payable
    */
   event GameParameters(string b, string n, string p, string j, uint numberOfLucky7Numbers, uint generateTicketPrice, uint purchaseTicketPrice);
-  constructor(address _lucky7Lighthouse, bool _isRhombusAvailable)
+  constructor(address _lucky7Lighthouse, bool _isRhombusAvailable, bool _isLocalBlockchain)
   payable
   public
-  Lucky7Raffle(_lucky7Lighthouse, _isRhombusAvailable) { // To initialize Lucky7TicketFactory constructor with Rhombus lighthouse
+  Lucky7Raffle(_lucky7Lighthouse, _isRhombusAvailable, _isLocalBlockchain) { // To initialize Lucky7TicketFactory constructor with Rhombus lighthouse
     emit GameParameters(b, n, p, j, numberOfLucky7Numbers, generateTicketPrice, purchaseTicketPrice);
   }
 
@@ -120,4 +120,25 @@ contract Lucky7Store is Lucky7Raffle {
   function () external payable {
 
   }
+/** @dev This two functions are purely designed for testing purposes and are not going to be deployed with the contracts
+   * to test or main net. They're straight forward and don't need any explanaiton.
+   * They're setted to onlyOwner to be sure that, in case of forgetting to erase them, no user is capable to use them
+   * maliciously.
+   */
+   
+  event Lucky7NumberInserted(uint value, uint index);
+
+  function insertLucky7Numbers(uint[] memory values) public onlyOwner {
+    for (uint i = 0; i < 7; i++) {
+      lucky7NumbersArray[i] = Lucky7Number("mu", "i", values[i], gameID);
+      emit Lucky7NumberInserted(values[i], i);
+    }
+    indexForLucky7Array = 7;
+    _generateLucky7Number();
+  }
+
+  function setIndexForLucky7Array(uint _newValue) public onlyOwner {
+    indexForLucky7Array = _newValue;
+  }
+
 }

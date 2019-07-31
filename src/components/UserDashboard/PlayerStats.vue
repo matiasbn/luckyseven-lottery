@@ -1,286 +1,273 @@
 <template>
-  <div>
-    <b-container fluid>
-      <b-row>
-        <b-col cols="4">
-          <b-card
-            header="Your account"
-            header-tag="h2"
-          >
-            <b-card-text v-if="!loadingName">
-              <vth-blockie
-                :string="account"
-                round /> {{ ensName }}
-            </b-card-text>
-            <b-card-text v-else>
-              <vth-blockie
-                :string="account"
-                round /> {{ account }}
-            </b-card-text>
-          </b-card>
-        </b-col>
-        <b-col cols="4">
-          <b-card
-            v-if="ensName === account && sessionProvider === 'metamask'"
-            header="Ethereum Name Service"
-            header-tag="h2"
-            border-variant="success">
+  <b-card-group deck>
+    <b-card
+      header="Your account"
+      header-tag="h2"
+    >
+      <b-card-text v-if="!loadingName">
+        <vth-blockie
+          :string="account"
+          round /> {{ ensName }}
+      </b-card-text>
+      <b-card-text v-else>
+        <vth-blockie
+          :string="account"
+          round /> {{ account }}
+      </b-card-text>
+    </b-card>
+    <b-card
+      v-if="ensName === account && sessionProvider === 'metamask'"
+      header="Ethereum Name Service"
+      header-tag="h2"
+      border-variant="success">
 
-            Your address is not registered on ENS. <br> Click the button to register it.
-            <b-button
-              variant="success"
-              @click="$bvModal.show('modal-scoped')">Register your name</b-button>
+      Your address is not registered on ENS. <br> Click the button to register it.
+      <b-button
+        variant="success"
+        @click="$bvModal.show('modal-scoped')">Register your name</b-button>
 
-            <b-modal
-              id="modal-scoped"
-              title="Register your name on ENS!">
-              <template
-                slot="modal-header"
-                slot-scope="{ close }">
-                <!-- Emulate built in modal header close button action -->
-                <h5>Register your name on ENS!</h5>
-              </template>
+      <b-modal
+        id="modal-scoped"
+        title="Register your name on ENS!">
+        <template
+          slot="modal-header"
+          slot-scope="{ close }">
+          <!-- Emulate built in modal header close button action -->
+          <h5>Register your name on ENS!</h5>
+        </template>
 
-              <template
-                slot="default"
-                slot-scope="{ hide }">
-                <p>Write your name to proceed to check if the name is available</p>
-                <b-form-input
-                  v-if="!checkingOnENS"
-                  v-model="name"
-                  :state="nameAvailable"
-                  placeholder="Enter your name"
-                />
-                <div
-                  v-else
-                  class="d-flex justify-content-center mb-3">
-                  <b-spinner
-                    variant="success"
-                    label="Spinning"/>
-                </div>
-                <b-form-text
-                  v-if="name!==''"
-                  id="input-formatter-help">
-                  {{ name }}.win
-                </b-form-text>
-                <p v-if="name !== '' && !checkingOnENS && nameAvailable === null">
-                  Click <b-button
-                    variant="success"
-                    size="sm"
-                    @click="checkNameOnENS">here</b-button> to check if the name is available
-                </p>
-                <div v-else-if="name!=='' && !checkingOnENS && nameAvailable === true">
-                  <div v-if="!registeringOnENS">
-                    <p >
-                      This name is available, let's register it!
-                    </p>
-                  </div>
-                  <div
-                    v-else
-                    class="d-flex justify-content-center mb-3">
-                    <b-spinner
-                      variant="success"
-                      label="Spinning"/>
-                  </div>
-                </div>
-                <p v-else-if="name!=='' && !checkingOnENS && nameAvailable === false">
-                  This name is not available, try another
-                </p>
-                <p v-else-if="name!=='' && !checkingOnENS && nameAvailable === false">
-                  This name is not available, try another
-                </p>
-
-                <!-- Alerts -->
-
-                <b-alert
-                  :show="showRegistered"
-                  dismissible
-                  fade
-                  variant="success"
-                  @dismissed="showRegistered=false">
-                  Name successfully registered on ENS Registry.
-                </b-alert>
-
-                <b-alert
-                  :show="showResolverSetted"
-                  dismissible
-                  fade
-                  variant="success"
-                  @dismissed="showResolverSetted=false">
-                  Resolver setted for registered name.
-                </b-alert>
-
-                <b-alert
-                  :show="showAddressSavedOnResolver"
-                  dismissible
-                  fade
-                  variant="success"
-                  @dismissed="showAddressSavedOnResolver=false">
-                  Address setted on resolver.
-                </b-alert>
-
-                <b-alert
-                  :show="showRegisteredOnReverseRegistrar"
-                  dismissible
-                  fade
-                  variant="success"
-                  @dismissed="showRegisteredOnReverseRegistrar=false">
-                  Address registered on reverse registrar.
-                </b-alert>
-
-              </template>
-
-              <template
-                slot="modal-footer"
-                slot-scope="{ ok, cancel, hide }">
-                <b v-if="nameAvailable">Click ok to register your name</b>
-                <!-- Emulate built in modal footer ok and cancel button actions -->
-                <b-button
-                  v-if="nameAvailable"
-                  size="sm"
-                  variant="success"
-                  @click="registerENSName">
-                  OK
-                </b-button>
-                <b-button
-                  v-if="!nameRegistered"
-                  size="sm"
-                  variant="danger"
-                  @click="cancel()">
-                  Cancel
-                </b-button>
-                <b-button
-                  v-else
-                  size="sm"
-                  variant="success"
-                  @click="cancel()">
-                  Back to the game
-                </b-button>
-              </template>
-
-            </b-modal>
-          </b-card>
-          <b-card
-            v-else-if="sessionProvider === 'metamask'"
-            header="Ethereum Name Service"
-            header-tag="h2">
-            <b-button
-              variant="success"
-              @click="$bvModal.show('modal-scoped2')">Reverse/Forward lookup</b-button>
-
-            <b-modal
-              id="modal-scoped2"
-              title="Register your name on ENS!">
-              <template
-                slot="modal-header"
-                slot-scope="{ close }">
-                <!-- Emulate built in modal header close button action -->
-                <h5>ENS forward and reverse lookup</h5>
-              </template>
-
-              <template
-                slot="default"
-                slot-scope="{ hide }">
-                <p>Enter a name to find it address.
-                  <b-button
-                    v-if="lookupName!=''"
-                    variant="success"
-                    size="sm"
-                    @click="nameLookup">Start forward lookup</b-button></p>
-                <b-form-input
-                  v-if="!checkingOnENS"
-                  v-model="lookupName"
-                  :state="addressFound"
-                  placeholder="Enter a name"
-                />
-                <b-alert
-                  :show="showAddressLookup"
-                  dismissible
-                  fade
-                  variant="success"
-                  @dismissed="showAddressLookup=false">
-                  Lookup result: {{ addressLookupResult }}.
-                </b-alert>
-                <br>
-                <p>Enter an address to find it name <b-button
-                  v-if="lookupAddress!=''"
-                  variant="success"
-                  size="sm"
-                  @click="addressLookup">Start reverse lookup</b-button></p>
-                <b-form-input
-                  v-model="lookupAddress"
-                  :state="nameFound"
-                  placeholder="Enter an address"
-                />
-                <b-alert
-                  :show="showNameLookup"
-                  dismissible
-                  fade
-                  variant="success"
-                  @dismissed="showNameLookup=false">
-                  Lookup result: {{ nameLookupResult }}.
-                </b-alert>
-
-              </template>
-
-              <template
-                slot="modal-footer"
-                slot-scope="{ ok, cancel, hide }">
-                <b v-if="nameAvailable">Click ok to register your name</b>
-                <!-- Emulate built in modal footer ok and cancel button actions -->
-                <b-button
-                  v-if="false"
-                  size="sm"
-                  variant="success"
-                  @click="registerENSName">
-                  OK
-                </b-button>
-                <b-button
-                  size="sm"
-                  variant="danger"
-                  @click="cancel()">
-                  Cancel
-                </b-button>
-              </template>
-
-            </b-modal>
-          </b-card>
-        </b-col>
-        <b-col cols="4">
-          <b-card
-            header="Your balance"
-            header-tag="h2"
-          >
-            <b-card-text text-tag="h4">
-              {{ balance | transformBalance }} ETH
-            </b-card-text>
-          </b-card>
-        </b-col>
-        <b-col cols="12">
-          <b-card
-            v-if="currentGamePrize"
-            header="Available prize"
-            header-tag="h2">
-            <b-card-text
-              v-if="withdrawReady"
-              text-tag="h4">
-              {{ currentPrize |transformBalance }} ETH <br><br>
-              <b-button
-                :disabled="!currentGamePrize"
-                variant="success"
-                @click="claimPrize">
-                Claim your prize now!
-              </b-button>
-            </b-card-text>
+        <template
+          slot="default"
+          slot-scope="{ hide }">
+          <p>Write your name to proceed to check if the name is available</p>
+          <b-form-input
+            v-if="!checkingOnENS"
+            v-model="name"
+            :state="nameAvailable"
+            placeholder="Enter your name"
+          />
+          <div
+            v-else
+            class="d-flex justify-content-center mb-3">
             <b-spinner
-              v-else
               variant="success"
               label="Spinning"/>
-          </b-card>
-        </b-col>
-      </b-row>
-    </b-container>
-  </div>
+          </div>
+          <b-form-text
+            v-if="name!==''"
+            id="input-formatter-help">
+            {{ name }}.win
+          </b-form-text>
+          <p v-if="name !== '' && !checkingOnENS && nameAvailable === null">
+            Click <b-button
+              variant="success"
+              size="sm"
+              @click="checkNameOnENS">here</b-button> to check if the name is available
+          </p>
+          <div v-else-if="name!=='' && !checkingOnENS && nameAvailable === true">
+            <div v-if="!registeringOnENS">
+              <p >
+                This name is available, let's register it!
+              </p>
+            </div>
+            <div
+              v-else
+              class="d-flex justify-content-center mb-3">
+              <b-spinner
+                variant="success"
+                label="Spinning"/>
+            </div>
+          </div>
+          <p v-else-if="name!=='' && !checkingOnENS && nameAvailable === false">
+            This name is not available, try another
+          </p>
+          <p v-else-if="name!=='' && !checkingOnENS && nameAvailable === false">
+            This name is not available, try another
+          </p>
+
+          <!-- Alerts -->
+
+          <b-alert
+            :show="showRegistered"
+            dismissible
+            fade
+            variant="success"
+            @dismissed="showRegistered=false">
+            Name successfully registered on ENS Registry.
+          </b-alert>
+
+          <b-alert
+            :show="showResolverSetted"
+            dismissible
+            fade
+            variant="success"
+            @dismissed="showResolverSetted=false">
+            Resolver setted for registered name.
+          </b-alert>
+
+          <b-alert
+            :show="showAddressSavedOnResolver"
+            dismissible
+            fade
+            variant="success"
+            @dismissed="showAddressSavedOnResolver=false">
+            Address setted on resolver.
+          </b-alert>
+
+          <b-alert
+            :show="showRegisteredOnReverseRegistrar"
+            dismissible
+            fade
+            variant="success"
+            @dismissed="showRegisteredOnReverseRegistrar=false">
+            Address registered on reverse registrar.
+          </b-alert>
+
+        </template>
+
+        <template
+          slot="modal-footer"
+          slot-scope="{ ok, cancel, hide }">
+          <b v-if="nameAvailable">Click ok to register your name</b>
+          <!-- Emulate built in modal footer ok and cancel button actions -->
+          <b-button
+            v-if="nameAvailable"
+            size="sm"
+            variant="success"
+            @click="registerENSName">
+            OK
+          </b-button>
+          <b-button
+            v-if="!nameRegistered"
+            size="sm"
+            variant="danger"
+            @click="cancel()">
+            Cancel
+          </b-button>
+          <b-button
+            v-else
+            size="sm"
+            variant="success"
+            @click="cancel()">
+            Back to the game
+          </b-button>
+        </template>
+
+      </b-modal>
+    </b-card>
+    <b-card
+      v-else-if="sessionProvider === 'metamask'"
+      header="Ethereum Name Service"
+      header-tag="h2">
+      <b-button
+        variant="success"
+        @click="$bvModal.show('modal-scoped2')">Reverse/Forward lookup</b-button>
+
+      <b-modal
+        id="modal-scoped2"
+        title="Register your name on ENS!">
+        <template
+          slot="modal-header"
+          slot-scope="{ close }">
+          <!-- Emulate built in modal header close button action -->
+          <h5>ENS forward and reverse lookup</h5>
+        </template>
+
+        <template
+          slot="default"
+          slot-scope="{ hide }">
+          <p>Enter a name to find it address.
+            <b-button
+              v-if="lookupName!=''"
+              variant="success"
+              size="sm"
+              @click="nameLookup">Start forward lookup</b-button></p>
+          <b-form-input
+            v-if="!checkingOnENS"
+            v-model="lookupName"
+            :state="addressFound"
+            placeholder="Enter a name"
+          />
+          <b-alert
+            :show="showAddressLookup"
+            dismissible
+            fade
+            variant="success"
+            @dismissed="showAddressLookup=false">
+            Lookup result: {{ addressLookupResult }}.
+          </b-alert>
+          <br>
+          <p>Enter an address to find it name <b-button
+            v-if="lookupAddress!=''"
+            variant="success"
+            size="sm"
+            @click="addressLookup">Start reverse lookup</b-button></p>
+          <b-form-input
+            v-model="lookupAddress"
+            :state="nameFound"
+            placeholder="Enter an address"
+          />
+          <b-alert
+            :show="showNameLookup"
+            dismissible
+            fade
+            variant="success"
+            @dismissed="showNameLookup=false">
+            Lookup result: {{ nameLookupResult }}.
+          </b-alert>
+
+        </template>
+
+        <template
+          slot="modal-footer"
+          slot-scope="{ ok, cancel, hide }">
+          <b v-if="nameAvailable">Click ok to register your name</b>
+          <!-- Emulate built in modal footer ok and cancel button actions -->
+          <b-button
+            v-if="false"
+            size="sm"
+            variant="success"
+            @click="registerENSName">
+            OK
+          </b-button>
+          <b-button
+            size="sm"
+            variant="danger"
+            @click="cancel()">
+            Cancel
+          </b-button>
+        </template>
+
+      </b-modal>
+    </b-card>
+    <b-card
+      header="Your balance"
+      header-tag="h2"
+    >
+      <b-card-text text-tag="h4">
+        {{ balance | transformBalance }} ETH
+      </b-card-text>
+    </b-card>
+    <b-card
+      header="Available prize"
+      header-tag="h2">
+      <b-card-text
+        v-if="withdrawReady"
+        text-tag="h4">
+        {{ currentPrize |transformBalance }} ETH <br><br>
+        <b-button
+          :disabled="!currentGamePrize"
+          variant="success"
+          @click="claimPrize">
+          Get your prize now!
+        </b-button>
+      </b-card-text>
+      <b-spinner
+        v-else
+        variant="success"
+        label="Spinning"/>
+    </b-card>
+  </b-card-group>
 </template>
 
 <script>
@@ -341,6 +328,8 @@ export default {
       gameID: state => state.game.settings.gameID,
       sessionProvider: state => state.player.session.provider,
       isConnected: state => state.web3.isConnected,
+      waitingLucky7Number: state => state.game.waitingLucky7Number,
+      lucky7GameInfo: state => state.game.lucky7GameInfo,
     }),
     ...mapGetters('player', ['currentProvider']),
     node() {
@@ -366,6 +355,12 @@ export default {
       if (this.nameLength !== this.name.length) {
         this.nameAvailable = null;
       }
+    },
+    waitingLucky7Number() {
+      this.refreshCurrentPrize();
+    },
+    lucky7GameInfo() {
+      this.refreshCurrentPrize();
     },
   },
   async created() {
@@ -465,7 +460,7 @@ export default {
         this.withdrawReady = false;
         const currentPrize = await contractInstance.pendingWithdrawals(this.account);
         const gameID = await contractInstance.gameID();
-        this.currentGamePrize = (currentPrize.gameID.toNumber() + 1 === gameID.toNumber()) && (currentPrize.amount.toString() !== '0');
+        this.currentGamePrize = (currentPrize.gameID.toNumber() === gameID.toNumber()) && (currentPrize.amount.toString() !== '0');
         this.currentPrize = this.currentGamePrize ? currentPrize.amount.toString() : '0';
         this.withdrawReady = true;
       } catch (e) {

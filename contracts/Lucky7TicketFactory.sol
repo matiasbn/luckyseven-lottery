@@ -42,6 +42,12 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize {
     isRhombusAvailable = _isRhombusAvailable;
   }
 
+  /**
+  * @param waitingLucky7Number is a circuit breaker to wait to receive a Lucky7Number to call for the next
+   */
+  bool waitingForLucky7Number = false;
+
+
   /** @dev This modifier is used to set the gas price on the functions which do oraclize querys.
    *  It uses the oraclizeCustomGasPrice of the Lucky7Admin contract.
    */
@@ -286,6 +292,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize {
     lucky7NumbersArray[indexForLucky7Array] = Lucky7Number(userValues[_ticketOwner].mu, userValues[_ticketOwner].i, userValues[_ticketOwner].ticketValue, gameID);
     emit Lucky7NumberInserted(userValues[_ticketOwner].ticketValue, indexForLucky7Array);
     indexForLucky7Array++;
+    waitingForLucky7Number = false;
   }
 
   /** @dev _checkForLucky7Ticket is a function that check if a ticket recently inserted in the ticketsArray is a Lucky7Ticket.
@@ -378,7 +385,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize {
       if (userValues[iParameterID[myid]].muReady == true) {
         if ((userValues[iParameterID[myid]].userPaidTicket == true)) {
           _askForTicket(iParameterID[myid]);
-        } else {
+        } else if(settingLucky7Numbers == false){
           emit GeneratedParametersReceived(userValues[iParameterID[myid]].mu, userValues[iParameterID[myid]].i, iParameterID[myid], gameID);
         }
         if (settingLucky7Numbers == true) {

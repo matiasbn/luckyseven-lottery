@@ -20,5 +20,6 @@ export default {
   lucky7GameInfo: [],
   lucky7GameInfoReady: false,
   lucky7PastGames: [],
+  waitingLucky7Number: false,
 };
 

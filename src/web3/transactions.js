@@ -52,6 +52,13 @@ const setLucky7Numbers = async (state) => {
   await truffleContractInstance.insertLucky7Numbers(values, { from: state.web3.coinbase });
 };
 
+const generateLucky7Number = async (state) => {
+  const provider = state.player.session.provider === 'metamask' ? window.web3.currentProvider : state.player.session.uportProvider;
+  const truffleContractInstance = await truffleContract(provider).deployed();
+  // eslint-disable-next-line no-underscore-dangle
+  await truffleContractInstance._generateLucky7Number({ from: state.web3.coinbase });
+};
+
 export default {
   generateTicket,
   purchaseRandomTicket,
@@ -59,4 +66,5 @@ export default {
   claimPrize,
   setNewGame,
   setLucky7Numbers,
+  generateLucky7Number,
 };

@@ -54,7 +54,10 @@ contract Lucky7Admin is Ownable {
    * @param ticketsPurchased amount of tickets purchased during currentGame
    * @param expectedPrize amount of expected prize before users can set new game
    * @param expectedGameTime amount of expected time elapsed before users can set new game
+   * @param newGameSettedPrize prize for setting a new game.
+   * @param newLucky7NumberPrize prize for setting a new Lucky7Number.
    */
+   
   uint public generateTicketPrice = 0.005 ether;
   uint public purchaseTicketPrice = 0.01 ether;
   uint public oraclizeGasLimit = 3000000 wei;

@@ -13,12 +13,12 @@ pragma solidity ^ 0.5 .0;
 import "./Lucky7TicketFactory.sol";
 
 contract Lucky7Raffle is Lucky7TicketFactory {
-
-  constructor(address _lucky7Lighthouse, bool _isRhombusAvailable)
+  bool isLocalBlockchain;
+  constructor(address _lucky7Lighthouse, bool _isRhombusAvailable, bool _isLocalBlockchain)
   public
   payable
   Lucky7TicketFactory(_lucky7Lighthouse, _isRhombusAvailable) { // To initialize Lucky7TicketFactory constructor with Rhombus lighthouse
-
+    isLocalBlockchain = _isLocalBlockchain;
   }
 
   /**
@@ -40,7 +40,12 @@ contract Lucky7Raffle is Lucky7TicketFactory {
     bool potReached;
     bool timeReached;
     (, potReached, timeReached) = validateDelivery();
-    require(potReached == true && timeReached == true);
+    if(isLocalBlockchain == true){
+      require((potReached == true && timeReached == true) || isOwner());
+    }
+    else{
+      require(potReached == true && timeReached == true);
+    }
     _;
   }
   /** @param initialLucky7TicketPosition is a uint used for the _orderLucky7Tickets function of this contract. 
@@ -89,13 +94,12 @@ contract Lucky7Raffle is Lucky7TicketFactory {
     _deliverPrizes();
     _cleanMappings();
     gameID++;
+    pendingWithdrawals[msg.sender].amount += newGameSettedPrize;
+    pendingWithdrawals[msg.sender].gameID = gameID;
     ticketsGenerated = 0;
     ticketsPurchased = 0;
     lastDelivery = now;
     initialLucky7TicketPosition = gameID * numberOfLucky7Numbers;
-    pendingWithdrawals[msg.sender].amount = newGameSettedPrize;
-    pendingWithdrawals[msg.sender].gameID = gameID;
-    emit NewGameStarted(gameID);
   }
 
   /** @dev _generateLucky7Number is the function that is actually used to generate the Lucky7Numbers. It have the business logic for generating the Lucky7Numbers, i.e. if 
@@ -107,17 +111,21 @@ contract Lucky7Raffle is Lucky7TicketFactory {
    * the settingLucky7Numbers circuit breaker to allow users to start buying tickets.
    */
   function _generateLucky7Number() public gameNotInCourse {
+    require(waitingForLucky7Number == false);
     if (indexForLucky7Array == numberOfLucky7Numbers) {
+      waitingForLucky7Number = true;
       _orderLucky7Numbers();
       indexForLucky7Array = 0;
       toggleLucky7Setting();
-      pendingWithdrawals[msg.sender].amount = newLucky7NumberPrize;
+      waitingForLucky7Number = false;
+      pendingWithdrawals[msg.sender].amount += newLucky7NumberPrize;
       pendingWithdrawals[msg.sender].gameID = gameID;
     } else {
+      waitingForLucky7Number = true;
       userValues[address(this)].muReady = false;
       userValues[address(this)].iReady = false;
       _generateTicket(address(this));
-      pendingWithdrawals[msg.sender].amount = newLucky7NumberPrize;
+      pendingWithdrawals[msg.sender].amount += newLucky7NumberPrize;
       pendingWithdrawals[msg.sender].gameID = gameID;
     }
   }
@@ -212,12 +220,12 @@ contract Lucky7Raffle is Lucky7TicketFactory {
     uint prizeCounter = 7;
     for (i = initialLucky7TicketPosition; i < numberOfLucky7Numbers + initialLucky7TicketPosition; i++) {
       if (lucky7TicketsArray[i].owner != address(0x0)) {
-        if (pendingWithdrawals[lucky7TicketsArray[i].owner].gameID != gameID) {
+        if (pendingWithdrawals[lucky7TicketsArray[i].owner].gameID != gameID + 1) {
           pendingWithdrawals[lucky7TicketsArray[i].owner].amount = winnersPrize.mul(prizeCounter);
         } else {
           pendingWithdrawals[lucky7TicketsArray[i].owner].amount += winnersPrize.mul(prizeCounter);
         }
-        pendingWithdrawals[lucky7TicketsArray[i].owner].gameID = gameID;
+        pendingWithdrawals[lucky7TicketsArray[i].owner].gameID = gameID + 1;
         lucky7TicketsArray[i].prize = winnersPrize.mul(prizeCounter);
         prizeCounter -= 1;
       }
@@ -263,32 +271,10 @@ contract Lucky7Raffle is Lucky7TicketFactory {
   function withdraw() public {
     PrizeInfo memory prize = pendingWithdrawals[msg.sender];
     uint amount = prize.amount;
-    require((prize.gameID == gameID - 1) && (prize.amount != 0));
+    require(prize.gameID == gameID && (prize.amount != 0));
     pendingWithdrawals[msg.sender].amount = 0;
     msg.sender.transfer(amount);
-    emit PrizeClaimed(msg.sender, gameID - 1, amount);
-  }
-
-  /** @dev This four functions are purely designed for testing purposes and are going to be erased when the contract
-   * is deployed to test or main net. They're straight forward and don't need any explanaiton.
-   * They're setted to onlyOwner to be sure that, in case of forgetting to erase them, no user is capable to use them
-   * maliciously.
-   */
-
-  event Lucky7NumberInserted(uint value, uint index);
-
-
-  function insertLucky7Numbers(uint[] memory values) public onlyOwner {
-    for (uint i = 0; i < 7; i++) {
-      lucky7NumbersArray[i] = Lucky7Number("mu", "i", values[i], gameID);
-      emit Lucky7NumberInserted(values[i], i);
-    }
-    indexForLucky7Array = 7;
-    _generateLucky7Number();
-  }
-
-  function setIndexForLucky7Array(uint _newValue) public onlyOwner {
-    indexForLucky7Array = _newValue;
+    emit PrizeClaimed(msg.sender, gameID, amount);
   }
 
   /** @dev Fallback function to make this contract payable.

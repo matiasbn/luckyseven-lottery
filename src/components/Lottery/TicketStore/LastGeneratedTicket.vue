@@ -139,6 +139,7 @@ export default {
       n: state => state.settings.n,
       p: state => state.settings.p,
       j: state => state.settings.j,
+      storeEnabled: state => state.settings.storeEnabled,
     }),
     ...mapState(['player', 'web3', 'game']),
     ...mapGetters('player', ['currentProvider']),
@@ -186,8 +187,8 @@ export default {
         await transactions.purchaseGeneratedTicket(this.$store.state);
       } catch (e) {
         console.log(e);
-        this.$store.state.player.generatedTicket.received = false;
-        this.$store.state.player.purchasedTicket.received = false;
+        this.$store.state.player.generatedTicket.received = true;
+        this.$store.state.player.purchasedTicket.received = true;
       }
     },
     purchasePrice() {

@@ -8,7 +8,7 @@
         <b-card-text
           text-tag="h4">
           To login with uPort you should pick your preferred network
-        </b-card-text>
+        </b-card-text> <br>
         <b-form-select
           v-model="selected"
           :options="options"

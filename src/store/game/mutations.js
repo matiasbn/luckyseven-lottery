@@ -32,6 +32,7 @@ export const statsUpdated = (state, payload) => {
 export const lucky7NumberInserted = (state, payload) => {
   const { value, index } = payload;
   state.lucky7GameInfo[index].number = value;
+  state.waitingLucky7Number = false;
 };
 export const newLucky7Ticket = (state, payload) => {
   const { returnValues, rootState } = payload;
