@@ -224,6 +224,12 @@ This project uses a pseudo-random number generator (PRNG) designed by me. You ca
 
 I wrote an article on [Medium](https://medium.com/@matias.barriosn/how-i-realized-as-an-adult-that-ive-been-studying-number-theory-since-i-was-a-kid-a8b49ea57a87) about how i formulated the PRNG. Read it and give me some claps.
 
+## Live demo
+
+You can see a long version of demo on this [link](https://www.youtube.com/playlist?list=PL0jTQI3lb8xH46hz-w6Y5l6AB7dhrxs-0), which is a playlist.
+
+You ca see the short version too in this [link]{https://www.youtube.com/watch?v=Arn1l70lY_Q}.
+
 ## Authors
 
 * **Matías Barrios** 
