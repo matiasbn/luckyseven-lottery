@@ -6344,7 +6344,7 @@
     }
   },
   "schemaVersion": "3.0.11",
-  "updatedAt": "2019-08-01T02:09:18.291Z",
+  "updatedAt": "2019-08-01T03:32:09.915Z",
   "devdoc": {
     "methods": {
       "claim(address)": {

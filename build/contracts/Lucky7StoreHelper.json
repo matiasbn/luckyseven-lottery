@@ -3418,6 +3418,18 @@
     "version": "0.5.8+commit.23d335f2.Emscripten.clang"
   },
   "networks": {
+    "3": {
+      "events": {},
+      "links": {
+        "Lucky7Library": "0xb9861986BadF043bFd624588B8865D68E4e7E746"
+      }
+    },
+    "4": {
+      "events": {},
+      "links": {
+        "Lucky7Library": "0x9745252ceC696525A2C0aAfE092b38ee5fB4f02A"
+      }
+    },
     "7": {
       "events": {
         "0x205b10e6817754ae69619fe35e2b49c3c9246b795133b40533171497a81e3713": {
@@ -3774,7 +3786,7 @@
     }
   },
   "schemaVersion": "3.0.11",
-  "updatedAt": "2019-08-01T02:09:43.200Z",
+  "updatedAt": "2019-08-01T03:34:33.224Z",
   "devdoc": {
     "methods": {
       "__callback(bytes32,string)": {

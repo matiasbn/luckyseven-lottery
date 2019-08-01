@@ -7208,6 +7208,714 @@
     "version": "0.5.8+commit.23d335f2.Emscripten.clang"
   },
   "networks": {
+    "3": {
+      "events": {
+        "0xb36b735efbdaa740f132590befa1bf2634b517020a061e9fc5921de38a230bb4": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "b",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "n",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "p",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "j",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "numberOfLucky7Numbers",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "generateTicketPrice",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "purchaseTicketPrice",
+              "type": "uint256"
+            }
+          ],
+          "name": "GameParameters",
+          "type": "event",
+          "signature": "0xb36b735efbdaa740f132590befa1bf2634b517020a061e9fc5921de38a230bb4"
+        },
+        "0xa7a54b0ba7db69f1636213c1d21f424409b1b3190a8e3d1a078ca7a387312e39": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "gameID",
+              "type": "uint256"
+            }
+          ],
+          "name": "RandomTicketSelled",
+          "type": "event",
+          "signature": "0xa7a54b0ba7db69f1636213c1d21f424409b1b3190a8e3d1a078ca7a387312e39"
+        },
+        "0xe8cd617b27d7c0e98105f603492d0988c6ca3e17f29c944ea350063c8e0792aa": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "gameID",
+              "type": "uint256"
+            }
+          ],
+          "name": "GeneratedTicket",
+          "type": "event",
+          "signature": "0xe8cd617b27d7c0e98105f603492d0988c6ca3e17f29c944ea350063c8e0792aa"
+        },
+        "0xdcd159d28cd065bc018b98e7871c95200854b11d0986dfc7d0dba5e3bd5fbe72": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "gameID",
+              "type": "uint256"
+            }
+          ],
+          "name": "GeneratedTicketSelled",
+          "type": "event",
+          "signature": "0xdcd159d28cd065bc018b98e7871c95200854b11d0986dfc7d0dba5e3bd5fbe72"
+        },
+        "0xd67d38e6942f1955eba82d765f96e3ae0e25a2d089feefaf66c6913580100125": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "gameID",
+              "type": "uint256"
+            }
+          ],
+          "name": "NewGameStarted",
+          "type": "event",
+          "signature": "0xd67d38e6942f1955eba82d765f96e3ae0e25a2d089feefaf66c6913580100125"
+        },
+        "0x538343026e31e40972341fb0edf015061204ea9cd1158d295f5d962b7223e6bf": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "difference",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "ticketID",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "ticketValue",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "lucky7Number",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "lucky7NumberID",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "gameID",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "prize",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "mu",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "i",
+              "type": "string"
+            }
+          ],
+          "name": "Lucky7TicketStored",
+          "type": "event",
+          "signature": "0x538343026e31e40972341fb0edf015061204ea9cd1158d295f5d962b7223e6bf"
+        },
+        "0x256642a903d86ec186d0ad895b74bdbe7f9e5a72db568f4c4d58c2fa38b39e1c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "gameID",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "PrizeClaimed",
+          "type": "event",
+          "signature": "0x256642a903d86ec186d0ad895b74bdbe7f9e5a72db568f4c4d58c2fa38b39e1c"
+        },
+        "0x6f6a595f1625060fd0f882e953621a1d74eda187446f39622246322aa887c902": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "mu",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "i",
+              "type": "string"
+            },
+            {
+              "indexed": true,
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "gameID",
+              "type": "uint256"
+            }
+          ],
+          "name": "GeneratedParametersReceived",
+          "type": "event",
+          "signature": "0x6f6a595f1625060fd0f882e953621a1d74eda187446f39622246322aa887c902"
+        },
+        "0x55e46bc67aa8ca9c625f4e25d40ab91d3e3878a23e0baff870cb4bc532cd9d66": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "ticketValue",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "mu",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "i",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "ticketID",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "gameID",
+              "type": "uint256"
+            }
+          ],
+          "name": "NewTicketReceived",
+          "type": "event",
+          "signature": "0x55e46bc67aa8ca9c625f4e25d40ab91d3e3878a23e0baff870cb4bc532cd9d66"
+        },
+        "0x3aba55b4f09d935ff9a3c49a2fc37832dde4fde12062957a9d261357f3c4a982": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "ticketValue",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "difference",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "index",
+              "type": "uint256"
+            }
+          ],
+          "name": "NewLucky7Ticket",
+          "type": "event",
+          "signature": "0x3aba55b4f09d935ff9a3c49a2fc37832dde4fde12062957a9d261357f3c4a982"
+        },
+        "0x205b10e6817754ae69619fe35e2b49c3c9246b795133b40533171497a81e3713": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "index",
+              "type": "uint256"
+            }
+          ],
+          "name": "Lucky7NumberInserted",
+          "type": "event",
+          "signature": "0x205b10e6817754ae69619fe35e2b49c3c9246b795133b40533171497a81e3713"
+        },
+        "0x04be25a4c0fe4c39136ca055daaac08ac6b3041b2e1f2a1b698bac12f1cbdc4a": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "balance",
+              "type": "uint256"
+            }
+          ],
+          "name": "BalanceUpdated",
+          "type": "event",
+          "signature": "0x04be25a4c0fe4c39136ca055daaac08ac6b3041b2e1f2a1b698bac12f1cbdc4a"
+        },
+        "0x7632252ebff214b4969a92f7ca8290a9aa92e8dbea9b95ae49a7ea372c086026": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "settingLucky7Numbers",
+              "type": "bool"
+            }
+          ],
+          "name": "SettingNumbersChanged",
+          "type": "event",
+          "signature": "0x7632252ebff214b4969a92f7ca8290a9aa92e8dbea9b95ae49a7ea372c086026"
+        },
+        "0x261af219212047633bb60c8d0cc7e33d217c38edf6fa7e53acb97a3f94180de5": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "wolframQuery",
+              "type": "string"
+            }
+          ],
+          "name": "NewWolframQuery",
+          "type": "event",
+          "signature": "0x261af219212047633bb60c8d0cc7e33d217c38edf6fa7e53acb97a3f94180de5"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event",
+          "signature": "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0"
+        }
+      },
+      "links": {
+        "Lucky7Library": "0xb9861986BadF043bFd624588B8865D68E4e7E746"
+      },
+      "address": "0xbf60EDD5143b6D2c2f3E037a28CD54870716b2d6",
+      "transactionHash": "0x914898e22daa0c169226596e444d33b9ce2e1f2272b3139812588ae86e5f1db0"
+    },
+    "4": {
+      "events": {
+        "0xb36b735efbdaa740f132590befa1bf2634b517020a061e9fc5921de38a230bb4": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "b",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "n",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "p",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "j",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "numberOfLucky7Numbers",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "generateTicketPrice",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "purchaseTicketPrice",
+              "type": "uint256"
+            }
+          ],
+          "name": "GameParameters",
+          "type": "event",
+          "signature": "0xb36b735efbdaa740f132590befa1bf2634b517020a061e9fc5921de38a230bb4"
+        },
+        "0xa7a54b0ba7db69f1636213c1d21f424409b1b3190a8e3d1a078ca7a387312e39": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "gameID",
+              "type": "uint256"
+            }
+          ],
+          "name": "RandomTicketSelled",
+          "type": "event",
+          "signature": "0xa7a54b0ba7db69f1636213c1d21f424409b1b3190a8e3d1a078ca7a387312e39"
+        },
+        "0xe8cd617b27d7c0e98105f603492d0988c6ca3e17f29c944ea350063c8e0792aa": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "gameID",
+              "type": "uint256"
+            }
+          ],
+          "name": "GeneratedTicket",
+          "type": "event",
+          "signature": "0xe8cd617b27d7c0e98105f603492d0988c6ca3e17f29c944ea350063c8e0792aa"
+        },
+        "0xdcd159d28cd065bc018b98e7871c95200854b11d0986dfc7d0dba5e3bd5fbe72": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "gameID",
+              "type": "uint256"
+            }
+          ],
+          "name": "GeneratedTicketSelled",
+          "type": "event",
+          "signature": "0xdcd159d28cd065bc018b98e7871c95200854b11d0986dfc7d0dba5e3bd5fbe72"
+        },
+        "0xd67d38e6942f1955eba82d765f96e3ae0e25a2d089feefaf66c6913580100125": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "gameID",
+              "type": "uint256"
+            }
+          ],
+          "name": "NewGameStarted",
+          "type": "event",
+          "signature": "0xd67d38e6942f1955eba82d765f96e3ae0e25a2d089feefaf66c6913580100125"
+        },
+        "0x538343026e31e40972341fb0edf015061204ea9cd1158d295f5d962b7223e6bf": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "difference",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "ticketID",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "ticketValue",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "lucky7Number",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "lucky7NumberID",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "gameID",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "prize",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "mu",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "i",
+              "type": "string"
+            }
+          ],
+          "name": "Lucky7TicketStored",
+          "type": "event",
+          "signature": "0x538343026e31e40972341fb0edf015061204ea9cd1158d295f5d962b7223e6bf"
+        },
+        "0x256642a903d86ec186d0ad895b74bdbe7f9e5a72db568f4c4d58c2fa38b39e1c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "gameID",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "PrizeClaimed",
+          "type": "event",
+          "signature": "0x256642a903d86ec186d0ad895b74bdbe7f9e5a72db568f4c4d58c2fa38b39e1c"
+        },
+        "0x6f6a595f1625060fd0f882e953621a1d74eda187446f39622246322aa887c902": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "mu",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "i",
+              "type": "string"
+            },
+            {
+              "indexed": true,
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "gameID",
+              "type": "uint256"
+            }
+          ],
+          "name": "GeneratedParametersReceived",
+          "type": "event",
+          "signature": "0x6f6a595f1625060fd0f882e953621a1d74eda187446f39622246322aa887c902"
+        },
+        "0x55e46bc67aa8ca9c625f4e25d40ab91d3e3878a23e0baff870cb4bc532cd9d66": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "ticketValue",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "mu",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "i",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "ticketID",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "gameID",
+              "type": "uint256"
+            }
+          ],
+          "name": "NewTicketReceived",
+          "type": "event",
+          "signature": "0x55e46bc67aa8ca9c625f4e25d40ab91d3e3878a23e0baff870cb4bc532cd9d66"
+        },
+        "0x3aba55b4f09d935ff9a3c49a2fc37832dde4fde12062957a9d261357f3c4a982": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "ticketValue",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "difference",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "index",
+              "type": "uint256"
+            }
+          ],
+          "name": "NewLucky7Ticket",
+          "type": "event",
+          "signature": "0x3aba55b4f09d935ff9a3c49a2fc37832dde4fde12062957a9d261357f3c4a982"
+        },
+        "0x205b10e6817754ae69619fe35e2b49c3c9246b795133b40533171497a81e3713": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "index",
+              "type": "uint256"
+            }
+          ],
+          "name": "Lucky7NumberInserted",
+          "type": "event",
+          "signature": "0x205b10e6817754ae69619fe35e2b49c3c9246b795133b40533171497a81e3713"
+        },
+        "0x04be25a4c0fe4c39136ca055daaac08ac6b3041b2e1f2a1b698bac12f1cbdc4a": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "balance",
+              "type": "uint256"
+            }
+          ],
+          "name": "BalanceUpdated",
+          "type": "event",
+          "signature": "0x04be25a4c0fe4c39136ca055daaac08ac6b3041b2e1f2a1b698bac12f1cbdc4a"
+        },
+        "0x7632252ebff214b4969a92f7ca8290a9aa92e8dbea9b95ae49a7ea372c086026": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "settingLucky7Numbers",
+              "type": "bool"
+            }
+          ],
+          "name": "SettingNumbersChanged",
+          "type": "event",
+          "signature": "0x7632252ebff214b4969a92f7ca8290a9aa92e8dbea9b95ae49a7ea372c086026"
+        },
+        "0x261af219212047633bb60c8d0cc7e33d217c38edf6fa7e53acb97a3f94180de5": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "wolframQuery",
+              "type": "string"
+            }
+          ],
+          "name": "NewWolframQuery",
+          "type": "event",
+          "signature": "0x261af219212047633bb60c8d0cc7e33d217c38edf6fa7e53acb97a3f94180de5"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event",
+          "signature": "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0"
+        }
+      },
+      "links": {
+        "Lucky7Library": "0x9745252ceC696525A2C0aAfE092b38ee5fB4f02A"
+      },
+      "address": "0x288250Cd7515Ba9dff43B9847076bDcF90B625d0",
+      "transactionHash": "0xa1814550e5c67977e774a4076bcc3bd1c0df01658c8437e70d3e77b72135393f"
+    },
     "7": {
       "events": {},
       "links": {
@@ -7216,7 +7924,7 @@
     }
   },
   "schemaVersion": "3.0.11",
-  "updatedAt": "2019-08-01T02:09:43.120Z",
+  "updatedAt": "2019-08-01T03:34:33.208Z",
   "devdoc": {
     "methods": {
       "__callback(bytes32,string)": {
