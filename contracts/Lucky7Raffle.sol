@@ -100,6 +100,7 @@ contract Lucky7Raffle is Lucky7TicketFactory {
     ticketsPurchased = 0;
     lastDelivery = now;
     initialLucky7TicketPosition = gameID * numberOfLucky7Numbers;
+    emit NewGameStarted(gameID);
   }
 
   /** @dev _generateLucky7Number is the function that is actually used to generate the Lucky7Numbers. It have the business logic for generating the Lucky7Numbers, i.e. if 

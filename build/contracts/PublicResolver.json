@@ -3628,60 +3628,6 @@
           "type": "event",
           "signature": "0x7c69f06bea0bdef565b709e93a147836b0063ba2dd89f02d0b7e8d931e6a6daa"
         },
-        "0xe379c1624ed7e714cc0937528a32359d69d5281337765313dba4e081b72d7578": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "name": "node",
-              "type": "bytes32"
-            },
-            {
-              "indexed": false,
-              "name": "hash",
-              "type": "bytes"
-            }
-          ],
-          "name": "ContenthashChanged",
-          "type": "event",
-          "signature": "0xe379c1624ed7e714cc0937528a32359d69d5281337765313dba4e081b72d7578"
-        },
-        "0x52d7d861f09ab3d26239d492e8968629f95e9e318cf0b73bfddc441522a15fd2": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "name": "node",
-              "type": "bytes32"
-            },
-            {
-              "indexed": false,
-              "name": "a",
-              "type": "address"
-            }
-          ],
-          "name": "AddrChanged",
-          "type": "event",
-          "signature": "0x52d7d861f09ab3d26239d492e8968629f95e9e318cf0b73bfddc441522a15fd2"
-        },
-        "0xaa121bbeef5f32f5961a2a28966e769023910fc9479059ee3495d4c1a696efe3": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "name": "node",
-              "type": "bytes32"
-            },
-            {
-              "indexed": true,
-              "name": "contentType",
-              "type": "uint256"
-            }
-          ],
-          "name": "ABIChanged",
-          "type": "event",
-          "signature": "0xaa121bbeef5f32f5961a2a28966e769023910fc9479059ee3495d4c1a696efe3"
-        },
         "0x52a608b3303a48862d07a73d82fa221318c0027fbbcfb1b2329bface3f19ff2b": {
           "anonymous": false,
           "inputs": [
@@ -3745,15 +3691,69 @@
           "name": "DNSZoneCleared",
           "type": "event",
           "signature": "0xb757169b8492ca2f1c6619d9d76ce22803035c3b1d5f6930dffe7b127c1a1983"
+        },
+        "0xe379c1624ed7e714cc0937528a32359d69d5281337765313dba4e081b72d7578": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "node",
+              "type": "bytes32"
+            },
+            {
+              "indexed": false,
+              "name": "hash",
+              "type": "bytes"
+            }
+          ],
+          "name": "ContenthashChanged",
+          "type": "event",
+          "signature": "0xe379c1624ed7e714cc0937528a32359d69d5281337765313dba4e081b72d7578"
+        },
+        "0x52d7d861f09ab3d26239d492e8968629f95e9e318cf0b73bfddc441522a15fd2": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "node",
+              "type": "bytes32"
+            },
+            {
+              "indexed": false,
+              "name": "a",
+              "type": "address"
+            }
+          ],
+          "name": "AddrChanged",
+          "type": "event",
+          "signature": "0x52d7d861f09ab3d26239d492e8968629f95e9e318cf0b73bfddc441522a15fd2"
+        },
+        "0xaa121bbeef5f32f5961a2a28966e769023910fc9479059ee3495d4c1a696efe3": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "node",
+              "type": "bytes32"
+            },
+            {
+              "indexed": true,
+              "name": "contentType",
+              "type": "uint256"
+            }
+          ],
+          "name": "ABIChanged",
+          "type": "event",
+          "signature": "0xaa121bbeef5f32f5961a2a28966e769023910fc9479059ee3495d4c1a696efe3"
         }
       },
       "links": {},
-      "address": "0x66c6c4ebC75FEc5E2cC7D36a01FaAb8012F66351",
-      "transactionHash": "0x681a1700bb7ee7ff6094dd86310d58e1964d1734ade0c6c8adfbc32d8fafa184"
+      "address": "0x42c421A34923B10cAa27Ae9df71cE4c4e0229Acb",
+      "transactionHash": "0x3532febf1813db87b103810a3fcf0f0d492dcc1c570bc81031534c70fc42bf5f"
     }
   },
   "schemaVersion": "3.0.11",
-  "updatedAt": "2019-07-31T20:26:05.493Z",
+  "updatedAt": "2019-08-01T02:09:18.430Z",
   "devdoc": {
     "methods": {
       "ABI(bytes32,uint256)": {

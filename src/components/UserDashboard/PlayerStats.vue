@@ -359,9 +359,6 @@ export default {
     waitingLucky7Number() {
       this.refreshCurrentPrize();
     },
-    lucky7GameInfo() {
-      this.refreshCurrentPrize();
-    },
   },
   async created() {
     this.refreshCurrentPrize();

@@ -103,15 +103,19 @@ export default {
     return {
       loading: false,
       showNetworks: false,
-      selected: { id: '0x7', rpcUrl: 'https://a34b3fbf.ngrok.io' },
+      selected: { id: '0x7', rpcUrl: 'https://389e8e42.ngrok.io' },
       options: [
         {
-          value: { id: '0x7', rpcUrl: 'https://a34b3fbf.ngrok.io' },
+          value: { id: '0x7', rpcUrl: 'https://389e8e42.ngrok.io' },
           text: 'Local Network',
         },
         {
           value: { id: '0x4', rpcUrl: 'https://rinkeby.infura.io/v3/dc466345ecf2426d9bd6458046dce39f' },
           text: 'Rinkeby',
+        },
+        {
+          value: { id: '0x3', rpcUrl: 'https://ropsten.infura.io/v3/dc466345ecf2426d9bd6458046dce39f' },
+          text: 'Ropsetn',
         },
       ],
     };

@@ -14,7 +14,7 @@ module.exports = function (deployer, network) {
   if (network === 'rinkeby') {
     var lighthouseAddress = '0x613D2159db9ca2fBB15670286900aD6c1C79cC9a';
     deployer.deploy(Lucky7Store, lighthouseAddress, true, false, { // true = rhombus available on network
-      value: web3.utils.toWei('1', 'ether'),
+      value: web3.utils.toWei('0', 'ether'),
     });
   } else if (network === 'development') {
     deployer.deploy(Lighthouse).then(function () {
@@ -22,11 +22,10 @@ module.exports = function (deployer, network) {
         value: web3.utils.toWei('1', 'ether'),
       });
     })
-    
   } else {
     deployer.deploy(Lighthouse).then(function () {
       return deployer.deploy(Lucky7Store, Lighthouse.address, false, false, {
-        value: web3.utils.toWei('1', 'ether'),
+        value: web3.utils.toWei('0', 'ether'),
       });
     })
   }
