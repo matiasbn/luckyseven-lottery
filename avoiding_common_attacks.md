@@ -9,6 +9,12 @@ For instance, i'll use smaller numbers to represent the problem of the Integer u
 
 That's why the checkForLucky7Ticket function of the Lucky7TicketFactory uses SafeMath to avoid this kind of problem. The way the function is designed makes it imposible to happen. which increments the security of the method
 
+### Gas Limit DoS on a Contract via Unbounded Operations
+
+When the tickets are reviewed and a new 'lucky7ticket' is found, it value is stored on a mapping. This is because if the list
+of tickets grows too mucho, then iterating on it could cost an excessive gas amount, which can trigger a gas limit DoS on the contract.
+
+
 ### Cleaning the previous winners
 This design pattern is better illustrated with an example.
 
