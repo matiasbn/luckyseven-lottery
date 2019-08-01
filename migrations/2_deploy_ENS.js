@@ -9,36 +9,39 @@ const namehash = require('eth-ens-namehash');
 const tld = "win";
 
 module.exports = function(deployer, network, accounts) {
-  let ens;
-  let resolver;
-  let registrar;
+  if(network === 'developmnent'){
 
-  // Registry
-  deployer.deploy(ENS)
-  // Resolver
-  .then(function(ensInstance) {
-    ens = ensInstance;
-    return deployer.deploy(PublicResolver, ens.address);
-  })
-  .then(function(resolverInstance) {
-    resolver = resolverInstance;
-    return setupResolver(ens, resolver, accounts);
-  })
-  // Registrar
-  .then(function() {
-    return deployer.deploy(FIFSRegistrar, ens.address, namehash.hash(tld));
-  })
-  .then(function(registrarInstance) {
-    registrar = registrarInstance;
-    return setupRegistrar(ens, registrar);
-  })
-  // Reverse Registrar
-  .then(function() {
-    return deployer.deploy(ReverseRegistrar, ens.address, resolver.address);
-  })
-  .then(function(reverseRegistrarInstance) {
-    return setupReverseRegistrar(ens, resolver, reverseRegistrarInstance, accounts);
-  })
+    let ens;
+    let resolver;
+    let registrar;
+  
+    // Registry
+    deployer.deploy(ENS)
+    // Resolver
+    .then(function(ensInstance) {
+      ens = ensInstance;
+      return deployer.deploy(PublicResolver, ens.address);
+    })
+    .then(function(resolverInstance) {
+      resolver = resolverInstance;
+      return setupResolver(ens, resolver, accounts);
+    })
+    // Registrar
+    .then(function() {
+      return deployer.deploy(FIFSRegistrar, ens.address, namehash.hash(tld));
+    })
+    .then(function(registrarInstance) {
+      registrar = registrarInstance;
+      return setupRegistrar(ens, registrar);
+    })
+    // Reverse Registrar
+    .then(function() {
+      return deployer.deploy(ReverseRegistrar, ens.address, resolver.address);
+    })
+    .then(function(reverseRegistrarInstance) {
+      return setupReverseRegistrar(ens, resolver, reverseRegistrarInstance, accounts);
+    })
+  }
 };
 
 async function setupResolver(ens, resolver, accounts) {
