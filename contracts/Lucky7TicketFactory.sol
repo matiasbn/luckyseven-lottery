@@ -35,15 +35,17 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize {
   Lighthouse public localLighthouse;
   bool isRhombusAvailable;
 
-  constructor(address _lucky7Lighthouse, bool _isRhombusAvailable) public payable {
-    OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
+  constructor(address _lucky7Lighthouse, bool _isRhombusAvailable, bool _isLocalBlockchain) public payable {
+    if (_isLocalBlockchain == true) {
+      OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
+    }
     lucky7Lighthouse = ILighthouse(_lucky7Lighthouse);
     localLighthouse = Lighthouse(_lucky7Lighthouse);
     isRhombusAvailable = _isRhombusAvailable;
   }
 
   /**
-  * @param waitingLucky7Number is a circuit breaker to wait to receive a Lucky7Number to call for the next
+   * @param waitingLucky7Number is a circuit breaker to wait to receive a Lucky7Number to call for the next
    */
   bool waitingForLucky7Number = false;
 
@@ -385,7 +387,7 @@ contract Lucky7TicketFactory is Lucky7Admin, usingOraclize {
       if (userValues[iParameterID[myid]].muReady == true) {
         if ((userValues[iParameterID[myid]].userPaidTicket == true)) {
           _askForTicket(iParameterID[myid]);
-        } else if(settingLucky7Numbers == false){
+        } else if (settingLucky7Numbers == false) {
           emit GeneratedParametersReceived(userValues[iParameterID[myid]].mu, userValues[iParameterID[myid]].i, iParameterID[myid], gameID);
         }
         if (settingLucky7Numbers == true) {

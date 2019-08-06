@@ -2,53 +2,45 @@
   <b-card
     header="Try your luck!"
     header-tag="h2"
-    fluid
   >
-    <b-row>
-      <b-col>
-        <p>
-          Generate a ticket for a lower price than purchasing it! <br> If the ticket
-          generated is a Lucky7Ticket you'll have the option to buy it. <br>
-        </p>
-        <b-button
-          v-b-popover.hover="generatePrice"
-          v-if="player.purchasedTicket.received && player.generatedTicket.received"
-          :disabled="game.settings.storeEnabled"
-          size="lg"
-          title="Price"
-          variant="success"
-          @click="generateTicket"
-        >
-          Generate Ticket
-        </b-button>
-        <b-spinner
-          v-else
-          variant="success"
-          label="Spinning"/>
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col>
-        <p>
-          Or, if you feel lucky, you can purchase your ticket directly!.
-        </p>
-        <b-button
-          v-b-popover.hover="purchasePrice"
-          v-if="player.purchasedTicket.received && player.generatedTicket.received"
-          :disabled="game.settings.storeEnabled"
-          size="lg"
-          title="Price"
-          variant="success"
-          @click="purchaseRandomTicket"
-        >
-          Give me a random ticket!
-        </b-button>
-        <b-spinner
-          v-else
-          variant="success"
-          label="Spinning"/>
-      </b-col>
-    </b-row>
+    <p>
+      Generate a ticket for a lower price than purchasing it! <br> If the ticket
+      generated is a Lucky7Ticket you'll have the option to buy it. <br>
+    </p>
+    <b-button
+      v-b-popover.hover="generatePrice"
+      v-if="player.purchasedTicket.received && player.generatedTicket.received"
+      :disabled="game.settings.storeEnabled"
+      size="lg"
+      title="Price"
+      variant="success"
+      @click="generateTicket"
+    >
+      Generate Ticket
+    </b-button>
+    <b-spinner
+      v-else
+      variant="success"
+      label="Spinning"/>
+
+    <p>
+      Or, if you feel lucky, you can purchase your ticket directly!.
+    </p>
+    <b-button
+      v-b-popover.hover="purchasePrice"
+      v-if="player.purchasedTicket.received && player.generatedTicket.received"
+      :disabled="game.settings.storeEnabled"
+      size="lg"
+      title="Price"
+      variant="success"
+      @click="purchaseRandomTicket"
+    >
+      Give me a random ticket!
+    </b-button>
+    <b-spinner
+      v-else
+      variant="success"
+      label="Spinning"/>
   </b-card>
 </template>
 

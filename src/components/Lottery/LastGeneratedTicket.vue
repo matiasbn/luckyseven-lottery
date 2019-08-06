@@ -2,38 +2,34 @@
   <b-card
     header="Last Generated ticket"
     header-tag="h2"
-    no-body
+    title="Lucky7Ticket?"
   >
-    <b-card
-      title="Lucky7Ticket?"
-      class="lucky7-ticket">
-      <b-card-text
-        v-if="ticketIsLucky7Ticket && currentGameTicket">
-        <p>
-          Yes! What are you waiting? Buy it!
-        </p>
-        <b-button
-          v-b-popover.hover="purchasePrice"
-          :disabled="!player.generatedTicket.received"
-          title="Price"
-          variant="success"
-          @click="purchaseGeneratedTicket"
-        >
-          Buy Ticket
-        </b-button>
-      </b-card-text>
-      <b-card-text v-else-if="ticketIsAlreadyOwned && currentGameTicket">
-        <p>
-          You already own this ticket
-        </p>
-      </b-card-text>
-      <b-card-text v-else-if="notLucky7Ticket && currentGameTicket">
-        No, try again!.
-      </b-card-text>
-      <b-card-text v-else>
-        No tickets generated yet.
-      </b-card-text>
-    </b-card>
+    <b-card-text
+      v-if="ticketIsLucky7Ticket && currentGameTicket">
+      <p>
+        Yes! What are you waiting? Buy it!
+      </p>
+      <b-button
+        v-b-popover.hover="purchasePrice"
+        :disabled="!player.generatedTicket.received"
+        title="Price"
+        variant="success"
+        @click="purchaseGeneratedTicket"
+      >
+        Buy Ticket
+      </b-button>
+    </b-card-text>
+    <b-card-text v-else-if="ticketIsAlreadyOwned && currentGameTicket">
+      <p>
+        You already own this ticket
+      </p>
+    </b-card-text>
+    <b-card-text v-else-if="notLucky7Ticket && currentGameTicket">
+      No, try again!.
+    </b-card-text>
+    <b-card-text v-else>
+      No tickets generated yet.
+    </b-card-text>
 
     <b-list-group fluid>
       <b-list-group-item>

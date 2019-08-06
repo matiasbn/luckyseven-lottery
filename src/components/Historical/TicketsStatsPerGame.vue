@@ -1,27 +1,25 @@
 <template>
-  <b-container fluid>
-    <b-card
-      v-if="valuesReady"
-      header="Tickets stats per game"
-      header-tag="h2"
-      no-body>
+  <b-card
+    v-if="valuesReady"
+    header="Tickets stats per game"
+    header-tag="h2"
+    no-body>
 
-      <b-table
-        :items="ticketsStats"
-        :fields="fields"
-        striped
-        hover
-        responsive
-        bordered
-      />
-    </b-card>
-    <b-card
-      v-else>
-      <b-spinner
-        variant="success"
-        label="Spinning"/>
-    </b-card>
-  </b-container>
+    <b-table
+      :items="ticketsStats"
+      :fields="fields"
+      striped
+      hover
+      responsive
+      bordered
+    />
+  </b-card>
+  <b-card
+    v-else >
+    <b-spinner
+      variant="success"
+      label="Spinning"/>
+  </b-card>
 </template>
 
 <script>

@@ -17,7 +17,7 @@ contract Lucky7Raffle is Lucky7TicketFactory {
   constructor(address _lucky7Lighthouse, bool _isRhombusAvailable, bool _isLocalBlockchain)
   public
   payable
-  Lucky7TicketFactory(_lucky7Lighthouse, _isRhombusAvailable) { // To initialize Lucky7TicketFactory constructor with Rhombus lighthouse
+  Lucky7TicketFactory(_lucky7Lighthouse, _isRhombusAvailable, _isLocalBlockchain) { // To initialize Lucky7TicketFactory constructor with Rhombus lighthouse
     isLocalBlockchain = _isLocalBlockchain;
   }
 

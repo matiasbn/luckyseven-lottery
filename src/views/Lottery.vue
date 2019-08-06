@@ -1,15 +1,19 @@
 <template>
-  <b-container
-    fluid
-    class="rules-main">
-    <b-row class="lottery-element">
+  <b-container fluid>
+    <b-row>
       <b-col>
-        <TicketStore />
+        <Store/>
+      </b-col>
+      <b-col>
+        <LastGeneratedTicket/>
+      </b-col>
+      <b-col>
+        <LastPurchasedTicket/>
       </b-col>
     </b-row>
-    <b-row class="lottery-element">
-      <b-col >
-        <CurrentGame />
+    <b-row>
+      <b-col>
+        <CurrentGame/>
       </b-col>
     </b-row>
   </b-container>
@@ -19,12 +23,16 @@
 import Web3 from 'web3';
 import { mapState, mapMutations, mapGetters } from 'vuex';
 import CurrentGame from '@/components/Lottery/CurrentGame';
-import TicketStore from '@/components/Lottery/TicketStore';
+import Store from '@/components/Lottery/Store';
+import LastGeneratedTicket from '@/components/Lottery/LastGeneratedTicket';
+import LastPurchasedTicket from '@/components/Lottery/LastPurchasedTicket';
 
 export default {
   components: {
     CurrentGame,
-    TicketStore,
+    Store,
+    LastGeneratedTicket,
+    LastPurchasedTicket,
   },
   computed: {
     ...mapState({

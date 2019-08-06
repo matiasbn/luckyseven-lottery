@@ -1,4 +1,5 @@
 export default {
+  ensName: '',
   prizeAmount: '0',
   prizeGameID: '0',
   session: {

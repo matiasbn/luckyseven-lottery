@@ -1,26 +1,34 @@
 <template>
-  <b-container fluid>
-    <b-card
-      v-if="valuesReady"
-      header="Past Games"
-      header-tag="h2"
-      no-body>
-      <b-table
-        :items="lucky7PastGames"
-        :fields="fields"
-        striped
-        hover
-        responsive
-        bordered
-      />
-    </b-card>
-    <b-card
-      v-else >
-      <b-spinner
-        variant="success"
-        label="Spinning"/>
-    </b-card>
-  </b-container>
+  <b-card
+    v-if="valuesReady"
+    header="Past Games"
+    header-tag="h2"
+    no-body>
+    <b-table
+      id="lucky7PastGames"
+      :items="lucky7PastGames"
+      :fields="fields"
+      :per-page="perPage"
+      :current-page="currentPage"
+      striped
+      hover
+      responsive
+      bordered
+    />
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="rows"
+      :per-page="perPage"
+      aria-controls="lucky7PastGames"
+      align="fill"
+    />
+  </b-card>
+  <b-card
+    v-else >
+    <b-spinner
+      variant="success"
+      label="Spinning"/>
+  </b-card>
 </template>
 
 <script>
@@ -46,6 +54,9 @@ export default {
         { key: 'gameID', label: 'Game ID', sort: true, sortable: true },
       ],
       valuesReady: true,
+      perPage: 7,
+      currentPage: 0,
+      rows: 0,
     };
   },
   computed: {
@@ -63,7 +74,7 @@ export default {
       for (let i = 0; i < counter; i += 1) {
         lucky7TicketsPromises.push(contractInstance.lucky7TicketsArray(i));
       }
-      const lucky7TicketsArray = orderBy(await Promise.all(lucky7TicketsPromises), ['gameID', 'lucky7NumberID'], ['desc', 'asc']);
+      const lucky7TicketsArray = orderBy(await Promise.all(lucky7TicketsPromises), ['gameID', 'lucky7NumberID'], ['asc', 'asc']);
       lucky7TicketsArray.forEach((ticket, index) => {
         const pastTicket = {
           lucky7Number: parseInt(ticket.lucky7Number, 10),
@@ -77,6 +88,7 @@ export default {
         lucky7PastGames[index] = pastTicket;
       });
       this.valuesReady = true;
+      this.rows = lucky7PastGames.length;
       return lucky7PastGames;
     },
   },

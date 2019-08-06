@@ -1,30 +1,28 @@
 <template>
-  <div>
-    <b-card
-      v-if="lucky7GameInfoReady"
-      header="Current game"
-      header-tag="h1"
-      no-body
-    >
-      <b-table
-        :fields="fields"
-        :items="lucky7GameInfo"
-        striped
-        hover
-        bordered
-        responsive
-      />
-    </b-card>
-    <b-card
-      v-else
-    >
-      <b-spinner
-        variant="success"
-        label="Spinning"
-        size="lg"
-        class="spinner"/>
-    </b-card>
-  </div>
+  <b-card
+    v-if="lucky7GameInfoReady"
+    header="Current game"
+    header-tag="h1"
+    no-body
+  >
+    <b-table
+      :fields="fields"
+      :items="lucky7GameInfo"
+      striped
+      hover
+      bordered
+      responsive
+    />
+  </b-card>
+  <b-card
+    v-else
+  >
+    <b-spinner
+      variant="success"
+      label="Spinning"
+      size="lg"
+      class="spinner"/>
+  </b-card>
 </template>
 <script>
 /* eslint-disable max-len */
@@ -54,17 +52,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-  .card{
-    text-align: center;
-  }
-  .spinner{
-    text-align: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    justify-content: center;
-    align-content: center;
-    margin-bottom: 0%;
-    }
-</style>

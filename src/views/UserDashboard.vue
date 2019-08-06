@@ -1,13 +1,48 @@
 <template>
   <b-container fluid>
-    <br>
-    <AdminView/>
-    <br>
-    <UserView/>
-    <PlayerStats/>
-    <PlayerTickets/>
-    <br>
-    <PlayerPrizes/>
+    <b-row>
+      <b-col>
+        <AdminSetLucky7Numbers/>
+      </b-col>
+      <b-col>
+        <AdminStartNewGame/>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <SetLucky7Number/>
+      </b-col>
+      <b-col>
+        <SetNewGame/>
+      </b-col>
+      <b-col>
+        <DeliveryInfo/>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <UserAccount/>
+      </b-col>
+      <b-col>
+        <ENS/>
+      </b-col>
+      <b-col>
+        <UserBalance/>
+      </b-col>
+      <b-col>
+        <AvailablePrize/>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <PlayerTickets/>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <PlayerPrizes/>
+      </b-col>
+    </b-row>
   </b-container>
 </template>
 
@@ -16,20 +51,32 @@
 /* eslint-disable no-underscore-dangle */
 
 import truffleContract from '@/web3/truffleContract';
-import UserView from '@/components/UserDashboard/UserView';
-import AdminView from '@/components/UserDashboard/AdminView';
-import PlayerStats from '@/components/UserDashboard/PlayerStats';
+import SetLucky7Number from '@/components/UserDashboard/SetLucky7Number';
+import SetNewGame from '@/components/UserDashboard/SetNewGame';
+import DeliveryInfo from '@/components/UserDashboard/DeliveryInfo';
+import UserAccount from '@/components/UserDashboard/UserAccount';
+import ENS from '@/components/UserDashboard/ENS';
+import AdminSetLucky7Numbers from '@/components/UserDashboard/AdminSetLucky7Numbers';
+import AdminStartNewGame from '@/components/UserDashboard/AdminStartNewGame';
+import UserBalance from '@/components/UserDashboard/UserBalance';
+import AvailablePrize from '@/components/UserDashboard/AvailablePrize';
 import PlayerTickets from '@/components/UserDashboard/PlayerTickets';
 import PlayerPrizes from '@/components/UserDashboard/PlayerPrizes';
 import { mapGetters } from 'vuex';
 
 export default {
   components: {
-    AdminView,
-    PlayerStats,
+    AdminSetLucky7Numbers,
+    AdminStartNewGame,
+    UserBalance,
+    AvailablePrize,
     PlayerTickets,
     PlayerPrizes,
-    UserView,
+    SetLucky7Number,
+    SetNewGame,
+    DeliveryInfo,
+    UserAccount,
+    ENS,
   },
   data() {
     return {
@@ -55,9 +102,3 @@ export default {
   },
 };
 </script>
-
-<style>
-    .card{
-      text-align: center;
-    }
-</style>

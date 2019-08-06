@@ -9,6 +9,7 @@ import Lottery from '@/views/Lottery';
 import GameStats from '@/views/GameStats';
 import UserDashboard from '@/views/UserDashboard';
 import TicketValidator from '@/views/TicketValidator';
+import Historical from '@/views/Historical';
 import Login from '@/views/Login';
 import player from '@/store/player/';
 
@@ -49,6 +50,13 @@ export const router = new VueRouter({
     {
       path: '/user_dashboard',
       component: UserDashboard,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/historical',
+      component: Historical,
       meta: {
         requiresAuth: true,
       },

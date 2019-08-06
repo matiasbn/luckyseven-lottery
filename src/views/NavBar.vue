@@ -25,10 +25,13 @@
           class="ml-auto"
           right>
           <b-nav-item to="/lottery">Lottery</b-nav-item>
-          <b-nav-item
-            to="/game_stats" >
-            Game stats
-          </b-nav-item>
+          <b-nav-item-dropdown
+            text="Stats"
+            right>
+            <b-dropdown-item to="/game_stats">Current Game</b-dropdown-item>
+            <b-dropdown-item href="#">Ticket Vault</b-dropdown-item>
+            <b-dropdown-item to="/historical">Historical</b-dropdown-item>
+          </b-nav-item-dropdown>
           <b-nav-item to="/user_dashboard">User</b-nav-item>
           <b-nav-item to="/">
             <b-button

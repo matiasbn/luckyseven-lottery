@@ -2,19 +2,15 @@
   <b-card
     header="Last Purchased ticket"
     header-tag="h2"
-    no-body
+    title="Lucky7Ticket?"
   >
-    <b-card
-      title="Lucky7Ticket?"
-      class="lucky7-ticket">
-      <b-card-text v-if="player.purchasedTicket.received">
-        {{ isLucky7Ticket }}
-      </b-card-text>
-      <b-spinner
-        v-else
-        variant="success"
-        label="Spinning"/>
-    </b-card>
+    <b-card-text v-if="player.purchasedTicket.received">
+      {{ isLucky7Ticket }}
+    </b-card-text>
+    <b-spinner
+      v-else
+      variant="success"
+      label="Spinning"/>
     <b-list-group fluid>
 
       <b-list-group-item>

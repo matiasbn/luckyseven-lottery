@@ -53,12 +53,12 @@ export default {
     balance() {
       this.refreshPrizes();
     },
-    async coinbase() {
+    coinbase() {
       this.refreshPrizes();
     },
   },
   // eslint-disable-next-line consistent-return
-  async created() {
+  created() {
     this.refreshPrizes();
   },
   methods: {

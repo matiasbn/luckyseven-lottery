@@ -1,17 +1,18 @@
 <template>
   <div id="app">
-    <Header />
+    <NavBar />
+    <br>
     <router-view/>
   </div>
 </template>
 <script>
 
-import Header from '@/views/Header';
+import NavBar from '@/views/NavBar';
 
 export default {
   name: 'App',
   components: {
-    Header,
+    NavBar,
   },
 };
 </script>
@@ -35,6 +36,7 @@ export default {
     font-family: 'Cinzel', serif !important;
     /* border-color:rgba(255, 255, 0, 0.473) !important; */
     text-align: center;
+    margin: 10px;
   }
   .card-body{
     background-color:black;
@@ -122,12 +124,6 @@ export default {
   .login-cancel-button{
     font-family: 'Cinzel', serif !important;
   }
-  .lottery-element{
-    margin: 20px;
-  }
-  .lucky7-ticket{
-    border: 0px !important;
-  }
   .metamask-button{
     background-color: rgb(167, 68, 2);
     border-color: rgb(167, 68, 2);
@@ -139,13 +135,28 @@ export default {
     font-family: 'Cinzel', serif !important;
     border-color:rgba(253, 253, 132, 0.411);
   }
+  .modal-header{
+    font-family: 'Cinzel', serif !important;
+    background-color: rgb(36, 32, 32) !important;
+    color: white;
+    text-align:  center !important;
+    border-bottom: 0;
+  }
+  .modal-header .close{
+    margin-left: 0 !important;
+    border-bottom: 0;
+    color: white;
+  }
+
   .navbar-dark .navbar-brand{
     opacity: 0.7;
     color: rgba(253, 253, 132, 0.7) !important;
   }
+
   .table{
     margin-bottom: 0px !important;
   }
+
   th{
     background-color: rgb(44, 38, 38);
     color: rgba(255, 255, 0, 0.473);
@@ -156,6 +167,7 @@ export default {
     border-color:white !important;
     border-bottom: 0 !important;
   }
+
   td{
     background-color: black;
     color: rgba(255, 255, 0, 0.473);
@@ -165,12 +177,14 @@ export default {
     /* border-color:rgba(255, 255, 0, 0.473) !important; */
     border-color:white !important;
   }
+
   .page-title{
     font-family: 'Monoton', cursive !important;
     font-size: 100px !important;
     margin-top: 30px;
     margin-bottom: 0px;
   }
+
   .paper-text{
     color: rgba(255, 255, 0, 0.473);
     font-size: 20px !important;
@@ -178,6 +192,17 @@ export default {
     text-align: center !important;
     justify-content: center !important;
   }
+
+  .spinner{
+    text-align: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    justify-content: center;
+    align-content: center;
+    margin-bottom: 0%;
+  }
+
   .uport-botton{
     background-color: rgb(119,83,221);
     border-color: rgb(119,83,221);
