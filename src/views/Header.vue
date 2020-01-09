@@ -100,6 +100,6 @@ export default{
     font-family: 'Cinzel', serif !important;
   }
   .navbar{
-    opacity: 50%;
+    opacity: 100%;
   }
 </style>
