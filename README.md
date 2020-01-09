@@ -53,7 +53,7 @@ The balance of the contract is going to increase in the way more players purchas
 
 [NodeJS](https://github.com/nodejs/node) to run some scripts that will help you work easier.
 
-[Ganache-CLI](https://github.com/trufflesuite/ganache-cli) to generate a local blockchain to complete the sandbox. I've been using it with Ganache-GUI but gave me some troubles with Metamask.
+[Ganache-CLI](https://github.com/trufflesuite/ganache-cli) to generate a local blockchain to complete the sandbox. I've been using it with Ganache-GUI but gave me some troubles with Metamask. IMPORTANT!!!-> TESTED WITH ganache-cli v6.4.5
  
 [Metamask](https://metamask.io/) to interact with the dApp.
 
