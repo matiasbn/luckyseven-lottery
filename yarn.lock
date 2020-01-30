@@ -886,13 +886,13 @@
   dependencies:
     find-up "^2.1.0"
 
-"@ensdomains/ens@^0.3.11":
-  version "0.3.11"
-  resolved "https://registry.yarnpkg.com/@ensdomains/ens/-/ens-0.3.11.tgz#3001c76687b2ee36523a234e520ee3b0b6800b89"
-  integrity sha512-XqOWQYqdjZTZQA7vAJty9Bdw5er+K0KGLTkrMDBXuJj5yNSf2oM4cj+dW6RATA4Bwz5cBCH2mjA8EsOxa+8eDA==
+"@ensdomains/ens@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@ensdomains/ens/-/ens-0.4.0.tgz#bca927b4ac81f5da0ab1580a2dfea5289a95357a"
+  integrity sha512-J6/Gc1ttVz//dW/BVl5Wz9tJ0wB2LMSzzbXTJ5rZLQvWMkpN8o3Rukw1EeDA1zmS3IOjOdsmu3wgQkGA7vtGRw==
   dependencies:
     bluebird "^3.5.2"
-    eth-ens-namehash "^1.0.2"
+    eth-ens-namehash "^2.0.8"
     ethereumjs-testrpc "^6.0.3"
     ganache-cli "^6.1.0"
     solc "^0.4.20"
@@ -5906,14 +5906,6 @@ eth-ens-namehash@2.0.8, eth-ens-namehash@^2.0.8:
     idna-uts46-hx "^2.3.1"
     js-sha3 "^0.5.7"
 
-eth-ens-namehash@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/eth-ens-namehash/-/eth-ens-namehash-1.0.2.tgz#05ecdd6bac2d7fd7bc5ca84a993c6bad9da4edb9"
-  integrity sha1-Bezda6wtf9e8XKhKmTxrrZ2k7bk=
-  dependencies:
-    idna-uts46 "^1.0.1"
-    js-sha3 "^0.5.7"
-
 eth-lib@0.1.27, eth-lib@^0.1.26:
   version "0.1.27"
   resolved "https://registry.yarnpkg.com/eth-lib/-/eth-lib-0.1.27.tgz#f0b0fd144f865d2d6bf8257a40004f2e75ca1dd6"
@@ -7825,13 +7817,6 @@ idna-uts46-hx@^2.3.1:
   integrity sha512-PWoF9Keq6laYdIRwwCdhTPl60xRqAloYNMQLiyUnG42VjT53oW07BXIRM+NK7eQjzXjAk2gUvX9caRxlnF9TAA==
   dependencies:
     punycode "2.1.0"
-
-idna-uts46@^1.0.1:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/idna-uts46/-/idna-uts46-1.1.0.tgz#be098b2b7c1cabfbef87a8b80f626fac37366aea"
-  integrity sha1-vgmLK3wcq/vvh6i4D2JvrDc2auo=
-  dependencies:
-    punycode "^2.1.0"
 
 ieee754@^1.1.4:
   version "1.1.13"
